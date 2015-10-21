@@ -46,8 +46,8 @@ class EditProfileForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = '/edit-profile/'
         self.helper.layout = Layout(
-            TabHolder(
-                Tab('Personal',
+            Accordion(
+                AccordionGroup('Personal',
                     'name', 
                     'gender',
                     'date_of_birth',
@@ -57,7 +57,7 @@ class EditProfileForm(forms.ModelForm):
                     'batch',
                     'department',
                 ),
-                Tab('Contact',
+                AccordionGroup('Contact',
                     'home_contact_no',
                     'work_contact_no',
                     'current_address', 
@@ -65,7 +65,7 @@ class EditProfileForm(forms.ModelForm):
                     'country',
                     'nationality',
                 ),
-                Tab('Social',
+                AccordionGroup('Social',
                     'google_link',
                     'linkedin_link',
                     'facebook_link', 
