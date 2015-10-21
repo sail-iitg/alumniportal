@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import alumniportal.models
 from django.conf import settings
 
 
@@ -28,7 +29,7 @@ class Migration(migrations.Migration):
                 ('activity_type', models.CharField(max_length=32, choices=[(b'Event', b'Event'), (b'Meet', b'Alumni Meet'), (b'Volunteering', b'Start a Volunteering Activity'), (b'Survey', b'Take a Survey'), (b'Project', b'Float a Project')])),
                 ('name', models.CharField(max_length=32)),
                 ('purpose', models.CharField(max_length=128)),
-                ('date', models.DateTimeField(blank=True)),
+                ('created', models.DateTimeField(blank=True)),
                 ('end_date', models.DateTimeField(null=True, blank=True)),
                 ('requirement', models.TextField(blank=True)),
                 ('description', models.TextField(blank=True)),
@@ -39,7 +40,7 @@ class Migration(migrations.Migration):
             name='Blog',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('profile_picture', models.ImageField(null=True, upload_to=b'', blank=True)),
+                ('profile_picture', models.ImageField(null=True, upload_to=alumniportal.models.get_image_path, blank=True)),
                 ('videos', models.TextField(blank=True)),
                 ('about_me', models.TextField(blank=True)),
                 ('interests', models.TextField(blank=True)),
@@ -93,20 +94,21 @@ class Migration(migrations.Migration):
             name='Post',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('post_type', models.CharField(max_length=2, choices=[(b'U', b'University'), (b'A', b'Alumni'), (b'S', b'Student'), (b'R', b'Research')])),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('heading', models.CharField(max_length=128)),
                 ('content', models.TextField()),
-                ('profile', models.ForeignKey(to='alumniportal.Blog')),
+                ('blog', models.ForeignKey(to='alumniportal.Blog')),
             ],
         ),
         migrations.CreateModel(
             name='Profile',
             fields=[
+                ('profile_type', models.CharField(blank=True, max_length=2, choices=[(b'is_iitg', b'IITG'), (b'is_alumni', b'Alumni'), (b'is_stud', b'Current Student'), (b'is_prof', b'Professor')])),
                 ('roll_no', models.IntegerField(unique=True, serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
-                ('gender', models.CharField(max_length=7, choices=[(b'm', b'Male'), (b'f', b'Female'), (b'o', b'Other')])),
+                ('name', models.CharField(max_length=50, blank=True)),
+                ('gender', models.CharField(blank=True, max_length=7, choices=[(b'm', b'Male'), (b'f', b'Female'), (b'o', b'Other')])),
                 ('date_of_birth', models.DateField(null=True, blank=True)),
-                ('current_job_id', models.IntegerField(unique=True, null=True, blank=True)),
                 ('current_address', models.TextField(blank=True)),
                 ('city', models.CharField(max_length=32, blank=True)),
                 ('country', models.CharField(max_length=32, blank=True)),
@@ -119,11 +121,12 @@ class Migration(migrations.Migration):
                 ('twitter_link', models.URLField(blank=True)),
                 ('home_contact_no', models.CharField(max_length=15, blank=True)),
                 ('work_contact_no', models.CharField(max_length=15, blank=True)),
-                ('hostel', models.CharField(max_length=15, choices=[(b'Barak', b'Barak'), (b'Brahmaputra', b'Brahmaputra'), (b'Dhansiri', b'Dhansiri'), (b'Dibang', b'Dibang'), (b'Dihing', b'Dihing'), (b'Kameng', b'Kameng'), (b'Kapili', b'Kapili'), (b'Lohit', b'Lohit'), (b'Manas', b'Manas'), (b"Married Scholar's Hostel", b"Married Scholar's Hostel"), (b'Siang', b'Siang'), (b'Subansiri', b'Subansiri'), (b'Umiam', b'Umiam'), (b'Other', b'Other')])),
+                ('hostel', models.CharField(blank=True, max_length=15, choices=[(b'Barak', b'Barak'), (b'Brahmaputra', b'Brahmaputra'), (b'Dhansiri', b'Dhansiri'), (b'Dibang', b'Dibang'), (b'Dihing', b'Dihing'), (b'Kameng', b'Kameng'), (b'Kapili', b'Kapili'), (b'Lohit', b'Lohit'), (b'Manas', b'Manas'), (b"Married Scholar's Hostel", b"Married Scholar's Hostel"), (b'Siang', b'Siang'), (b'Subansiri', b'Subansiri'), (b'Umiam', b'Umiam'), (b'Other', b'Other')])),
                 ('room_no', models.CharField(max_length=10, blank=True)),
                 ('batch', models.IntegerField(choices=[(98, 1998), (99, 1999), (0, 2000), (1, 2001), (2, 2002), (3, 2003), (4, 2004), (5, 2005), (6, 2006), (7, 2007), (8, 2008), (9, 2009), (10, 2010), (11, 2011), (12, 2012), (13, 2013), (14, 2014), (15, 2015), (16, 2016), (17, 2017), (18, 2018), (19, 2019), (20, 2020)])),
-                ('department', models.CharField(max_length=25, choices=[(b'bt', b'Biotechnology [BT]'), (b'cl', b'Chemical [CL]'), (b'che', b'Chemistry [CHE]'), (b'ce', b'Civil [CE]'), (b'cse', b'Computer Science [CSE]'), (b'ds', b'Design [DD]'), (b'eee', b'Electrical [EEE]'), (b'ece', b'Electronics [ECE]'), (b'hss', b'Humanities &amp; Social Sciences [HSS]'), (b'ma', b'Mathematics [MA]'), (b'me', b'Mechanical [ME]'), (b'ep', b'Physics [EP]'), (b'cfe', b'Centre for Energy'), (b'cfte', b'Centre for the Environment'), (b'cnt', b'Centre for Nanotechnology'), (b'o', b'Other')])),
-                ('blog_id', models.OneToOneField(blank=True, to='alumniportal.Blog')),
+                ('department', models.CharField(blank=True, max_length=25, choices=[(b'bt', b'Biotechnology [BT]'), (b'cl', b'Chemical [CL]'), (b'che', b'Chemistry [CHE]'), (b'ce', b'Civil [CE]'), (b'cse', b'Computer Science [CSE]'), (b'ds', b'Design [DD]'), (b'eee', b'Electrical [EEE]'), (b'ece', b'Electronics [ECE]'), (b'hss', b'Humanities &amp; Social Sciences [HSS]'), (b'ma', b'Mathematics [MA]'), (b'me', b'Mechanical [ME]'), (b'ep', b'Physics [EP]'), (b'cfe', b'Centre for Energy'), (b'cfte', b'Centre for the Environment'), (b'cnt', b'Centre for Nanotechnology'), (b'o', b'Other')])),
+                ('current_education', models.OneToOneField(related_name='current_education', null=True, blank=True, to='alumniportal.Education')),
+                ('current_job', models.OneToOneField(related_name='current_job', null=True, blank=True, to='alumniportal.Job')),
                 ('user', models.OneToOneField(blank=True, to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -136,7 +139,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True)),
                 ('start_date', models.DateField(null=True, blank=True)),
                 ('end_date', models.DateField(null=True, blank=True)),
-                ('profile', models.ForeignKey(to='alumniportal.Profile', blank=True)),
+                ('profile', models.ForeignKey(related_name='projects', blank=True, to='alumniportal.Profile')),
             ],
         ),
         migrations.CreateModel(
@@ -158,22 +161,27 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='job',
             name='profile',
-            field=models.ForeignKey(to='alumniportal.Profile', blank=True),
+            field=models.ForeignKey(related_name='jobs', blank=True, to='alumniportal.Profile'),
         ),
         migrations.AddField(
             model_name='iitgexperience',
             name='profile',
-            field=models.ForeignKey(to='alumniportal.Profile', blank=True),
+            field=models.ForeignKey(related_name='iitgexperiences', blank=True, to='alumniportal.Profile'),
         ),
         migrations.AddField(
             model_name='education',
             name='profile',
-            field=models.ForeignKey(to='alumniportal.Profile', blank=True),
+            field=models.ForeignKey(related_name='educations', blank=True, to='alumniportal.Profile'),
         ),
         migrations.AddField(
             model_name='club',
             name='members',
             field=models.ManyToManyField(to='alumniportal.Profile', blank=True),
+        ),
+        migrations.AddField(
+            model_name='blog',
+            name='profile',
+            field=models.OneToOneField(blank=True, to='alumniportal.Profile'),
         ),
         migrations.AddField(
             model_name='activity',
@@ -193,7 +201,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='achievement',
             name='profile',
-            field=models.ForeignKey(to='alumniportal.Profile', blank=True),
+            field=models.ForeignKey(related_name='achievements', blank=True, to='alumniportal.Profile'),
         ),
         migrations.AddField(
             model_name='achievement',

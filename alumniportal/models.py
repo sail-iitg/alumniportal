@@ -13,7 +13,8 @@ class Profile(models.Model):
     name = models.CharField(max_length=50, blank=True)  #Full Name with the designation
     gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
     date_of_birth = models.DateField(blank=True, null=True)  #Date of Birth
-    current_job = models.OneToOneField('Job', blank=True, null=True, related_name='job')   #Row ID of the job object currently doing
+    current_job = models.OneToOneField('Job', blank=True, null=True, related_name='current_job')   #Row ID of the job object currently doing
+    current_education = models.OneToOneField('Education', blank=True, null =True, related_name='current_education')
     # past_jobs_id = models.TextField()   #List of Row IDs of the job objects
     current_address = models.TextField(blank=True)    #Complete Address
     city = models.CharField(max_length=32, blank=True)  #City currently living in. Useful to filter people on the basis of the city
@@ -59,7 +60,7 @@ class IITGExperience(models.Model):
     """
     Activity of an alumnus in institute clubs
     """
-    profile = models.ForeignKey(Profile, blank=True)  #roll_no of the person to which the IITGExperience object belongs
+    profile = models.ForeignKey(Profile, blank=True, related_name='iitgexperiences')  #roll_no of the person to which the IITGExperience object belongs
     club_name = models.CharField(max_length=30, choices=CLUBS)   #Club about which experience is shared
     experience = models.TextField() #experience shared
 
@@ -81,7 +82,7 @@ class Achievement(models.Model):
     """
     Achievements received in or out the campus
     """
-    profile = models.ForeignKey(Profile, blank=True)  #roll_no referring to the person to which the achievement belongs
+    profile = models.ForeignKey(Profile, blank=True, related_name='achievements')  #roll_no referring to the person to which the achievement belongs
     year = models.IntegerField(blank=True, null=True)    #Year of which achievement
     achievement = models.CharField(max_length=128)  #What is the achievement?
     description = models.TextField(blank=True)    #Description about it or experience.
@@ -94,7 +95,7 @@ class Education(models.Model):
     """
     Degree of an alumnus in and outside IITG
     """
-    profile = models.ForeignKey(Profile, blank=True)  #roll_no referring to the person to which the education object belongs
+    profile = models.ForeignKey(Profile, blank=True, related_name='educations')  #roll_no referring to the person to which the education object belongs
     degree = models.CharField(max_length=40, choices=PROGRAMS)  #Name of the degree
     institute = models.CharField(max_length=100)    #Name of the institute
     in_iitg = models.BooleanField() #Whether it is IITG or not. Used in filling the NonIITG_degrees and IITG_degrees in the Profile Class object.
@@ -108,7 +109,7 @@ class Education(models.Model):
 
 class Job(models.Model):
     """Past job of an alumnus"""
-    profile = models.ForeignKey(Profile, blank=True)
+    profile = models.ForeignKey(Profile, blank=True, related_name='jobs')
     company = models.CharField(max_length=50)
     position = models.CharField(max_length=50, blank=True)
     start_date = models.DateField(blank=True, null=True)
@@ -124,7 +125,7 @@ class Project(models.Model):
     """
     Research project that the alumni has done
     """
-    profile = models.ForeignKey(Profile, blank=True)
+    profile = models.ForeignKey(Profile, blank=True, related_name='projects')
     topic = models.CharField(max_length=128)
     mentor = models.CharField(max_length=32, blank=True)
     description = models.TextField(blank=True)
