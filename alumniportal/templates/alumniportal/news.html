@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block news  %}
+{% load staticfiles %}
+          <div class="col-md-9 main-content" >
+            <div class="row">
+            	<h3>News & Views</h3>
+            	<p class="news-intro">
+					Get the latest news on IITG and your fellow alums all in one place. Browse the alumni directory online, follow the latest IITG trends on social media.
+            	</p>
+            </div>
+            <div class="row " >
+              <div class="col-md-12 col-left news-container" >
+                <h3 class='column-header news-header'>News <a href="" class='column-addbutton'>(add)</a></h3>
+                <div class="row news-row">
+                  <div class="col-md-12 col-element" >
+                    <img src="{% static 'assets/images/image1.jpeg' %}">
+                    <h4><a>First News Item</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+                    </p>
+                  </div>
+                </div>
+                <div class="row news-row">
+                  <div class="col-md-12 col-element">
+                    <img src="{% static 'assets/images/image3.jpeg' %}">
+                    <h4 ><a>Second News Item</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    </p>
+
+                    
+
+                  </div>
+                </div>
+                <div class="row news-row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="">More news...</a>
+                  </div>
+                </div>
+
+
+           
+              
+            
+               
+
+
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6 col-left news-container" >
+              <h3 class='column-header news-header'>Research <a href="" class='column-addbutton'>(add)</a></h3>
+                <div class="row news-row">
+                  <div class="col-md-12 col-element" >
+                    <img src="{% static 'assets/images/image5.jpeg' %}">
+                    <h4><a>Research Paper Published!</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    </p>
+                  </div>
+                </div>
+            <div class="row news-row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="">More research...</a>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-right news-container " >
+              <h3 class='column-header news-header'>Achievements <a href="" class='column-addbutton'>(add)</a></h3>
+                <div class="row news-row">
+                  <div class="col-md-12 col-element" >
+                    <img src="{% static 'assets/images/image6.jpeg' %}">
+                    <h4><a>Great Achievement Achieved</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    </p>
+                  </div>
+                </div>
+                <div class="row news-row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="">More achievements...</a>
+                  </div>
+                </div>
+            </div>
+
+          </div>
+
+          </div>
+          <div class="col-md-3 sidebar" >
+            
+          
+
+
+
+
+
+          </div>
+{% endblock %}

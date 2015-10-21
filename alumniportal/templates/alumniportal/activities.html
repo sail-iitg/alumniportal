@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block activity %}
+
+
+
+{% load staticfiles %}
+        
+          <div class="col-md-9 main-content" >
+            <div class="row">
+            	<h3>Activities</h3>
+            	<p class="activities-intro">
+					Itching to get out and do something? Stop scratching and start clicking! Take your pick of things to do and places to see on campus, where you live or in a fascinating land far, far away.
+            	</p>
+            </div>
+            
+          
+          <div class="row">
+              <div class="col-md-6 col-left activities-container" >
+              <h3 class='column-header activities-header'>Events <a href="" class='column-addbutton'>(add)</a></h3>
+                <div class="row activities-row">
+                  <div class="col-md-12 col-element" >
+                    <img src="{% static 'assets/images/image2.jpeg' %}">
+                    <h4><a>Great Event</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    </p>
+                  </div>
+                </div>
+                <div class="row activities-row">
+                  <div class="col-md-12 col-element" >
+                    <img src="{% static 'assets/images/image4.jpeg' %}">
+                    <h4><a>Better Event</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    </p>
+                  </div>
+                </div>
+            <div class="row activities-row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="">More events...</a>
+                  </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-right activities-container " >
+              <h3 class='column-header activities-header'>Alumni Meet <a href="" class='column-addbutton'>(add)</a></h3>
+                <div class="row activities-row">
+                  <div class="col-md-12 col-element" >
+                    <img src="{% static 'assets/images/image3.jpeg' %}">
+                    <h4><a>Epic Meet</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    </p>
+                  </div>
+                </div>
+                <div class="row activities-row">
+                  <div class="col-md-12 col-element" >
+                    <img src="{% static 'assets/images/image1.jpeg' %}">
+                    <h4><a>Awesome Meet</a></h4>
+                    <p class="col-elem-data">
+                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    </p>
+                  </div>
+                </div>
+                <div class="row activities-row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="">More meets...</a>
+                  </div>
+                </div>
+            </div>
+
+          </div>
+
+          </div>
+{% endblock %}
+
