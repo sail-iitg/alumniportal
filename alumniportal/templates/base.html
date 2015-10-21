@@ -74,84 +74,9 @@
 	          <!-- Widgets to be added dynamically to sidebar -->
 	          <div class="col-md-3 sidebar" >
 	          <!--  Widget - add the block (complete contents of file) here -->
-	          	<div class="row">
-				{% if not request.user.is_authenticated %}
-					
-					<div class="well">
-                          <form id="loginForm" method="POST" action="/login/auth/" novalidate="novalidate">{% csrf_token %}
-                              <div class="form-group">
-                                  <label for="username" class="control-label">Username</label>
-                                  <input type="text" class="form-control" id="username" name="username" value="" required="" title="Please enter you username" placeholder="example@gmail.com">
-                                  <span class="help-block"></span>
-                              </div>
-                              <div class="form-group">
-                                  <label for="password" class="control-label">Password</label>
-                                  <input type="password" class="form-control" id="password" name="password" value="" required="" title="Please enter your password">
-                                  <span class="help-block"></span>
-                              </div>
-
-                              <!-- displayed if the username/password combo is wrong -->
-                              <div id="loginErrorMsg" class="alert alert-error hide">Wrong username or password</div>
-
-
-
-                              <div class="checkbox">
-
-
-                                  <label>
-                                      <input type="checkbox" name="remember" id="remember"> Remember login
-                                  </label>
-                                  
-                              </div>
-                              <input type="hidden" name="next" id="next" value="{{ response.path }}" />
-                              <button type="submit" class="btn btn-success btn-block">Login</button>
-                              <a href="#" class="btn btn-default btn-block">Forgot Password</a>
-                          </form>
-                      </div>
-                      </div>
-				{% endif %}
-
-				{% if request.user.is_authenticated %}
-					<div class="row">
-						<div class="well">
-                         		<p>Welcome {{ request.user.username }}</p>
-                              <a href='/login/logout/' class="btn btn-default btn-block" >Logout</a>
-                              
-                          </form>
-                      </div>
-                     </div>
-                {% endif %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                      <div class="row">
-<div class="well">
-                          <form id="questionForm" method="POST" action="#" novalidate="novalidate">
-                              <div class="form-group">
-                                  <label for="question" class="control-label">Where did you work?</label>
-                                  <input type="text" class="form-control" id="sidebar-answer" name="sidebar-answer" value="" required="" >
-                                 
-                              </div>
-                            
-
-                              <button type="submit" class="btn btn-default btn-block">Submit</button>
-                              
-                          </form>
-                      </div>
-</div>
-<a class="twitter-timeline"  href="https://twitter.com/_iitg" data-widget-id="655690236714811392">Tweets by @_iitg</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              {% include "widgets/login.html" %}
+              {% include "widgets/question.html" %}
+              {% include "widgets/twitter.html" %}
 			  <!--  End Widget-->
 	     
 	          </div>
