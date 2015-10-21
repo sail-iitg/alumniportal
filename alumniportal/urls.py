@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^news/$', views.news , name='news'),
     url(r'^profile/$', views.profile , name='profile'),
     url(r'^news-list/$', 'alumniportal.views.news_list' , name='news-list'),
-    url(r'^edit-profile/$', 'alumniportal.views.edit_profile' , name='edit-profile'),
+    url(r'^edit-profile/$', views.edit_profile , name='edit-profile'),
 ]

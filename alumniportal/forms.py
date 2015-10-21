@@ -20,7 +20,7 @@ class EditProfileForm(forms.ModelForm):
     """
     Form for alumnus to edit profile
     """
-    date_of_birth = forms.DateTimeField(required=True, widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
 
     class Meta:
         model = models.Profile

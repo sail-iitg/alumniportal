@@ -7,12 +7,11 @@ def get_image_path(instance, filename):
     return os.path.join('profile_picture', str(instance.profile.roll_no), filename)
 
 class Profile(models.Model):
-    profile_type = models.CharField(max_length=2, choices=PROFILE_TYPE)
-    blog = models.OneToOneField('Blog', blank=True)  #Row ID of Blog Class
+    profile_type = models.CharField(max_length=2, choices=PROFILE_TYPE, blank=True)
     user = models.OneToOneField(User, blank=True)  #webmail ID of the person (it acts as the username)
     roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
-    name = models.CharField(max_length=50)  #Full Name with the designation
-    gender = models.CharField(max_length=7, choices=GENDERS) #Choices
+    name = models.CharField(max_length=50, blank=True)  #Full Name with the designation
+    gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
     date_of_birth = models.DateField(blank=True, null=True)  #Date of Birth
     current_job = models.OneToOneField('Job', blank=True, null=True, related_name='job')   #Row ID of the job object currently doing
     # past_jobs_id = models.TextField()   #List of Row IDs of the job objects
@@ -33,10 +32,10 @@ class Profile(models.Model):
     # projects_id = models.TextField()    #List of Project IDs that the person has done
     # achievements_id = models.TextField()    #List of Achievement IDs for that person
     # IITG_experiences_id = models.TextField()    #List of Experience IDs for that person
-    hostel = models.CharField(max_length=15, choices=HOSTELS)    #Name of the hostel
+    hostel = models.CharField(max_length=15, choices=HOSTELS, blank=True)    #Name of the hostel
     room_no = models.CharField(max_length=10, blank=True)    #Room No. of that person while living in IITG
     batch = models.IntegerField(choices=PASS_OUT_YEARS)  #Batch (Pass Out Year) of the person
-    department = models.CharField(max_length=25, choices=DEPARTMENTS)    #Department in which he was in IITG
+    department = models.CharField(max_length=25, choices=DEPARTMENTS, blank=True)    #Department in which he was in IITG
 
     def __unicode__(self):
         return str(self.name)
@@ -47,6 +46,7 @@ class Blog(models.Model):
     Like a social page.
     """
     # profile_id = models.IntegerField(unique=True, primary_key=True) #Unique to the person
+    profile = models.OneToOneField('Profile', blank=True)  #Row ID of Blog Class
     profile_picture = models.ImageField(blank=True, null=True, upload_to=get_image_path)   #Profile Picture of the person
     videos = models.TextField(blank=True) #List of path to the videos that the person with profile_id = roll_no has uploaded
     # posts = models.TextField(blank=True)      #List of lists. [["TimeStamp", "Header of Post", "Content"]]. It will be updated from the end. 

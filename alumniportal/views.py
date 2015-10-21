@@ -1,6 +1,7 @@
 from alumniportal import forms
 from alumniportal import models
 from datetime import datetime
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -23,6 +24,7 @@ def profile(request):
 def news_list(request):
     return render(request,'alumniportal/news-list.html', {'page': 'news-list'})
 
+@login_required(login_url='/')
 def edit_profile(request):
     """
     display form to alumnus for editing profile
@@ -36,8 +38,7 @@ def edit_profile(request):
 
     if request.method == "POST":
         if profile:
-            form = forms.EditProfileForm(request.POST, request.FILES,
-                                     instance=profile)
+            form = forms.EditProfileForm(request.POST, request.FILES, instance=profile)
         else:
             form = forms.EditProfileForm(request.POST, request.FILES)
         if form.is_valid():
@@ -46,8 +47,7 @@ def edit_profile(request):
             if not profile:
                 task.user = request.user
             task.save()
-            messages.success(request,
-                'Profile saved.')
+            messages.success(request, 'Profile saved.')
     else:
         if profile:
             form = forms.EditProfileForm(instance=profile)
