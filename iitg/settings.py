@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'alumniportal',
     'login',
+    'crispy_forms',
+    'bootstrap3_datetime',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -74,7 +76,7 @@ TEMPLATES = [
 ]
 
 #URL for login_required decorator 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/auth/login/'
 
 
 WSGI_APPLICATION = 'iitg.wsgi.application'
@@ -117,3 +119,6 @@ STATIC_URL = '/static/'
 
 
 # PATH_TO_DATABASE_IMPORT = '/home/jayadeep/Downloads/sailDb.sql'
+
+# Template pack for django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

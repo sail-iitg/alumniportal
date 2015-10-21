@@ -15,14 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from alumniportal import views as alumniportal_views
-from login import views as login_views
+
 urlpatterns = [
-    url(r'^$', alumniportal_views.home),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^auth', login_views.auth),
-    url(r'^login/', login_views.login),
-    url(r'^logout/', login_views.logout),
-
-
+    url(r'^', include('alumniportal.urls')),
+    url(r'^login/', include('login.urls')),
 ]

@@ -13,14 +13,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
-from alumniportal import views
+from login import views
 
 urlpatterns = [
-    url(r'^$', views.home , name='home'),
-    url(r'^activity/$', views.activity , name='activity'),
-    url(r'^community/$', views.community , name='community'),
-    url(r'^news/$', views.news , name='news'),
-    url(r'^profile/$', views.profile , name='profile'),
-    url(r'^news-list/$', 'alumniportal.views.news_list' , name='news-list'),
-    url(r'^edit-profile/$', 'alumniportal.views.edit_profile' , name='edit-profile'),
+    url(r'^$', views.login , name='login'),
+    url(r'^auth/$', views.auth , name='auth'),
+    url(r'^logout/$', views.logout , name='logout'),
 ]

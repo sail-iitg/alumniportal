@@ -76,7 +76,7 @@
 				{% if not request.user.is_authenticated %}
 					
 					<div class="well">
-                          <form id="loginForm" method="POST" action="/auth" novalidate="novalidate">{% csrf_token %}
+                          <form id="loginForm" method="POST" action="/login/auth/" novalidate="novalidate">{% csrf_token %}
                               <div class="form-group">
                                   <label for="username" class="control-label">Username</label>
                                   <input type="text" class="form-control" id="username" name="username" value="" required="" title="Please enter you username" placeholder="example@gmail.com">
@@ -113,7 +113,7 @@
 					<div class="row">
 						<div class="well">
                          		<p>Welcome {{ request.user.username }}</p>
-                              <a href='/logout' class="btn btn-default btn-block" >Logout</a>
+                              <a href='/login/logout/' class="btn btn-default btn-block" >Logout</a>
                               
                           </form>
                       </div>
