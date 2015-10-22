@@ -26,11 +26,39 @@
                             <p {% if message.tags %} class="{{ message.tags }} alert alert-success"{% endif %}>{{ message }}</p>
                           {% endif %}
                           {% endfor %}
-
-
                       </div>
                     {% endif %}
-                    {% crispy form form.helper %}      
+                    <!-- EDITED!!!!! -->
+                    <div class="col-md-10">
+                      <ul class="nav nav-tabs profile-tabs">
+                        <li class="active"><a data-toggle="tab" href="#tab-personal">Personal</a></li>
+                        <li><a data-toggle="tab" href="#tab-personal">Education</a></li>
+                        <li><a data-toggle="tab" href="#tab-professional">IITG</a></li>
+                        <li><a data-toggle="tab" href="#tab-education">Project</a></li>
+                        <li><a data-toggle="tab" href="#tab-iitg">Achievement</a></li>
+                        <li><a data-toggle="tab" href="#tab-professional">Professional</a></li>
+                      </ul>
+                    </div>
+                    <div class="tab-content">
+                      <div id="tab-personal" class="tab-pane fade in active profile-personal">
+                        {% crispy form form.helper %} 
+                      </div>
+                      <div id="tab-education" class="tab-pane fade in active profile-education">
+                        {% crispy form form.helper %} 
+                      </div>
+                      <div id="tab-iitg" class="tab-pane fade in active profile-iitg">
+                        {% crispy form form.helper %} 
+                      </div>
+                      <div id="tab-project" class="tab-pane fade in active profile-project">
+                        {% crispy form form.helper %} 
+                      </div>
+                      <div id="tab-achievement" class="tab-pane fade in active profile-achievement">
+                        {% crispy form form.helper %} 
+                      </div>
+                      <div id="tab-professional" class="tab-pane fade in active profile-professional">
+                        {% crispy form form.helper %} 
+                      </div>
+                    </div>     
                 </div>  
             </div>
         </div>

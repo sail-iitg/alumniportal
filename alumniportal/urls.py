@@ -18,6 +18,10 @@ from alumniportal import views
 urlpatterns = [
     url(r'^$', views.home , name='home'),
     url(r'^activity/$', views.activity , name='activity'),
+    ####my edit
+    url(r'^activity/add/$', views.add_activity , name='add_activity'),
+    url(r'^blog/edit/$', views.blog_details_edit , name='blog_details_edit'),
+    ##edit end
     url(r'^community/$', views.community , name='community'),
     url(r'^news/$', views.news , name='news'),
     url(r'^profile/$', views.profile , name='profile'),

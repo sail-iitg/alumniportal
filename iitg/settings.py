@@ -41,6 +41,8 @@ INSTALLED_APPS = (
     'login',
     'crispy_forms',
     'bootstrap3_datetime',
+    ######edited
+    'multiupload',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -76,7 +76,10 @@ class Recent(models.Model):
     # posts = models.TextField()  #List of lists [["timestamp, profile_id, heading, content"]]
     # achievements = models.TextField()   #List of lists [["timestamp, achievement_id"]]
     # projects = models.TextField()   #List of lists [["timestamp, project_id"]]
-    # activities = models.TextField() #List of lists [["timestamp, activity_id"]]
+    activities = models.TextField() #List of lists [["timestamp, activity_id"]]
+    ######edited
+    def __unicode__(self):
+        return str(self.week)
 
 class Achievement(models.Model):
     """
@@ -149,7 +152,11 @@ class Activity(models.Model):
     peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved. 
     # peoples_id = models.TextField() #List of the peoples who gor involved
     images = models.TextField(blank=True) #List of the paths of the images which are involved with the activity
-    recent = models.ForeignKey(Recent, blank=True)
+    #######EDITED
+    recent = models.ForeignKey(Recent, blank=True,null=True)
+    ######edited
+    def __unicode__(self):
+        return str(self.name)
 
 
 class Club(models.Model):
