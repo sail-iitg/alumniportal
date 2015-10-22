@@ -13,18 +13,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
-from alumniportal import views
+from alumniportal import forms_views, display_views
 
 urlpatterns = [
-    url(r'^$', views.home , name='home'),
-    url(r'^activity/$', views.activity , name='activity'),
+    url(r'^$', display_views.home , name='home'),
+    url(r'^activity/$', display_views.activity , name='activity'),
     ####my edit
-    url(r'^activity/add/$', views.add_activity , name='add_activity'),
-    url(r'^blog/edit/$', views.blog_details_edit , name='blog_details_edit'),
+    url(r'^activity/add/$', forms_views.add_activity , name='add_activity'),
+    url(r'^blog/edit/$', forms_views.blog_details_edit , name='blog_details_edit'),
     ##edit end
-    url(r'^community/$', views.community , name='community'),
-    url(r'^news/$', views.news , name='news'),
-    url(r'^profile/$', views.profile , name='profile'),
+    url(r'^community/$', display_views.community , name='community'),
+    url(r'^news/$', display_views.news , name='news'),
+    url(r'^profile/$', display_views.profile , name='profile'),
     url(r'^news-list/$', 'alumniportal.views.news_list' , name='news-list'),
-    url(r'^edit-profile/$', views.edit_profile , name='edit-profile'),
+    url(r'^edit-profile/$', forms_views.edit_profile , name='edit-profile'),
 ]
