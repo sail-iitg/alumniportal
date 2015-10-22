@@ -14,6 +14,8 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from alumniportal import forms_views, display_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', display_views.home , name='home'),
@@ -27,4 +29,4 @@ urlpatterns = [
     url(r'^profile/$', display_views.profile , name='profile'),
     url(r'^news-list/$', 'alumniportal.views.news_list' , name='news-list'),
     url(r'^edit-profile/$', forms_views.edit_profile , name='edit-profile'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
