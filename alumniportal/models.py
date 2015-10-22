@@ -4,9 +4,9 @@ from constants import *
 import os
 # Create your models here.
 def get_image_path(instance, filename):
-    if type(instance)=="Blog":
+    if type(instance).__name__ == "Blog":
         return os.path.join('profile_picture', str(instance.profile.roll_no), filename)
-    elif type(instance)=="Post":
+    elif type(instance).__name__ == "Post":
         if instance.blog.profile.user.username == "admin":
             return os.path.join('news', filename)
         else:
@@ -14,7 +14,7 @@ def get_image_path(instance, filename):
             return os.path.join('posts', instance.blog.profile.user.username, filename)
 
 class Profile(models.Model):
-    profile_type = models.CharField(max_length=2, choices=PROFILE_TYPE, blank=True)
+    profile_type = models.CharField(max_length=16, choices=PROFILE_TYPE, blank=True)
     user = models.OneToOneField(User, blank=True)  #webmail ID of the person (it acts as the username)
     roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
     name = models.CharField(max_length=50, blank=True)  #Full Name with the designation
