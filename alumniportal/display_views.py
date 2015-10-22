@@ -6,7 +6,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-######EDITED
 import time
 
 def home(request):
@@ -21,8 +20,13 @@ def community(request):
 def news(request):
     return render(request,'alumniportal/news.html', {'page': 'news'})
 
+@login_required
 def profile(request):
-    return render(request,'alumniportal/profile.html', {'page': 'profile'})
+	profile = models.Profile.objects.get(user = request.user)
+	return render(request,'alumniportal/profile.html', {
+    	'page': 'profile',
+    	'profile':profile,
+    	})
 
 def news_list(request):
     return render(request,'alumniportal/news-list.html', {'page': 'news-list'})

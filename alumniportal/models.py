@@ -4,7 +4,14 @@ from constants import *
 import os
 # Create your models here.
 def get_image_path(instance, filename):
-    return os.path.join('profile_picture', str(instance.profile.roll_no), filename)
+    if type(instance)=="Blog":
+        return os.path.join('profile_picture', str(instance.profile.roll_no), filename)
+    elif type(instance)=="Post":
+        if instance.blog.profile.user.username == "admin":
+            return os.path.join('news', filename)
+        else:
+            #####Check for changing the filename before uploading and also about shwing timestamps for different post instances. 
+            return os.path.join('posts', instance.blog.profile.user.username, filename)
 
 class Profile(models.Model):
     profile_type = models.CharField(max_length=2, choices=PROFILE_TYPE, blank=True)
@@ -76,10 +83,7 @@ class Recent(models.Model):
     # posts = models.TextField()  #List of lists [["timestamp, profile_id, heading, content"]]
     # achievements = models.TextField()   #List of lists [["timestamp, achievement_id"]]
     # projects = models.TextField()   #List of lists [["timestamp, project_id"]]
-    activities = models.TextField() #List of lists [["timestamp, activity_id"]]
-    ######edited
-    def __unicode__(self):
-        return str(self.week)
+    # activities = models.TextField() #List of lists [["timestamp, activity_id"]]
 
 class Achievement(models.Model):
     """
@@ -89,7 +93,7 @@ class Achievement(models.Model):
     year = models.IntegerField(blank=True, null=True)    #Year of which achievement
     achievement = models.CharField(max_length=128)  #What is the achievement?
     description = models.TextField(blank=True)    #Description about it or experience.
-    recent = models.ForeignKey(Recent, blank=True)
+    recent = models.ForeignKey(Recent, blank=True, related_name = 'achievements')
 
     def __unicode__(self):
         return str(self.achievement)
@@ -134,13 +138,13 @@ class Project(models.Model):
     description = models.TextField(blank=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
-    recent = models.ForeignKey(Recent, blank=True)
+    recent = models.ForeignKey(Recent, blank=True, related_name='projects')
 
 class Activity(models.Model):
     """
     Includes volunteering activities as well as any meet or event, survey, project floated.
     """
-    profile = models.ForeignKey(Profile, related_name='activity_host', blank=True)
+    profile = models.ForeignKey(Profile, related_name='activities', blank=True)
     activity_type = models.CharField(max_length=32, choices=ACTIVITY_TYPE)
     name = models.CharField(max_length=32)  #Name of the Voluteer Activity being proposed
     purpose = models.CharField(max_length=128)  #Purpose of the activity eg. Welfare of society, CrowdSourcing, Survey
@@ -152,11 +156,7 @@ class Activity(models.Model):
     peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved. 
     # peoples_id = models.TextField() #List of the peoples who gor involved
     images = models.TextField(blank=True) #List of the paths of the images which are involved with the activity
-    #######EDITED
-    recent = models.ForeignKey(Recent, blank=True,null=True)
-    ######edited
-    def __unicode__(self):
-        return str(self.name)
+    recent = models.ForeignKey(Recent, blank=True, related_name='activities')
 
 
 class Club(models.Model):
@@ -167,8 +167,9 @@ class Club(models.Model):
 
 class Post(models.Model):
     blog = models.ForeignKey(Blog)
-    post_type = models.CharField(max_length=2, choices = POST_TYPE)
+    post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
     timestamp = models.DateTimeField(auto_now_add=True)
     heading = models.CharField(max_length=128)
     content = models.TextField()
-    recent = models.ForeignKey(Recent, blank=True)
+    image = models.ImageField(blank=True, null=True, upload_to=get_image_path)
+    recent = models.ForeignKey(Recent, blank=True, related_name='posts')

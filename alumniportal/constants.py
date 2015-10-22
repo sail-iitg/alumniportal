@@ -125,6 +125,7 @@ POST_TYPE = (
     ('A', 'Alumni'),
     ('S', 'Student'),
     ('R', 'Research'),
+    ('B', 'Blog'),
     )
 
 PROFILE_TYPE = (
