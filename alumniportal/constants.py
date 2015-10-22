@@ -2,6 +2,7 @@ from datetime import datetime
 """
 Choices for fields in models.
 """
+ADMIN_USERNAME = 'admin'
 CLUBS = (
     ('alcheringa', 'Alcheringa'),
     ('EDC', 'Entrepreneurial Development Cell (EDC)'),

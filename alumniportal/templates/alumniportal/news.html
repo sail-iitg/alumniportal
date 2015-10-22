@@ -12,27 +12,18 @@
             <div class="row " >
               <div class="col-md-12 col-left news-container" >
                 <h3 class='column-header news-header'>News <a href="" class='column-addbutton'>(add)</a></h3>
+                {% for new in news %}
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
                     <img src="{% static 'assets/images/image1.jpeg' %}">
-                    <h4><a>First News Item</a></h4>
+                    <h4><a>{{new.heading}}</a></h4>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+                      {{new.content|linebreaks}}
                     </p>
                   </div>
                 </div>
-                <div class="row news-row">
-                  <div class="col-md-12 col-element">
-                    <img src="{% static 'assets/images/image3.jpeg' %}">
-                    <h4 ><a>Second News Item</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
+                {% endfor %}
 
-                    
-
-                  </div>
-                </div>
                 <div class="row news-row">
                   <div class="col-md-12 col-element">
                     <a class='column-more' href="">More news...</a>

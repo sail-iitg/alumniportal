@@ -85,6 +85,12 @@ class Recent(models.Model):
     # projects = models.TextField()   #List of lists [["timestamp, project_id"]]
     # activities = models.TextField() #List of lists [["timestamp, activity_id"]]
 
+    class Meta:
+        # order_with_respect_to = week
+        ordering = ['-week']
+
+    def __unicode__(self):
+        return self.week
 class Achievement(models.Model):
     """
     Achievements received in or out the campus
@@ -174,3 +180,9 @@ class Post(models.Model):
     content = models.TextField()
     image = models.ImageField(blank=True, null=True, upload_to=get_image_path)
     recent = models.ForeignKey(Recent, blank=True, related_name='posts')
+
+    class Meta:
+        # order_with_respect_to = ['recent']
+        ordering = ['-timestamp']
+    def __unicode__(self):
+        return str(self.post_type + " " + str(self.timestamp))
