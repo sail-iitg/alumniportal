@@ -22,11 +22,14 @@ def news(request):
 
 @login_required
 def profile(request):
-	profile = models.Profile.objects.get(user = request.user)
-	return render(request,'alumniportal/profile.html', {
-    	'page': 'profile',
-    	'profile':profile,
-    	})
+    try:
+        profile = models.Profile.objects.get(user = request.user)
+    except:
+        return HttpResponseRedirect('/edit-profile')
+    return render(request,'alumniportal/profile.html', {
+        'page': 'profile',
+        'profile':profile,
+        })
 
 def news_list(request):
     return render(request,'alumniportal/news-list.html', {'page': 'news-list'})

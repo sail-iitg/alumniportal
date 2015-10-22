@@ -42,7 +42,7 @@ class Profile(models.Model):
     # IITG_experiences_id = models.TextField()    #List of Experience IDs for that person
     hostel = models.CharField(max_length=15, choices=HOSTELS, blank=True)    #Name of the hostel
     room_no = models.CharField(max_length=10, blank=True)    #Room No. of that person while living in IITG
-    batch = models.IntegerField(choices=PASS_OUT_YEARS)  #Batch (Pass Out Year) of the person
+    batch = models.CharField(max_length=16, choices=PASS_OUT_YEARS)  #Batch (Pass Out Year) of the person
     department = models.CharField(max_length=25, choices=DEPARTMENTS, blank=True)    #Department in which he was in IITG
 
     def __unicode__(self):
@@ -90,6 +90,7 @@ class Achievement(models.Model):
     Achievements received in or out the campus
     """
     profile = models.ForeignKey(Profile, blank=True, related_name='achievements')  #roll_no referring to the person to which the achievement belongs
+    achievement_type = models.CharField(max_length=2, choices=ACHIEVEMENT_TYPE)
     year = models.IntegerField(blank=True, null=True)    #Year of which achievement
     achievement = models.CharField(max_length=128)  #What is the achievement?
     description = models.TextField(blank=True)    #Description about it or experience.
@@ -119,8 +120,8 @@ class Job(models.Model):
     profile = models.ForeignKey(Profile, blank=True, related_name='jobs')
     company = models.CharField(max_length=50)
     position = models.CharField(max_length=50, blank=True)
-    start_date = models.DateField(blank=True, null=True)
-    end_date = models.DateField(blank=True, null=True)
+    start_date = models.IntegerField(blank=True, null=True, choices=COMMENCMENT_YEARS)
+    end_date = models.IntegerField(blank=True, null=True, choices=COMMENCMENT_YEARS)
     description = models.CharField(max_length=50, blank=True)
     # occupation = models.CharField(max_length=50, null=True, choices=OCCUPATIONS)
     city = models.CharField(max_length=50, blank=True)

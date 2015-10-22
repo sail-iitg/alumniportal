@@ -1,3 +1,4 @@
+from datetime import datetime
 """
 Choices for fields in models.
 """
@@ -6,6 +7,8 @@ CLUBS = (
     ('EDC', 'Entrepreneurial Development Cell (EDC)'),
     ('gymkhana', 'Gymkhana'),
     ('techniche', 'Techniche'),
+    ('technothlon', 'Technothlon'),
+    ('LS', 'Lecture Series'),
     ('SAIL', 'Student Alumni Interaction Linkage (SAIL)'),
 
     ('aeromodelling', 'Aeromodeling Club'),
@@ -52,6 +55,9 @@ CLUBS = (
     ('redRibbon', 'Red Ribbon Club'),
     ('hostel', 'Hostel Affairs Board'),
     ('other', 'Other'),
+
+    ('Manthan', 'Manthan'),
+    ('Kriti', 'Manthan'),
 )
 GENDERS = (
     ('m', 'Male'),
@@ -59,15 +65,20 @@ GENDERS = (
     ('o', 'Other'),
 )
 PROGRAMS = (
-    ('b', 'B.Tech.'),
-    ('m', 'M.Tech.'),
-    ('bd', 'B.Des.'),
-    ('p', 'Ph.D.'),
-    ('other', 'Other')
+    ('B. Tech', 'B.Tech.'),
+    ('M. Tech', 'M.Tech.'),
+    ('B. Des', 'B.Des.'),
+    ('Ph.D.', 'Ph.D.'),
+    ('Other', 'Other')
 )
-
-COMMENCMENT_YEARS = [(i+1994,i+1994) for i in range(37)]
-PASS_OUT_YEARS = [(98,1998), (99,1999)] + [(i,i+2000) for i in range(21)]
+MAX_YEAR = datetime.now().year + 4
+COMMENCMENT_YEARS = [(i,i) for i in range(1994, MAX_YEAR - 4)]
+PASS_OUT_YEARS = []
+for i in PROGRAMS:
+    for j in range(1998, MAX_YEAR):
+        PASS_OUT_YEARS = PASS_OUT_YEARS + [(str(j) + " " + i[1], str(j) + " " + i[1])]
+# PASS_OUT_YEARS = [(str(i)+ for j in PROGRAMS, str(i)+ for jjjj in PROGRAMS)   for i in range(1998, MAX_YEAR)]
+# PASS_OUT_YEARS = [(1998,'1998-BTec'), (1999,1999)] + [(i+2000,i+2000) for i in range(21)]
 
 DEPARTMENTS = (
     ('bt', 'Biotechnology [BT]'),
@@ -133,4 +144,10 @@ PROFILE_TYPE = (
     ('is_alumni', 'Alumni'),
     ('is_stud', 'Current Student'),
     ('is_prof', 'Professor'),
+    )
+
+ACHIEVEMENT_TYPE = (
+    ('A', 'Alumni'),
+    ('I','IITG'),
+    ('S', 'Student'),
     )

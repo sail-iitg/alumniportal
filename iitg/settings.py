@@ -78,7 +78,7 @@ TEMPLATES = [
 ]
 
 #URL for login_required decorator 
-LOGIN_URL = '/auth/login/'
+LOGIN_URL = '/login/auth'
 
 
 WSGI_APPLICATION = 'iitg.wsgi.application'
