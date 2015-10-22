@@ -20,14 +20,19 @@ def community(request):
 
 def news(request):
     admin_blog = User.objects.get(username = ADMIN_USERNAME).profile.blog
-    posts = models.Post.objects.filter(blog = admin_blog).exclude(post_type = 'B')[:2]
+    posts = models.Post.objects.filter(blog = admin_blog)
+    news = posts.exclude(post_type = 'B')[:2]
+    research = posts.filter(post_type = 'R')[0]
+    achievement = models.Achievement.objects.all()[0]
     # import pdb; pdb.set_trace()
     # print news[0]
     # print news[1]
     # print news   
     return render(request,'alumniportal/news.html', {
         'page': 'news',
-        'news':posts,
+        'news':news,
+        'research':research,
+        'achievement':achievement,
         })
 
 @login_required

@@ -91,6 +91,7 @@ class Recent(models.Model):
 
     def __unicode__(self):
         return self.week
+
 class Achievement(models.Model):
     """
     Achievements received in or out the campus
@@ -104,6 +105,10 @@ class Achievement(models.Model):
 
     def __unicode__(self):
         return str(self.achievement)
+
+    class Meta:
+        order_with_respect_to = 'recent'   
+        ordering = ['-year']
 
 class Education(models.Model):
     """
@@ -173,6 +178,11 @@ class Club(models.Model):
     posts = models.TextField()  #list of lists in which sublist ["date", "rollno", "content"]
 
 class Post(models.Model):
+    """
+    Denotes a General Class for News and Blog posts.
+    Admin if uses post_type other than 'B' are considered as news. 'R' categorised as Research News and so on. 
+    If post_type = 'B' then they re individual BLOGS.
+    """
     blog = models.ForeignKey(Blog)
     post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -182,7 +192,7 @@ class Post(models.Model):
     recent = models.ForeignKey(Recent, blank=True, related_name='posts')
 
     class Meta:
-        # order_with_respect_to = ['recent']
+        order_with_respect_to = 'recent'
         ordering = ['-timestamp']
     def __unicode__(self):
         return str(self.post_type + " " + str(self.timestamp))

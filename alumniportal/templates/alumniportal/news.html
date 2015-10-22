@@ -31,12 +31,6 @@
                 </div>
 
 
-           
-              
-            
-               
-
-
             </div>
           </div>
           <div class="row">
@@ -45,9 +39,9 @@
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
                     <img src="{% static 'assets/images/image5.jpeg' %}">
-                    <h4><a>Research Paper Published!</a></h4>
+                    <h4><a>{{research.heading}}</a></h4>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                      {{research.content|linebreaks}}
                     </p>
                   </div>
                 </div>
@@ -62,9 +56,9 @@
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
                     <img src="{% static 'assets/images/image6.jpeg' %}">
-                    <h4><a>Great Achievement Achieved</a></h4>
+                    <h4><a>{{achievement.achievement}}</a></h4>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                      {{achievement.content|linebreaks}}
                     </p>
                   </div>
                 </div>
