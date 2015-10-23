@@ -28,6 +28,12 @@ def home(request):
         'community':community,
         })
 
+def volunteer(request):
+    volunteers = models.Activity.objects.filter(activity_type = 'V')
+    return render(request, 'alumniportal/volunteer.html', {
+        'page':'volunteer',
+        'volunteers':volunteers,
+        })
 def activity(request):
     return render(request,'alumniportal/activities.html', {'page': 'activity'})
 

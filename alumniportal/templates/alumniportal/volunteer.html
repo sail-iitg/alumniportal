@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block volunteer  %}
+{% load staticfiles %}
+          <div class="col-md-9 main-content" >
+            <div class="row">
+
+                <h3>Volunteering Activities<a href="" class='column-addbutton'>(add)</a></h3>
+                <p class="news-intro">
+                    Some Content
+                </p>
+            </div>
+            <div class="row " >
+                <!-- This is a template news row -->
+                {% for v in volunteers %}
+                <div class="row news-row">
+                  <div class="col-md-12 col-element" >
+                    <img {% if v.image %} src="{{v.image.url}}" {% endif %} alt="{{v.post_type}}{{v.achievement_type}}" width="150" height="150" >
+
+                    <h4><a>{{v.name}}</a></h4>
+                    <div class="news-date">{{v.created}}</div>
+                    <p class="col-elem-data">
+                      {{v.description}} 
+                    </p>
+                  </div>
+                </div>
+                {% endfor %}
+                <!-- News row end -->
+
+          </div>
+         
+
+          </div>
+
+          </div>
+         
+{% endblock %}
