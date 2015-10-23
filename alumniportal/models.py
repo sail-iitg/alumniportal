@@ -159,7 +159,7 @@ class Activity(models.Model):
     Includes volunteering activities as well as any meet or event, survey, project floated.
     """
     profile = models.ForeignKey(Profile, related_name='activities', blank=True)
-    activity_type = models.CharField(max_length=32, choices=ACTIVITY_TYPE)
+    activity_type = models.CharField(max_length=32, choices=ACTIVITY_TYPE)  
     name = models.CharField(max_length=32)  #Name of the Voluteer Activity being proposed
     purpose = models.CharField(max_length=128)  #Purpose of the activity eg. Welfare of society, CrowdSourcing, Survey
     image = models.ImageField(upload_to=get_image_path, blank=True, null=True)
@@ -180,14 +180,21 @@ class Club(models.Model):
     name = models.CharField(max_length=32)  #Name of the club
     description = models.TextField()    #Descripton of the club
     members = models.ManyToManyField(Profile, blank=True)    #List of the profile_id of the cluv
-    posts = models.TextField()  #list of lists in which sublist ["date", "rollno", "content"]
+
+class ClubPost(models.Model):
+    member = models.ForeignKey(Profile, blank=True, related_name='clubposts')
+    heading = models.CharField(max_length=64)
+    content = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    club = models.ForeignKey(Club, related_name='club')
+    # image = models.ImageField(blank=True, null=True, upload_to = get_image_path)
 
 class News(models.Model):
     post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
     timestamp = models.DateTimeField(auto_now_add=True)
     heading = models.CharField(max_length=128)
     content = models.TextField()
-    image = models.ImageField(blank=True, null=True, upload_to=get_image_path)
+    image = models.ImageField(blank=True, null=True, upload_to=get_image_path)  #Currently just one
     recent = models.ForeignKey(Recent, blank=True, related_name='news')
 
     class Meta:
@@ -203,7 +210,6 @@ class Post(models.Model):
     If post_type = 'B' then they re individual BLOGS.
     """
     blog = models.ForeignKey(Blog)
-    post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
     timestamp = models.DateTimeField(auto_now_add=True)
     heading = models.CharField(max_length=128)
     content = models.TextField()

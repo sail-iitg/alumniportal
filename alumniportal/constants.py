@@ -137,11 +137,10 @@ POST_TYPE = (
     ('A', 'Alumni'),
     ('S', 'Student'),
     ('R', 'Research'),
-    ('B', 'Blog'),
+    ('C', 'Achievement'),
     )
 
 PROFILE_TYPE = (
-    ('is_iitg', 'IITG'),
     ('is_alumni', 'Alumni'),
     ('is_stud', 'Current Student'),
     ('is_prof', 'Professor'),
