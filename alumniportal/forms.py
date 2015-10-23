@@ -105,6 +105,7 @@ class AddActivityForm(forms.ModelForm):
             'activity_type',
             'name',
             'purpose',
+            'image',
             'end_date',
             'requirement',
             'description',

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import migrations, models
+from django.db import models, migrations
 import alumniportal.models
 from django.conf import settings
 
@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             name='Activity',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('activity_type', models.CharField(max_length=32, choices=[(b'Event', b'Event'), (b'Meet', b'Alumni Meet'), (b'Volunteering', b'Start a Volunteering Activity'), (b'Survey', b'Take a Survey'), (b'Project', b'Float a Project')])),
+                ('activity_type', models.CharField(max_length=32, choices=[(b'E', b'Event'), (b'M', b'Alumni Meet'), (b'V', b'Start a Volunteering Activity'), (b'S', b'Take a Survey'), (b'P', b'Float a Project')])),
                 ('name', models.CharField(max_length=32)),
                 ('purpose', models.CharField(max_length=128)),
                 ('image', models.ImageField(null=True, upload_to=alumniportal.models.get_image_path, blank=True)),
@@ -243,7 +243,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='activity',
             name='recent',
-            field=models.ForeignKey(related_name='activities', blank=True, to='alumniportal.Recent'),
+            field=models.ForeignKey(related_name='activities', blank=True, to='alumniportal.Recent', null=True),
         ),
         migrations.AddField(
             model_name='achievement',
@@ -254,21 +254,5 @@ class Migration(migrations.Migration):
             model_name='achievement',
             name='recent',
             field=models.ForeignKey(related_name='achievements', blank=True, to='alumniportal.Recent'),
-        ),
-        migrations.AlterOrderWithRespectTo(
-            name='post',
-            order_with_respect_to='recent',
-        ),
-        migrations.AlterOrderWithRespectTo(
-            name='news',
-            order_with_respect_to='recent',
-        ),
-        migrations.AlterOrderWithRespectTo(
-            name='activity',
-            order_with_respect_to='recent',
-        ),
-        migrations.AlterOrderWithRespectTo(
-            name='achievement',
-            order_with_respect_to='recent',
         ),
     ]

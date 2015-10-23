@@ -21,12 +21,12 @@ urlpatterns = [
     url(r'^$', display_views.home , name='home'),
     url(r'^activity/$', display_views.activity , name='activity'),
     ####my edit
-    url(r'^activity/$', forms_views.add_activity , name='add_activity'),
+    url(r'^activity/add/$', forms_views.add_activity , name='add_activity'),
     url(r'^blog/edit/$', forms_views.blog_details_edit , name='blog_details_edit'),
     ##edit end
     url(r'^community/$', display_views.community , name='community'),
     url(r'^news/$', display_views.news , name='news'),
-    url(r'^(?P<class_type>\b(news|activity)\b)/(?P<item_type>\b(All|add|Research|IITG|Student|Alumni|Achievement)\b)/$', display_views.items, name='news-items'),
+    url(r'^(?P<class_type>\b(news|activity)\b)/(?P<item_type>\b(All|Research|IITG|Student|Alumni|Achievement)\b)/$', display_views.items, name='news-items'),
     # url(r'^achievement/(?P<type>\b(all|iitg|alumni|student)\b)/$', display_views.items , name='news-items'),
     url(r'^profile/$', display_views.profile , name='profile'),
     url(r'^edit-profile/(?P<tab_type>\b(personal|professional|project|achievement|iitg|education)\b)/$', forms_views.edit_profile , name='edit-profile'),

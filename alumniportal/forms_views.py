@@ -6,8 +6,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
+from django.conf import settings
+from django.core.files import File
 ######EDITED
-import time
+import time, os
+
 
 
 
@@ -266,36 +269,27 @@ def add_activity(request):
     if hasattr(request.user, 'profile'):
         profile = request.user.profile
     else:
-        print("Create Profile before adding activity")
-        return HttpResponseRedirect('/')
+        messages.error(request, "Create your Profile before adding activity")
+        return HttpResponseRedirect('/edit-profile/')
 
     if request.method == "POST":
         form = forms.AddActivityForm(request.POST, request.FILES)
+        recent = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
         if form.is_valid():
-            
             task = form.save(commit=False)
-            #task.recent = models.Recent.objects.get(pk=1)
-            #print(models.Recent.objects.get(pk=1).week)
             image_list = request.FILES.getlist('files')
-            #####NOW GET DIRECTORY TO STORE IMAGES
-            print(image_list)
-            
             task.profile = profile
             task.created = datetime.now()
-            ## RECENT
-            today = datetime.today()
-            week_no = today.isocalendar()[1]
-            year_no = today.isocalendar()[0]
-            recent_week= str(models.Recent.objects.latest('week'))[:2]
-            recent_year= str(models.Recent.objects.latest('week'))[-4:]
-            
-            if week_no == recent_week and year_no == recent_year :
-                recent= models.Recent.objects.latest('week')
-            else :
-                recent = models.Recent(week=str(week_no)+str(year_no))
-                recent.save()
-            task.recent = models.Recent.objects.latest('week')
+            today = datetime.today().isocalendar()
+            week = str(today[1])+str(today[0])
+            tmp = models.Recent.objects.get_or_create(week=week)
+            if tmp[1]:
+                tmp[0].save()
+            task.recent = tmp[0]
             task.save()
+            
+            for image in image_list:
+                models.ActivityImage.objects.create(activity=task, image=image).save()
             messages.success(request, 'Activity Created')
     else:
         form = forms.AddActivityForm()

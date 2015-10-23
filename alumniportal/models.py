@@ -2,18 +2,25 @@ from django.db import models
 from django.contrib.auth.models import User
 from constants import *
 import os
+from time import strftime
+# from datetime import datetime
 # Create your models here.
+# mydict = {
+#     "Blog" : os.path.join('profile_picture', str(instance.profile.roll_no), filename),
+#     "Post" : os.path.join('posts', instance.blog.profile.user.username, instance.timestamp, filename),
+#     "Activity" : os.path.join('activity',instance.activity_type, instance.name, str(instance.created), filename), 
+#     "News"  : os.path.join('news',instance.timestamp, filename),
+#     }
+# datetime_dir = strftime("%Y%m%d_%H%M%S")
 def get_image_path(instance, filename):
     if type(instance).__name__ == "Blog":
         return os.path.join('profile_picture', str(instance.profile.roll_no), filename)
     elif type(instance).__name__ == "Post":
-        if instance.blog.profile.user.username == "admin":
-            return os.path.join('news', filename)
-        else:
-            #####Check for changing the filename before uploading and also about shwing timestamps for different post instances. 
-            return os.path.join('posts', instance.blog.profile.user.username, filename)
-    elif type(instance).__name__ == "Activity":
-        return os.path.join('activity',self.activity_type, self.name + str(self.created), filename)
+        return os.path.join('posts', instance.blog.profile.user.username, str(instance.timestamp.strftime("%Y%m%d_%H%M%S")), filename)
+    elif type(instance).__name__ == "ActivityImage":
+        return os.path.join('activity', instance.activity.activity_type, instance.activity.profile.user.username, str(instance.activity.created.strftime("%Y%m%d_%H%M%S")), filename)
+    elif type(instance).__name__ == "News":
+        return os.path.join('news',str(instance.timestamp.strftime("%Y%m%d_%H%M%S")), filename)
 
 class Profile(models.Model):
     profile_type = models.CharField(max_length=16, choices=PROFILE_TYPE, blank=True)
@@ -88,8 +95,8 @@ class Recent(models.Model):
     # activities = models.TextField() #List of lists [["timestamp, activity_id"]]
 
     class Meta:
-        # order_with_respect_to = 'week'
         ordering = ['-week']
+        # order_with_respect_to = 'week'
 
     def __unicode__(self):
         return self.week
@@ -109,8 +116,8 @@ class Achievement(models.Model):
         return str(self.achievement)
 
     class Meta:
-        order_with_respect_to = 'recent'   
         ordering = ['-year']
+        # order_with_respect_to = 'recent'   
 
 class Education(models.Model):
     """
@@ -168,13 +175,17 @@ class Activity(models.Model):
     requirement = models.TextField(blank=True)    #Requirements if any
     description = models.TextField(blank=True)    #Short summary of the activity. How to be performed etc
     peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved. 
-    # peoples_id = models.TextField() #List of the peoples who gor involved
-    images = models.TextField(blank=True) #List of the paths of the images which are involved with the activity
-    recent = models.ForeignKey(Recent, blank=True, related_name='activities')
+    recent = models.ForeignKey(Recent, blank=True, null=True, related_name='activities')
+
+    def __unicode__(self):
+        return str(self.created)
 
     class Meta:
-        order_with_respect_to = 'recent'
         ordering = ['-created']
+        # order_with_respect_to = 'recent'
+class ActivityImage(models.Model):
+    activity = models.ForeignKey(Activity, related_name='images')
+    image = models.ImageField(upload_to=get_image_path)
 
 class Club(models.Model):
     name = models.CharField(max_length=32)  #Name of the club
@@ -198,11 +209,14 @@ class News(models.Model):
     recent = models.ForeignKey(Recent, blank=True, related_name='news')
 
     class Meta:
-        order_with_respect_to = 'recent'
         ordering = ['-timestamp']
+        # order_with_respect_to = 'recent'
     def __unicode__(self):
         return str(self.post_type + " " + str(self.timestamp))    
-        
+      
+class NewsImage(models.Model):
+    news = models.ForeignKey(News, related_name='images')
+    image = models.ImageField(upload_to=get_image_path)
 class Post(models.Model):
     """
     Denotes a General Class for News and Blog posts.
@@ -217,7 +231,7 @@ class Post(models.Model):
     recent = models.ForeignKey(Recent, blank=True, related_name='posts')
 
     class Meta:
-        order_with_respect_to = 'recent'
         ordering = ['-timestamp']
+        # order_with_respect_to = 'recent'
     def __unicode__(self):
         return str(self.post_type + " " + str(self.timestamp))
