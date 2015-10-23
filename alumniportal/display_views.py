@@ -62,8 +62,7 @@ def profile(request):
 
 def items(request, class_type, item_type):
     #####need to add continuously loading of news
-    admin_blog = User.objects.get(username = ADMIN_USERNAME).profile.blog
-    posts = models.Post.objects.filter(blog = admin_blog)
+    posts = models.News.objects.all()
     print request.path
     if class_type == "news":
         if item_type == "all":

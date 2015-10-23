@@ -182,6 +182,20 @@ class Club(models.Model):
     members = models.ManyToManyField(Profile, blank=True)    #List of the profile_id of the cluv
     posts = models.TextField()  #list of lists in which sublist ["date", "rollno", "content"]
 
+class News(models.Model):
+    post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    heading = models.CharField(max_length=128)
+    content = models.TextField()
+    image = models.ImageField(blank=True, null=True, upload_to=get_image_path)
+    recent = models.ForeignKey(Recent, blank=True, related_name='news')
+
+    class Meta:
+        order_with_respect_to = 'recent'
+        ordering = ['-timestamp']
+    def __unicode__(self):
+        return str(self.post_type + " " + str(self.timestamp))    
+        
 class Post(models.Model):
     """
     Denotes a General Class for News and Blog posts.

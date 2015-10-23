@@ -147,7 +147,7 @@ def edit_profile(request):
             if profile:
                 try:
                     achievement = models.Achievement.objects.get(profile=profile)
-                    AchievementForm = forms.EditAchievementForm(request.POST, request.FILES,instance=project)
+                    AchievementForm = forms.EditAchievementForm(request.POST, request.FILES,instance=achievement)
                 except models.Achievement.DoesNotExist:
                     AchievementForm = forms.EditAchievementForm(request.POST, request.FILES)
 
@@ -283,8 +283,7 @@ def add_activity(request):
             task.profile = profile
             task.created = datetime.now()
             ## RECENT
-            timestamp = time.time() 
-            today = datetime.date.today()
+            today = datetime.today()
             week_no = today.isocalendar()[1]
             year_no = today.isocalendar()[0]
             recent_week= str(models.Recent.objects.latest('week'))[:2]
