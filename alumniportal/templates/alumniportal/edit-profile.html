@@ -18,48 +18,106 @@
                     
                 </div>
                 <div class="panel-body">    
-                    {% if messages %}
+                    
+                      {% if messages %}
                       <div class="messages">
                           {% for message in messages %}
                           <!-- TODO: Design "Profile saved" message using Bootstrap3 -->
                           {% if 'success' in message.tags %}
                             <p {% if message.tags %} class="{{ message.tags }} alert alert-success"{% endif %}>{{ message }}</p>
+                          {% elif 'error' in message.tags %}
+                            <p {% if message.tags %} class="{{ message.tags }} alert alert-danger"{% endif %}>{{ message }}</p>
                           {% endif %}
                           {% endfor %}
                       </div>
                     {% endif %}
+                    
                     <!-- EDITED!!!!! -->
                     <div class="col-md-10">
                       <ul class="nav nav-tabs profile-tabs">
                         <li class="active"><a data-toggle="tab" href="#tab-personal">Personal</a></li>
-                        <li><a data-toggle="tab" href="#tab-personal">Education</a></li>
-                        <li><a data-toggle="tab" href="#tab-professional">IITG</a></li>
-                        <li><a data-toggle="tab" href="#tab-education">Project</a></li>
-                        <li><a data-toggle="tab" href="#tab-iitg">Achievement</a></li>
+                        <li><a data-toggle="tab" href="#tab-education">Education</a></li>
+                        <li><a data-toggle="tab" href="#tab-iitg">IITG</a></li>
+                        <li><a data-toggle="tab" href="#tab-project">Project</a></li>
+                        <li><a data-toggle="tab" href="#tab-achievement">Achievement</a></li>
                         <li><a data-toggle="tab" href="#tab-professional">Professional</a></li>
                       </ul>
                     </div>
                     <div class="tab-content">
                       <div id="tab-personal" class="tab-pane fade in active profile-personal">
-                        {% crispy form form.helper %} 
+                        {% crispy PersonalForm PersonalForm.helper %} 
                       </div>
+
                       <div id="tab-education" class="tab-pane fade in active profile-education">
-                        {% crispy form form.helper %} 
+                         {% crispy EducationForm EducationForm.helper %}
                       </div>
                       <div id="tab-iitg" class="tab-pane fade in active profile-iitg">
-                        {% crispy form form.helper %} 
+                        {% crispy IITGExperienceForm IITGExperienceForm.helper %}
                       </div>
                       <div id="tab-project" class="tab-pane fade in active profile-project">
-                        {% crispy form form.helper %} 
+                        {% crispy ProjectForm ProjectForm.helper %}
                       </div>
                       <div id="tab-achievement" class="tab-pane fade in active profile-achievement">
-                        {% crispy form form.helper %} 
+                        {% crispy AchievementForm AchievementForm.helper %}
                       </div>
                       <div id="tab-professional" class="tab-pane fade in active profile-professional">
-                        {% crispy form form.helper %} 
+                        {% crispy JobForm JobForm.helper %}
                       </div>
                     </div>     
                 </div>  
             </div>
         </div>
+        {% load staticfiles %}
+        <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+        <script type="text/javascript">
+          $( document ).ready(function() {
+          $(".tab-pane").removeClass( "active" )
+          $("#tab-personal").addClass("active")
+          
+        });
+        // var csrfmiddlewaretoken =  $('input[name="csrfmiddlewaretoken"]').val();
+        // var profile_form = $('#id_edit_profile_form');
+        // var education_form = $('#id_edit_education_form');
+        
+        // function create_post() {
+        //     console.log("create post is working!") // sanity check
+        //     console.log(profile_form.serialize())
+        //     $.ajax({
+        //         url : "/edit-profile/", // the endpoint
+        //         type : "POST", // http method
+        //         data : profile_form.serialize() // data sent with the post request
+
+        //         // handle a successful response
+        //         success : function(json) {
+        //            // remove the value from the input
+        //             //console.log(json); // log the returned json to the console
+        //             console.log("success"); // another sanity check
+        //         },
+
+                // handle a non-successful response
+                // error : function(xhr,errmsg,err) {
+                //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                // }
+        //     });
+        // };
+        
+
+        // $('input[type="submit"]').click(function(event){
+            
+            
+        //     console.log($("#id_edit_education_form").serialize());
+        //     event.preventDefault();
+       
+        // });
+          // $(form input[type='submit']).click( function(){
+          //   console.log("Going to submit")
+          //   submitForms();
+          // });
+          
+        // $( form input[type='submit'] ).click(function() {
+        //       // $( "#target" ).click();
+        // });
+        </script>
 {% endblock %}
