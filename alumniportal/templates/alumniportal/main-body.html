@@ -52,37 +52,23 @@
 
     </div>
               
-
-
-
-
-
               </div>
             </div>
             <div class="row">
               <div class="col-md-6 col-left" >
                 <h3 class='column-header'>Research <a href="" class='column-addbutton'>(add)</a></h3>
+                {% for research in researchs %}
                 <div class="row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image1.jpeg' %}">
-                    <h4><a>Project 1</a></h4>
+                    <img {% if research.image %} src="{{research.image.url}}" {% endif %} alt="{{research.post_type}}" width="150" height="150" >
+                    <h4><a>{{research.heading}}</a></h4>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+                      {{research.content}} 
                     </p>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-md-12 col-element">
-                    <img src="{% static 'assets/images/image2.jpeg' %}">
-                    <h4 ><a>Project 2</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
-                    </p>
+                {% endfor %}
 
-                    
-
-                  </div>
-                </div>
                 <div class="row">
                   <div class="col-md-12 col-element">
                     <a class='column-more' href="">More activities...</a>
@@ -93,11 +79,11 @@
             </div>
               
             <div class="col-md-6 right" >
-
                 <h3 class='column-header'>Activities <a href="" class='column-addbutton'>(add)</a></h3>
                 <div class="row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image3.jpeg' %}">
+                    <img {% if activity.image %} src="{{activity.image.url}}" {% endif %} alt="{{activity.post_type}}" width="150" height="150" >
+
                     <h4><a>Activity 1</a></h4>
                     <p class="col-elem-data">
                       Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque  Aenean massa. Cum sociis natoque penatibus  Aenean massa. Cum sociis natoque penatibus

@@ -133,7 +133,7 @@ ACTIVITY_TYPE = (
     )
 
 POST_TYPE = (
-    ('U', 'University'),
+    ('I', 'IITG'),
     ('A', 'Alumni'),
     ('S', 'Student'),
     ('R', 'Research'),

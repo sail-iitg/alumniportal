@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block news-list  %}
+{% block items  %}
 {% load staticfiles %}
           <div class="col-md-9 main-content" >
             <div class="row">
@@ -15,48 +15,23 @@
                 <h3 class='column-header news-header'>News <a href="" class='column-addbutton'>(add)</a></h3>
                 
                 <!-- This is a template news row -->
+                {% for item in items %}
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image1.jpeg' %}">
+                    <img {% if item.image %} src="{{item.image.url}}" {% endif %} alt="{{item.post_type}}{{item.achievement_type}}" width="150" height="150" >
 
-                    <div class="teaser-container"><a class="news-topic-teaser" href="#">Research</a></div>
-                    <h4><a>First News Item</a></h4>
-                    <div class="news-date">29 September 2015</div>
+                    <div class="teaser-container">
+                      <a class="news-topic-teaser" href="/{{class_type}}/{{item.get_post_type_display|lower}}{{item.get_achievement_type_display|lower}}">{{item.get_post_type_display}}{{item.get_achievement_type_display}}</a>
+                    </div>
+                    <h4><a>{{item.heading}}{{item.achievement}}</a></h4>
+                    <div class="news-date">{{item.timestamp}}{{item.year}}</div>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+                      {{item.content}}{{item.description}} 
                     </p>
                   </div>
                 </div>
+                {% endfor %}
                 <!-- News row end -->
-
-
-                <div class="row news-row">
-                  <div class="col-md-12 col-element">
-                    <img src="{% static 'assets/images/image3.jpeg' %}">
-                    <div class="teaser-container"><a class="news-topic-teaser" href="#">Student</a></div>
-                    <h4><a>Second News Item</a></h4>
-                    <div class="news-date">13 January 2015</div>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="row news-row">
-                  <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image5.jpeg' %}">
-                    <div class="teaser-container"><a class="news-topic-teaser" href="#">Alumni</a></div>
-                    <h4><a>Third News Item</a></h4>
-                    <div class="news-date">2 May 2015</div>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
-                    </p>
-                  </div>
-                </div>
-
-
-
-
 
           </div>
          

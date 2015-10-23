@@ -26,7 +26,11 @@ urlpatterns = [
     ##edit end
     url(r'^community/$', display_views.community , name='community'),
     url(r'^news/$', display_views.news , name='news'),
+    # url(r'^news/(?P<task_id>\b(alumni|student)\b)/topic/$', display_views.items, name='news-items'),
+
+    # url(r'^(?P<class_type>\b(news|achievement)\b)/(?P<item_type>.*)/$', display_views.items, name='news-items'),
+    url(r'^(?P<class_type>\b(news|achievement)\b)/(?P<item_type>\b(all|research|iitg|student|alumni)\b)/$', display_views.items, name='news-items'),
+    # url(r'^achievement/(?P<type>\b(all|iitg|alumni|student)\b)/$', display_views.items , name='news-items'),
     url(r'^profile/$', display_views.profile , name='profile'),
-    url(r'^news-list/$', 'alumniportal.views.news_list' , name='news-list'),
     url(r'^edit-profile/$', forms_views.edit_profile , name='edit-profile'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

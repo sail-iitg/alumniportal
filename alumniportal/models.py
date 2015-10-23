@@ -170,6 +170,9 @@ class Activity(models.Model):
     images = models.TextField(blank=True) #List of the paths of the images which are involved with the activity
     recent = models.ForeignKey(Recent, blank=True, related_name='activities')
 
+    class Meta:
+        order_with_respect_to = 'recent'
+        ordering = ['-created']
 
 class Club(models.Model):
     name = models.CharField(max_length=32)  #Name of the club

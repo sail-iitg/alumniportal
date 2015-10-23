@@ -15,7 +15,7 @@
                 {% for new in news %}
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image1.jpeg' %}">
+                    <img {% if new.image %} src="{{new.image.url}}" {% endif %} alt="{{new.post_type}}" width="150" height="150" >
                     <h4><a>{{new.heading}}</a></h4>
                     <p class="col-elem-data">
                       {{new.content|linebreaks}}
@@ -26,7 +26,7 @@
 
                 <div class="row news-row">
                   <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More news...</a>
+                    <a class='column-more' href="all">More news...</a>
                   </div>
                 </div>
 
@@ -38,7 +38,7 @@
               <h3 class='column-header news-header'>Research <a href="" class='column-addbutton'>(add)</a></h3>
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image5.jpeg' %}">
+                    <img {% if research.image %} src="{{research.image.url}}" {% endif %} alt="{{research.post_type}}" width="150" height="150" >
                     <h4><a>{{research.heading}}</a></h4>
                     <p class="col-elem-data">
                       {{research.content|linebreaks}}
@@ -47,7 +47,7 @@
                 </div>
             <div class="row news-row">
                   <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More research...</a>
+                    <a class='column-more' href="research">More research...</a>
                   </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@
               <h3 class='column-header news-header'>Achievements <a href="" class='column-addbutton'>(add)</a></h3>
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image6.jpeg' %}">
+                    <img {% if achievement.image %} src="{{achievement.image.url}}" {% endif %} alt="{{achievement.achievement_type}}" width="150" height="150" >
                     <h4><a>{{achievement.achievement}}</a></h4>
                     <p class="col-elem-data">
                       {{achievement.content|linebreaks}}
@@ -64,7 +64,7 @@
                 </div>
                 <div class="row news-row">
                   <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More achievements...</a>
+                    <a class='column-more' href="/achievement/all">More achievements...</a>
                   </div>
                 </div>
             </div>
