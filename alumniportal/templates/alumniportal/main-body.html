@@ -57,7 +57,6 @@
             <div class="row">
               <div class="col-md-6 col-left" >
                 <h3 class='column-header'>Research <a href="" class='column-addbutton'>(add)</a></h3>
-                {% for research in researchs %}
                 <div class="row">
                   <div class="col-md-12 col-element" >
                     <img {% if research.image %} src="{{research.image.url}}" {% endif %} alt="{{research.post_type}}" width="150" height="150" >
@@ -67,7 +66,6 @@
                     </p>
                   </div>
                 </div>
-                {% endfor %}
 
                 <div class="row">
                   <div class="col-md-12 col-element">
@@ -80,7 +78,6 @@
               
             <div class="col-md-6 right" >
                 <h3 class='column-header'>Activities <a href="" class='column-addbutton'>(add)</a></h3>
-                {% for activity in activities %}
                 <div class="row">
                   <div class="col-md-12 col-element" >
                     <img {% if activity.image %} src="{{activity.image.url}}" {% endif %} alt="{{activity.activity_type}}" width="150" height="150" >
@@ -91,7 +88,6 @@
                     </p>
                   </div>
                 </div>
-                {% endfor %}
 
                 <div class="row">
                   <div class="col-md-12 col-element">

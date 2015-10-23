@@ -15,17 +15,15 @@ def get_recent_objects():
     pass   
 
 def home(request):
-    admin_blog = User.objects.get(username = ADMIN_USERNAME).profile.blog
-    posts = models.Post.objects.filter(blog = admin_blog)
-    researchs = posts.filter(post_type = 'R')[:2]
+    research = models.News.objects.filter(post_type = 'R').first()
     activities = models.Activity.objects
-    volunteer = activities.filter(activity_type = 'Volunteering').first()
-    activities = activities.all()[:2]
-    community = models.Post.objects.first()
+    activity = activities.first()
+    volunteer = activities.filter(activity_type = 'V')
+    community = models.Post.objects.first() #When Clubs get implemented change Post to ClubPosts (there would be some more changes too)
     return render(request,'alumniportal/main-body.html', {
         'page': 'home',
-        'researchs':researchs,
-        'activities':activities,
+        'research':research,
+        'activity': activity,
         'volunteer':volunteer,
         'community':community,
         })
@@ -37,16 +35,13 @@ def community(request):
     return render(request,'alumniportal/communities.html', {'page': 'community'})
 
 def news(request):
-    achievement = models.Achievement.objects.first()
-    admin_blog = User.objects.get(username = ADMIN_USERNAME).profile.blog
-    posts = models.Post.objects.filter(blog = admin_blog)
-    news = posts.exclude(post_type = 'B')[:2]
-    research = posts.filter(post_type = 'R').first()
+    admin_posts = models.News.objects
+    news = admin_posts.all()[:2]
+    achievements = admin_posts.filter(post_type = 'C')[:2]
     return render(request,'alumniportal/news.html', {
         'page': 'news',
         'news':news,
-        'research':research,
-        'achievement':achievement,
+        'achievements':achievements,
         })
 
 @login_required
@@ -62,30 +57,18 @@ def profile(request):
 
 def items(request, class_type, item_type):
     #####need to add continuously loading of news
-    posts = models.News.objects.all()
+    news = models.News.objects.all()
     print request.path
+    # print POST_TYPE
     if class_type == "news":
-        if item_type == "all":
-            items = posts.exclude(post_type = 'B')
-        elif item_type == "research":
-            items = posts.filter(post_type = 'R')
-        elif item_type == "iitg":
-            items = posts.filter(post_type = 'I')
-        elif item_type == "student":
-            items = posts.filter(post_type = 'S')
-    elif class_type == "achievement":
-        achievements = models.Achievement.objects.all()
-        if item_type == "all":
-            items = achievements
-        elif item_type == "alumni":
-            items = achievements.filter(achievement_type = 'A')
-        elif item_type == "student":
-            items = achievements.filter(achievement_type = 'S')
-        elif item_type == "iitg":
-            items = achievements.filter(achievement_type = 'I')
+        items = news
+        for a in POST_TYPE:
+            if a[1] == item_type:
+                items = news.filter(post_type = a[0])
+
     ########WHat happens if none of the URL matches!!!!
     return render(request,'alumniportal/news-list.html', {
         'page': 'items',
         'items':items,
-        'class_type':class_type,
+        'item_type':item_type,
         })
