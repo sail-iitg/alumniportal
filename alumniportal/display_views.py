@@ -89,3 +89,13 @@ def items(request, class_type, item_type):
         'items':items,
         'class_type':class_type,
         })
+
+def news_detail(request, news_id):
+    news = models.News.objects.get(id=news_id)
+    return render(request, 'alumniportal/news-detail.html', {
+        'page': 'news-detail',
+        'heading': news.heading,
+        'content': news.content,
+        'news_id': news.id,
+        'is_admin': request.user.is_superuser,
+        })

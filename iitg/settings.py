@@ -43,7 +43,7 @@ INSTALLED_APPS = (
     'bootstrap3_datetime',
     ######edited
     'multiupload',
-    'ckeditor'
+    'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -133,3 +133,33 @@ STATIC_ROOT = 'staticfiles'
 
 # Template pack for django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# CKEditor settings
+CKEDITOR_JQUERY_URL = '/static/assets/js/jquery.min.js'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Subscript',
+                       'Superscript', '-', 'RemoveFormat', 'NumberedList',
+                       'BulletedList', 'Blockquote', 'SpecialChar', '-',
+                       'Language', 'Link', 'Unlink', '-', 'Maximize', 'About']},
+        ],
+        'height': 200,
+        'width': '100%',
+        'uiColor': '#FFFFFF',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(
+            [
+                # extra plugins
+                'autolink',
+                'autogrow',
+                'lineutils',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'elementspath'
+            ]),
+    }
+}

@@ -33,4 +33,8 @@ urlpatterns = [
     # url(r'^achievement/(?P<type>\b(all|iitg|alumni|student)\b)/$', display_views.items , name='news-items'),
     url(r'^profile/$', display_views.profile , name='profile'),
     url(r'^edit-profile/$', forms_views.edit_profile , name='edit-profile'),
+
+    url(r'^add/news/$', forms_views.add_news, name='add-news'),
+    url(r'^(?P<news_id>\d+)/edit/news/$', forms_views.edit_news, name='edit-news'),
+    url(r'^(?P<news_id>\d+)/news/$', display_views.news_detail, name='news-detail'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
