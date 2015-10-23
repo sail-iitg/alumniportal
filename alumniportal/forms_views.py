@@ -1,4 +1,4 @@
-#####DO NOT CLOSE WINDOW
+
 from alumniportal import forms
 from alumniportal import models
 from datetime import datetime
@@ -6,13 +6,14 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-######EDITED
+from django.forms.formsets import formset_factory
+from django.db import IntegrityError, transaction
 import time
 
 
 
 
-###maybe we can use different functions for each subcategory in profile
+###maybe we can use different functions for each subcategory in profile later
 @login_required(login_url='/login/')
 def edit_profile(request):
     """
@@ -22,8 +23,12 @@ def edit_profile(request):
     # get user profile if exists
     if hasattr(request.user, 'profile'):
         profile = request.user.profile
+        IITGExperienceFormSet = formset_factory(forms.EditIITGExperienceForm)
+        IITGExperienceObjects = models.IITGExperience.objects.filter(profile=profile)
+        IITGExperienceData = [{'club_name': l.club_name, 'experience': l.experience} for l in IITGExperienceObjects]
     else:
         profile = None
+    
 
     if request.method == "POST" :
         print(request.POST)
@@ -83,28 +88,30 @@ def edit_profile(request):
 
         
         elif request.POST.get("experience"):
+            IITGExperience_formset = IITGExperienceFormSet(request.POST,request.FILES)
 
-            if profile:
-                try:
-                    iitgexp = models.IITGExperience.objects.get(profile=profile)
-                    IITGExperienceForm = forms.EditIITGExperienceForm(request.POST, request.FILES,instance=iitgexp)
-                except models.IITGExperience.DoesNotExist:
-                    IITGExperienceForm = forms.EditIITGExperienceForm(request.POST, request.FILES)
-
-            else:
+            if not profile:
                 print("Profile DNE")
                 #####write code to ask them to fill personal form first and redirect them
-            if IITGExperienceForm.is_valid():
-                print("Validated")
-                task = IITGExperienceForm.save(commit=False)
-                task.profile = profile
-                task.save()
-                print(type(task))
+            if IITGExperience_formset.is_valid():
+
+                new_IITGExperiences = []
+
+                for IITGExperienceForm in IITGExperience_formset:
+                    task = IITGExperienceForm.save(commit=False)
+                    task.profile = profile
+                    task.save()
+                    print(type(task))
                 messages.success(request, 'Experiences saved.')
+                
+
             else :
                 print("reached")
                 messages.error(request, 'Please enter information in all required(*) fields.')
         
+        
+
+
         elif request.POST.get("topic"):
 
             if profile:
@@ -212,11 +219,17 @@ def edit_profile(request):
             EducationForm = forms.EditEducationForm(instance=education)
         except models.Education.DoesNotExist:
             EducationForm = forms.EditEducationForm()
-        try:
-            iitgexp = models.IITGExperience.objects.get(profile=profile)
-            IITGExperienceForm = forms.EditIITGExperienceForm(instance=iitgexp)
-        except models.IITGExperience.DoesNotExist:
-            IITGExperienceForm = forms.EditIITGExperienceForm()
+
+        IITGExperience_formset = IITGExperienceFormSet(initial=IITGExperienceData)
+
+
+
+        # try:
+        #     iitgexp = models.IITGExperience.objects.get(profile=profile)
+        #     IITGExperienceForm = forms.EditIITGExperienceForm(instance=iitgexp)
+        # except models.IITGExperience.DoesNotExist:
+        #     IITGExperienceForm = forms.EditIITGExperienceForm()
+
         try:
             project = models.Project.objects.get(profile=profile)
             ProjectForm = forms.EditProjectForm(instance=project)
@@ -236,16 +249,17 @@ def edit_profile(request):
     else:
         PersonalForm = forms.EditProfileForm()
         EducationForm = forms.EditEducationForm()
-        IITGExperienceForm = forms.EditIITGExperienceForm()
+        IITGExperience_formset = IITGExperienceFormSet()
+        # IITGExperienceForm = forms.EditIITGExperienceForm()
         ProjectForm = forms.EditProjectForm()
         JobForm = forms.EditJobForm()
         AchievementForm=forms.AchievementForm
-    print(PersonalForm)    
+       
     return render(request, 'alumniportal/edit-profile.html',
                   {'page': 'edit-profile',
                    'PersonalForm': PersonalForm,
                    'EducationForm':EducationForm,
-                   'IITGExperienceForm':IITGExperienceForm,
+                   'IITGExperience_formset':IITGExperience_formset,
                    'ProjectForm':ProjectForm,
                    'JobForm':JobForm,
                    'AchievementForm':AchievementForm,

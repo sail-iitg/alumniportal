@@ -15,7 +15,7 @@ from django.core.validators import RegexValidator
 from datetime import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
 
-####edited
+
 from multiupload.fields import MultiFileField
 
 
@@ -302,4 +302,27 @@ class EditJobForm(forms.ModelForm):
             'city',
             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
         )
+
+
+class IITGExperienceFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(IITGExperienceFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_method = 'post'
+        self.form_action = '/edit-profile/'
+        self.layout = Layout(
+            'club_name',
+            'experience',
+        )
+        self.render_required_fields = True
+
+
+
+
+
+
+
+
+
+
+
 
