@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'bootstrap3_datetime',
     ######edited
     'multiupload',
+    'ckeditor'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -126,7 +127,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'alumniportal/media/')
 MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = 'staticfiles'
 
 # PATH_TO_DATABASE_IMPORT = '/home/jayadeep/Downloads/sailDb.sql'
 
