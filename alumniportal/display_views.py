@@ -10,21 +10,23 @@ import time
 from datetime import datetime
 from constants import *
 
-####To pass the required recent objects
+####To pass the required recent objects in required numbers
 def get_recent_objects():
     pass   
 
 def home(request):
-    recent = models.Recent.objects.all()[0]
-    researchs = recent.posts.filter(post_type='R')[:2]
-    activities = recent.activities.all()[:2]
-    volunteers = recent.activities.filter(activity_type = 'Volunteering')
-    community = recent.posts.all()[0] 
+    admin_blog = User.objects.get(username = ADMIN_USERNAME).profile.blog
+    posts = models.Post.objects.filter(blog = admin_blog)
+    researchs = posts.filter(post_type = 'R')[:2]
+    activities = models.Activity.objects
+    volunteer = activities.filter(activity_type = 'Volunteering').first()
+    activities = activities.all()[:2]
+    community = models.Post.objects.first()
     return render(request,'alumniportal/main-body.html', {
         'page': 'home',
         'researchs':researchs,
         'activities':activities,
-        'volunteers':volunteers,
+        'volunteer':volunteer,
         'community':community,
         })
 
@@ -35,10 +37,11 @@ def community(request):
     return render(request,'alumniportal/communities.html', {'page': 'community'})
 
 def news(request):
-    recent = models.Recent.objects.all()[0]
-    research = recent.posts.filter(post_type='R')[0]
-    news = recent.posts.exclude(post_type='B')[:2]
-    achievement = recent.achievements.all()[0]
+    achievement = models.Achievement.objects.first()
+    admin_blog = User.objects.get(username = ADMIN_USERNAME).profile.blog
+    posts = models.Post.objects.filter(blog = admin_blog)
+    news = posts.exclude(post_type = 'B')[:2]
+    research = posts.filter(post_type = 'R').first()
     return render(request,'alumniportal/news.html', {
         'page': 'news',
         'news':news,

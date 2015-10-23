@@ -71,7 +71,7 @@
 
                 <div class="row">
                   <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More activities...</a>
+                    <a class='column-more' href="/news/research">More about research...</a>
                   </div>
                 </div>
 
@@ -80,33 +80,22 @@
               
             <div class="col-md-6 right" >
                 <h3 class='column-header'>Activities <a href="" class='column-addbutton'>(add)</a></h3>
+                {% for activity in activities %}
                 <div class="row">
                   <div class="col-md-12 col-element" >
-                    <img {% if activity.image %} src="{{activity.image.url}}" {% endif %} alt="{{activity.post_type}}" width="150" height="150" >
+                    <img {% if activity.image %} src="{{activity.image.url}}" {% endif %} alt="{{activity.activity_type}}" width="150" height="150" >
 
-                    <h4><a>Activity 1</a></h4>
+                    <h4><a>{{activity.name}}</a></h4>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque  Aenean massa. Cum sociis natoque penatibus  Aenean massa. Cum sociis natoque penatibus
-                       Aenean massa. Cum sociis natoque penatibus  Aenean massa. Cum sociis natoque penatibus
+                      {{activity.created}}<br>{{activity.description}}
                     </p>
                   </div>
                 </div>
+                {% endfor %}
+
                 <div class="row">
                   <div class="col-md-12 col-element">
-                    
-                    <img src="{% static 'assets/images/image4.jpeg' %}">
-                    <h4><a>Activity 2</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus
-                    </p>
-
-
-
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More events...</a>
+                    <a class='column-more' href="/activity/all">More activities and events...</a>
                   </div>
                 </div>
 
@@ -118,23 +107,35 @@
               <h3 class='column-header'>Let's Join Hands <a href="" class='column-addbutton'>(add)</a></h3>
                 <div class="row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image4.jpeg' %}">
-                    <h4><a>Hands 1</a></h4>
+                    <img {% if volunteer.image %} src="{{volunteer.image.url}}" {% endif %} alt="{{volunteer.activity_type}}" width="150" height="150" >
+                    <h4><a>{{volunteer.name}}</a></h4>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+                      {{volunteer.created}}<br>{{volunteer.description}}
                     </p>
                   </div>
+                  <div class="row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="/activity/all">More volunteering...</a>
+                  </div>
+                </div>
                 </div>
             </div>
+
             <div class="col-md-6 right" >
               <h3 class='column-header'>Community <a href="" class='column-addbutton'>(add)</a></h3>
                 <div class="row">
                   <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image5.jpeg' %}">
-                    <h4><a>Community 1</a></h4>
+                    <img {% if community.image %} src="{{community.image.url}}" {% endif %} alt="{{community.post_type}}" width="150" height="150" >
+
+                    <h4><a>{{community.heading}}</a></h4>
                     <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+                      {{community.content}}
                     </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="/activity/all">More about the community...</a>
                   </div>
                 </div>
             </div>

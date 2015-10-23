@@ -29,7 +29,7 @@ urlpatterns = [
     # url(r'^news/(?P<task_id>\b(alumni|student)\b)/topic/$', display_views.items, name='news-items'),
 
     # url(r'^(?P<class_type>\b(news|achievement)\b)/(?P<item_type>.*)/$', display_views.items, name='news-items'),
-    url(r'^(?P<class_type>\b(news|achievement)\b)/(?P<item_type>\b(all|research|iitg|student|alumni)\b)/$', display_views.items, name='news-items'),
+    url(r'^(?P<class_type>\b(news|achievement|activity)\b)/(?P<item_type>\b(all|add|research|iitg|student|alumni)\b)/$', display_views.items, name='news-items'),
     # url(r'^achievement/(?P<type>\b(all|iitg|alumni|student)\b)/$', display_views.items , name='news-items'),
     url(r'^profile/$', display_views.profile , name='profile'),
     url(r'^edit-profile/$', forms_views.edit_profile , name='edit-profile'),
