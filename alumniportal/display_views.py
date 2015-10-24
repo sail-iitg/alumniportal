@@ -79,6 +79,13 @@ def profile(request):
         'profile':profile,
         })
 
+@login_required
+def view_profile(request, profile_id):
+    profile = User.objects.get(username = profile_id).profile
+    return render(request,'alumniportal/profile.html', {
+        'page': 'profile',
+        'profile':profile,
+        })
 
 def items(request, class_type, item_type):
     #####need to add continuously loading of news
@@ -99,16 +106,22 @@ def items(request, class_type, item_type):
         })
 
 def createQuery(request, result, field):
-    result = result & Q(**{field + "__icontains" : request.POST[field]})
+    result = result | Q(**{field + "__icontains" : request.POST[field]})
     return result
 
 @login_required
 def search(request):
+    profiles = []
     if request.POST:
         query = Q()
         # import pdb; pdb.set_trace()
         for field in request.POST:
             if field == "csrfmiddlewaretoken":
+                continue
+            if field == "name":
+                list_of_words = request.POST['name'].split()
+                for word in list_of_words:
+                    query = query | Q(name__icontains = word)
                 continue
             if request.POST[field]:
                 query = createQuery(request, query, field)
@@ -123,5 +136,5 @@ def search(request):
         'page':"search", 
         'batches':PASS_OUT_YEARS,
         'majors':DEPARTMENTS,
-        # 'profiles':profiles,
+        'profiles':profiles,
         })

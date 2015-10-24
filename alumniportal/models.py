@@ -128,7 +128,7 @@ class Education(models.Model):
     institute = models.CharField(max_length=100)    #Name of the institute
     in_iitg = models.BooleanField() #Whether it is IITG or not. Used in filling the NonIITG_degrees and IITG_degrees in the Profile Class object.
     start_year = models.IntegerField(null=True) #Start Year of the education
-    end_year = models.IntegerField(null=True)   #PassOut Year of the education
+    end_year = models.IntegerField(blank=True, null=True)   #PassOut Year of the education
     department = models.CharField(max_length=50, choices=DEPARTMENTS) #
     specialization = models.CharField(max_length=50, blank=True)
 
@@ -140,7 +140,7 @@ class Job(models.Model):
     profile = models.ForeignKey(Profile, blank=True, related_name='jobs')
     company = models.CharField(max_length=50)
     position = models.CharField(max_length=50, blank=True)
-    start_date = models.IntegerField(blank=True, null=True, choices=COMMENCMENT_YEARS)
+    start_date = models.IntegerField(choices=COMMENCMENT_YEARS)
     end_date = models.IntegerField(blank=True, null=True, choices=COMMENCMENT_YEARS)
     description = models.CharField(max_length=50, blank=True)
     # occupation = models.CharField(max_length=50, null=True, choices=OCCUPATIONS)

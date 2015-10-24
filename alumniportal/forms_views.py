@@ -15,262 +15,6 @@ from django.core.exceptions import ObjectDoesNotExist
 import time, os
 
 ###maybe we can use different functions for each subcategory in profile later
-@login_required(login_url='/login/')
-def edit_profile(request):
-    """
-    display form to alumnus for editing profile
-    """
-
-    # get user profile if exists
-    if hasattr(request.user, 'profile'):
-        profile = request.user.profile
-        IITGExperienceFormSet = modelformset_factory(forms.EditIITGExperienceForm)
-        IITGExperienceObjects = models.IITGExperience.objects.filter(profile=profile)
-        IITGExperienceData = [{'club_name': l.club_name, 'experience': l.experience} for l in IITGExperienceObjects]
-    else:
-        profile = None
-    
-
-    if request.method == "POST" :
-        print(request.POST)
-        if request.POST.get("roll_no"):
-            if profile:
-                
-                PersonalForm = forms.EditProfileForm(request.POST, request.FILES, instance=profile)
-
-                    # print(request.POST.get('form'))
-                # print(request.POST)
-                # print(PersonalForm)
-            else:
-                print("Profile DNE")
-                PersonalForm = forms.EditProfileForm(request.POST, request.FILES)
-                # print(PersonalForm)
-                # print(PersonalForm)
-            if PersonalForm.is_valid():
-                print("Validated")
-                task = PersonalForm.save(commit=False)
-                if not profile:
-                    task.user = request.user
-                    profile=request.user.profile
-                task.save()
-                messages.success(request, 'Profile saved.')
-
-                print(type(task))
-                ######add code to respond to request
-            else :
-                messages.error(request, 'Please enter information in all required(*) fields. Personal')
-
-        elif request.POST.get("institute"):
-            print("r1")
-
-            if profile:
-                try:
-                    education = models.Education.objects.get(profile=profile)
-                    EducationForm = forms.EditEducationForm(request.POST, request.FILES,instance=education)
-                except models.Education.DoesNotExist:
-                    EducationForm = forms.EditEducationForm(request.POST, request.FILES)
-
-            else:
-                print("Profile DNE")
-                #####write code to ask them to fill personal form first and redirect them
-            # print(EducationForm.errors)
-            if EducationForm.is_valid():
-                print("r3")
-                print("Validated")
-                task = EducationForm.save(commit=False)
-                task.profile = profile
-                task.save()
-                messages.success(request, 'Education saved.')
-                # print(type(task))
-            else :
-                print("reached")
-                messages.error(request, 'Please enter information in all required(*) fields.')
-                
-
-        
-        elif request.POST.get("experience"):
-            IITGExperience_formset = IITGExperienceFormSet(request.POST,request.FILES)
-
-            if not profile:
-                print("Profile DNE")
-                #####write code to ask them to fill personal form first and redirect them
-            if IITGExperience_formset.is_valid():
-
-                new_IITGExperiences = []
-
-                for IITGExperienceForm in IITGExperience_formset:
-                    task = IITGExperienceForm.save(commit=False)
-                    task.profile = profile
-                    task.save()
-                    print(type(task))
-                messages.success(request, 'Experiences saved.')
-                
-
-            else :
-                print("reached")
-                messages.error(request, 'Please enter information in all required(*) fields.')
-        
-        
-
-
-        elif request.POST.get("topic"):
-
-            if profile:
-                try:
-                    project = models.Project.objects.get(profile=profile)
-                    ProjectForm = forms.EditProjectForm(request.POST, request.FILES,instance=project)
-                except models.Project.DoesNotExist:
-                    ProjectForm = forms.EditProjectForm(request.POST, request.FILES)
-
-            else:
-                print("Profile DNE")
-                #####write code to ask them to fill personal form first and redirect them
-            print("reacheddd")
-            print(ProjectForm.errors)
-            if ProjectForm.is_valid():
-                print("Validated")
-                task = ProjectForm.save(commit=False)
-                print(datetime.date)
-                today = datetime.today()
-                week_no = today.isocalendar()[1]
-                year_no = today.isocalendar()[0]
-                recent_week= str(models.Recent.objects.latest('week'))[:2]
-                recent_year= str(models.Recent.objects.latest('week'))[-4:]
-                
-                if week_no == recent_week and year_no == recent_year :
-                    recent= models.Recent.objects.latest('week')
-                else :
-                    recent = models.Recent(week=str(week_no)+str(year_no))
-                    recent.save()
-                task.recent = models.Recent.objects.latest('week')
-                task.profile = profile
-                task.save()
-                messages.success(request, 'Project Saved')
-            else :
-                print("reached")
-                messages.error(request, 'Please enter information in all required(*) fields.')
-
-        elif request.POST.get("achievement"):
-
-            if profile:
-                try:
-                    achievement = models.Achievement.objects.get(profile=profile)
-                    AchievementForm = forms.EditAchievementForm(request.POST, request.FILES,instance=achievement)
-                except models.Achievement.DoesNotExist:
-                    AchievementForm = forms.EditAchievementForm(request.POST, request.FILES)
-
-            else:
-                print("Profile DNE")
-                #####write code to ask them to fill personal form first and redirect them
-            print(AchievementForm.errors)
-            if AchievementForm.is_valid():
-                print("Validated")
-                task = AchievementForm.save(commit=False)
-                print(datetime.date)
-                today = datetime.today()
-                week_no = today.isocalendar()[1]
-                year_no = today.isocalendar()[0]
-                recent_week= str(models.Recent.objects.latest('week'))[:2]
-                recent_year= str(models.Recent.objects.latest('week'))[-4:]
-                
-                if week_no == recent_week and year_no == recent_year :
-                    recent= models.Recent.objects.latest('week')
-                else :
-                    recent = models.Recent(week=str(week_no)+str(year_no))
-                    recent.save()
-                task.recent = models.Recent.objects.latest('week')
-                task.profile = profile
-                task.save()
-                messages.success(request, 'Achievement Saved')
-            else :
-                print("reached")
-                messages.error(request, 'Please enter information in all required(*) fields.')
-
-
-
-        elif request.POST.get("company"):
-
-            if profile:
-                try:
-                    job = models.Job.objects.get(profile=profile)
-                    JobForm = forms.EditJobForm(request.POST, request.FILES,instance=job)
-                except models.Job.DoesNotExist:
-                    JobForm = forms.EditJobForm(request.POST, request.FILES)
-
-            else:
-                print("Profile DNE")
-                #####write code to ask them to fill personal form first and redirect them
-            if JobForm.is_valid():
-                print("Validated")
-                task = JobForm.save(commit=False)
-                task.profile = profile
-                task.save()
-                print(type(task))
-                messages.success(request, 'Job saved.')
-            else :
-                print("reached")
-                messages.error(request, 'Please enter information in all required(*) fields.')
-
-
-            
-    if profile:
-        PersonalForm = forms.EditProfileForm(instance=profile)
-        try:
-            education = models.Education.objects.get(profile=profile)
-            EducationForm = forms.EditEducationForm(instance=education)
-        except models.Education.DoesNotExist:
-            EducationForm = forms.EditEducationForm()
-
-        IITGExperience_formset = IITGExperienceFormSet(initial=IITGExperienceData)
-
-
-
-        # try:
-        #     iitgexp = models.IITGExperience.objects.get(profile=profile)
-        #     IITGExperienceForm = forms.EditIITGExperienceForm(instance=iitgexp)
-        # except models.IITGExperience.DoesNotExist:
-        #     IITGExperienceForm = forms.EditIITGExperienceForm()
-
-        try:
-            project = models.Project.objects.get(profile=profile)
-            ProjectForm = forms.EditProjectForm(instance=project)
-        except models.Project.DoesNotExist:
-            ProjectForm = forms.EditProjectForm()
-        try:
-            job = models.Job.objects.get(profile=profile)
-            JobForm = forms.EditJobForm(instance=job)
-        except models.Job.DoesNotExist:
-            JobForm = forms.EditJobForm()
-        try:
-            achievement = models.Achievement.objects.get(profile=profile)
-            AchievementForm = forms.EditAchievementForm(instance=job)
-        except models.Achievement.DoesNotExist:
-            AchievementForm = forms.EditAchievementForm()
-
-    else:
-        PersonalForm = forms.EditProfileForm()
-        EducationForm = forms.EditEducationForm()
-        IITGExperience_formset = IITGExperienceFormSet()
-        # IITGExperienceForm = forms.EditIITGExperienceForm()
-        ProjectForm = forms.EditProjectForm()
-        JobForm = forms.EditJobForm()
-        AchievementForm=forms.AchievementForm
-       
-    return render(request, 'alumniportal/edit-profile.html',
-                  {'page': 'edit-profile',
-                   'PersonalForm': PersonalForm,
-                   'EducationForm':EducationForm,
-                   'IITGExperience_formset':IITGExperience_formset,
-                   'ProjectForm':ProjectForm,
-                   'JobForm':JobForm,
-                   'AchievementForm':AchievementForm,
-                   })
-
- # if models.Education.objects.get(profile=profile):
- #                education = models.Education.objects.get(profile=profile)
- #                EducationForm = forms.EditEducationForm(instance=education)
- #            else :
- #                EducationForm = forms.EditEducationForm()
 
 ####my edits
 @login_required(login_url='/login/')
@@ -610,3 +354,259 @@ def edit_personal(request):
                {'page': 'edit-profile',
                 'form': form,
                 'profile':'personal'})
+# @login_required(login_url='/login/')
+# def edit_profile(request):
+#     """
+#     display form to alumnus for editing profile
+#     """
+
+#     # get user profile if exists
+#     if hasattr(request.user, 'profile'):
+#         profile = request.user.profile
+#         IITGExperienceFormSet = modelformset_factory(forms.EditIITGExperienceForm)
+#         IITGExperienceObjects = models.IITGExperience.objects.filter(profile=profile)
+#         IITGExperienceData = [{'club_name': l.club_name, 'experience': l.experience} for l in IITGExperienceObjects]
+#     else:
+#         profile = None
+    
+
+#     if request.method == "POST" :
+#         print(request.POST)
+#         if request.POST.get("roll_no"):
+#             if profile:
+                
+#                 PersonalForm = forms.EditProfileForm(request.POST, request.FILES, instance=profile)
+
+#                     # print(request.POST.get('form'))
+#                 # print(request.POST)
+#                 # print(PersonalForm)
+#             else:
+#                 print("Profile DNE")
+#                 PersonalForm = forms.EditProfileForm(request.POST, request.FILES)
+#                 # print(PersonalForm)
+#                 # print(PersonalForm)
+#             if PersonalForm.is_valid():
+#                 print("Validated")
+#                 task = PersonalForm.save(commit=False)
+#                 if not profile:
+#                     task.user = request.user
+#                     profile=request.user.profile
+#                 task.save()
+#                 messages.success(request, 'Profile saved.')
+
+#                 print(type(task))
+#                 ######add code to respond to request
+#             else :
+#                 messages.error(request, 'Please enter information in all required(*) fields. Personal')
+
+#         elif request.POST.get("institute"):
+#             print("r1")
+
+#             if profile:
+#                 try:
+#                     education = models.Education.objects.get(profile=profile)
+#                     EducationForm = forms.EditEducationForm(request.POST, request.FILES,instance=education)
+#                 except models.Education.DoesNotExist:
+#                     EducationForm = forms.EditEducationForm(request.POST, request.FILES)
+
+#             else:
+#                 print("Profile DNE")
+#                 #####write code to ask them to fill personal form first and redirect them
+#             # print(EducationForm.errors)
+#             if EducationForm.is_valid():
+#                 print("r3")
+#                 print("Validated")
+#                 task = EducationForm.save(commit=False)
+#                 task.profile = profile
+#                 task.save()
+#                 messages.success(request, 'Education saved.')
+#                 # print(type(task))
+#             else :
+#                 print("reached")
+#                 messages.error(request, 'Please enter information in all required(*) fields.')
+                
+
+        
+#         elif request.POST.get("experience"):
+#             IITGExperience_formset = IITGExperienceFormSet(request.POST,request.FILES)
+
+#             if not profile:
+#                 print("Profile DNE")
+#                 #####write code to ask them to fill personal form first and redirect them
+#             if IITGExperience_formset.is_valid():
+
+#                 new_IITGExperiences = []
+
+#                 for IITGExperienceForm in IITGExperience_formset:
+#                     task = IITGExperienceForm.save(commit=False)
+#                     task.profile = profile
+#                     task.save()
+#                     print(type(task))
+#                 messages.success(request, 'Experiences saved.')
+                
+
+#             else :
+#                 print("reached")
+#                 messages.error(request, 'Please enter information in all required(*) fields.')
+        
+        
+
+
+#         elif request.POST.get("topic"):
+
+#             if profile:
+#                 try:
+#                     project = models.Project.objects.get(profile=profile)
+#                     ProjectForm = forms.EditProjectForm(request.POST, request.FILES,instance=project)
+#                 except models.Project.DoesNotExist:
+#                     ProjectForm = forms.EditProjectForm(request.POST, request.FILES)
+
+#             else:
+#                 print("Profile DNE")
+#                 #####write code to ask them to fill personal form first and redirect them
+#             print("reacheddd")
+#             print(ProjectForm.errors)
+#             if ProjectForm.is_valid():
+#                 print("Validated")
+#                 task = ProjectForm.save(commit=False)
+#                 print(datetime.date)
+#                 today = datetime.today()
+#                 week_no = today.isocalendar()[1]
+#                 year_no = today.isocalendar()[0]
+#                 recent_week= str(models.Recent.objects.latest('week'))[:2]
+#                 recent_year= str(models.Recent.objects.latest('week'))[-4:]
+                
+#                 if week_no == recent_week and year_no == recent_year :
+#                     recent= models.Recent.objects.latest('week')
+#                 else :
+#                     recent = models.Recent(week=str(week_no)+str(year_no))
+#                     recent.save()
+#                 task.recent = models.Recent.objects.latest('week')
+#                 task.profile = profile
+#                 task.save()
+#                 messages.success(request, 'Project Saved')
+#             else :
+#                 print("reached")
+#                 messages.error(request, 'Please enter information in all required(*) fields.')
+
+#         elif request.POST.get("achievement"):
+
+#             if profile:
+#                 try:
+#                     achievement = models.Achievement.objects.get(profile=profile)
+#                     AchievementForm = forms.EditAchievementForm(request.POST, request.FILES,instance=achievement)
+#                 except models.Achievement.DoesNotExist:
+#                     AchievementForm = forms.EditAchievementForm(request.POST, request.FILES)
+
+#             else:
+#                 print("Profile DNE")
+#                 #####write code to ask them to fill personal form first and redirect them
+#             print(AchievementForm.errors)
+#             if AchievementForm.is_valid():
+#                 print("Validated")
+#                 task = AchievementForm.save(commit=False)
+#                 print(datetime.date)
+#                 today = datetime.today()
+#                 week_no = today.isocalendar()[1]
+#                 year_no = today.isocalendar()[0]
+#                 recent_week= str(models.Recent.objects.latest('week'))[:2]
+#                 recent_year= str(models.Recent.objects.latest('week'))[-4:]
+                
+#                 if week_no == recent_week and year_no == recent_year :
+#                     recent= models.Recent.objects.latest('week')
+#                 else :
+#                     recent = models.Recent(week=str(week_no)+str(year_no))
+#                     recent.save()
+#                 task.recent = models.Recent.objects.latest('week')
+#                 task.profile = profile
+#                 task.save()
+#                 messages.success(request, 'Achievement Saved')
+#             else :
+#                 print("reached")
+#                 messages.error(request, 'Please enter information in all required(*) fields.')
+
+
+
+#         elif request.POST.get("company"):
+
+#             if profile:
+#                 try:
+#                     job = models.Job.objects.get(profile=profile)
+#                     JobForm = forms.EditJobForm(request.POST, request.FILES,instance=job)
+#                 except models.Job.DoesNotExist:
+#                     JobForm = forms.EditJobForm(request.POST, request.FILES)
+
+#             else:
+#                 print("Profile DNE")
+#                 #####write code to ask them to fill personal form first and redirect them
+#             if JobForm.is_valid():
+#                 print("Validated")
+#                 task = JobForm.save(commit=False)
+#                 task.profile = profile
+#                 task.save()
+#                 print(type(task))
+#                 messages.success(request, 'Job saved.')
+#             else :
+#                 print("reached")
+#                 messages.error(request, 'Please enter information in all required(*) fields.')
+
+
+            
+#     if profile:
+#         PersonalForm = forms.EditProfileForm(instance=profile)
+#         try:
+#             education = models.Education.objects.get(profile=profile)
+#             EducationForm = forms.EditEducationForm(instance=education)
+#         except models.Education.DoesNotExist:
+#             EducationForm = forms.EditEducationForm()
+
+#         IITGExperience_formset = IITGExperienceFormSet(initial=IITGExperienceData)
+
+
+
+#         # try:
+#         #     iitgexp = models.IITGExperience.objects.get(profile=profile)
+#         #     IITGExperienceForm = forms.EditIITGExperienceForm(instance=iitgexp)
+#         # except models.IITGExperience.DoesNotExist:
+#         #     IITGExperienceForm = forms.EditIITGExperienceForm()
+
+#         try:
+#             project = models.Project.objects.get(profile=profile)
+#             ProjectForm = forms.EditProjectForm(instance=project)
+#         except models.Project.DoesNotExist:
+#             ProjectForm = forms.EditProjectForm()
+#         try:
+#             job = models.Job.objects.get(profile=profile)
+#             JobForm = forms.EditJobForm(instance=job)
+#         except models.Job.DoesNotExist:
+#             JobForm = forms.EditJobForm()
+#         try:
+#             achievement = models.Achievement.objects.get(profile=profile)
+#             AchievementForm = forms.EditAchievementForm(instance=job)
+#         except models.Achievement.DoesNotExist:
+#             AchievementForm = forms.EditAchievementForm()
+
+#     else:
+#         PersonalForm = forms.EditProfileForm()
+#         EducationForm = forms.EditEducationForm()
+#         IITGExperience_formset = IITGExperienceFormSet()
+#         # IITGExperienceForm = forms.EditIITGExperienceForm()
+#         ProjectForm = forms.EditProjectForm()
+#         JobForm = forms.EditJobForm()
+#         AchievementForm=forms.AchievementForm
+       
+#     return render(request, 'alumniportal/edit-profile.html',
+#                   {'page': 'edit-profile',
+#                    'PersonalForm': PersonalForm,
+#                    'EducationForm':EducationForm,
+#                    'IITGExperience_formset':IITGExperience_formset,
+#                    'ProjectForm':ProjectForm,
+#                    'JobForm':JobForm,
+#                    'AchievementForm':AchievementForm,
+#                    })
+
+#  # if models.Education.objects.get(profile=profile):
+#  #                education = models.Education.objects.get(profile=profile)
+#  #                EducationForm = forms.EditEducationForm(instance=education)
+#  #            else :
+#  #                EducationForm = forms.EditEducationForm()

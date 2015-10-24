@@ -147,164 +147,6 @@ class BlogDetailsEdit(forms.ModelForm):
         )
 
 
-class EditEducationForm(forms.ModelForm):
-    """
-    Form for alumnus to edit education details (a tab within the profile edit page)
-    """
-    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
-
-    class Meta:
-        model = models.Education
-        exclude = ('profile',)
-
-    def __init__(self, *args, **kwargs):
-        super(EditEducationForm, self).__init__(*args, **kwargs)
-       
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
-        self.helper = FormHelper()
-        self.helper.form_id = 'id_edit_education_form'
-        self.helper.form_class = 'form-horizontal col-md-10'
-        self.helper.label_class = 'col-md-3'
-        self.helper.field_class = 'col-md-9'
-        self.helper.form_method = 'post'
-        self.helper.form_action = '/edit-profile/'
-
-        self.helper.layout = Layout(
-            'degree',
-            'institute',
-            'in_iitg',
-            'start_year',
-            'end_year',
-            'department',
-            'specialization',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
-        )
-
-class EditIITGExperienceForm(forms.ModelForm):
-    """
-    Form for alumnus to edit education details (a tab within the profile edit page)
-    """
-    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
-
-    class Meta:
-        model = models.IITGExperience
-        exclude = ('profile',)
-
-    def __init__(self, *args, **kwargs):
-        super(EditIITGExperienceForm, self).__init__(*args, **kwargs)
-       
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
-        self.helper = FormHelper()
-        self.helper.form_id = 'id_edit_education_form'
-        self.helper.form_class = 'form-horizontal col-md-10'
-        self.helper.label_class = 'col-md-3'
-        self.helper.field_class = 'col-md-9'
-        self.helper.form_method = 'post'
-        self.helper.form_action = '/edit-profile/'
-        self.helper.layout = Layout(
-            'club_name',
-            'experience',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
-        )
-
-class EditProjectForm(forms.ModelForm):
-    """
-    Form for alumnus to edit education details (a tab within the profile edit page)
-    """
-    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
-
-    class Meta:
-        model = models.Project
-        exclude = ('profile','recent',)
-
-    def __init__(self, *args, **kwargs):
-        super(EditProjectForm, self).__init__(*args, **kwargs)
-       
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
-        self.helper = FormHelper()
-        self.helper.form_id = 'id_edit_education_form'
-        self.helper.form_class = 'form-horizontal col-md-10'
-        self.helper.label_class = 'col-md-3'
-        self.helper.field_class = 'col-md-9'
-        self.helper.form_method = 'post'
-        self.helper.form_action = '/edit-profile/'
-        self.helper.layout = Layout(
-            'topic',
-            'mentor',
-            'description',
-            'start_date',
-            'end_date',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
-        )
-
-
-class EditAchievementForm(forms.ModelForm):
-    """
-    Form for alumnus to edit education details (a tab within the profile edit page)
-    """
-    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
-
-    class Meta:
-        model = models.Achievement
-        exclude = ('profile','recent',)
-
-    def __init__(self, *args, **kwargs):
-        super(EditAchievementForm, self).__init__(*args, **kwargs)
-       
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
-        self.helper = FormHelper()
-        self.helper.form_id = 'id_edit_education_form'
-        self.helper.form_class = 'form-horizontal col-md-10'
-        self.helper.label_class = 'col-md-3'
-        self.helper.field_class = 'col-md-9'
-        self.helper.form_method = 'post'
-        self.helper.form_action = '/edit-profile/'
-        self.helper.layout = Layout(
-            
-            'achievement',
-            'achievement_type',
-            'year',
-            'description',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
-        )
-
-
-
-class EditJobForm(forms.ModelForm):
-    """
-    Form for alumnus to edit education details (a tab within the profile edit page)
-    """
-    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
-
-    class Meta:
-        model = models.Job
-        exclude = ('profile',)
-
-    def __init__(self, *args, **kwargs):
-        super(EditJobForm, self).__init__(*args, **kwargs)
-       
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
-        self.helper = FormHelper()
-        self.helper.form_id = 'id_edit_education_form'
-        self.helper.form_class = 'form-horizontal col-md-10'
-        self.helper.label_class = 'col-md-3'
-        self.helper.field_class = 'col-md-9'
-        self.helper.form_method = 'post'
-        self.helper.form_action = '/edit-profile/'
-        self.helper.layout = Layout(
-            'company',
-            'position',
-            'description',
-            'start_date',
-            'end_date',
-            'city',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
-        )
 
 
 class IITGExperienceFormSetHelper(FormHelper):
@@ -420,6 +262,164 @@ class AchievementFormSetHelper(FormHelper):
         self.render_required_fields = True
 
 
+# class EditEducationForm(forms.ModelForm):
+#     """
+#     Form for alumnus to edit education details (a tab within the profile edit page)
+#     """
+#     # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+
+#     class Meta:
+#         model = models.Education
+#         exclude = ('profile',)
+
+#     def __init__(self, *args, **kwargs):
+#         super(EditEducationForm, self).__init__(*args, **kwargs)
+       
+#         for field in self.fields.values():
+#             field.error_messages = {'required':''}
+#         self.helper = FormHelper()
+#         self.helper.form_id = 'id_edit_education_form'
+#         self.helper.form_class = 'form-horizontal col-md-10'
+#         self.helper.label_class = 'col-md-3'
+#         self.helper.field_class = 'col-md-9'
+#         self.helper.form_method = 'post'
+#         self.helper.form_action = '/edit-profile/'
+
+#         self.helper.layout = Layout(
+#             'degree',
+#             'institute',
+#             'in_iitg',
+#             'start_year',
+#             'end_year',
+#             'department',
+#             'specialization',
+#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#         )
+
+# class EditIITGExperienceForm(forms.ModelForm):
+#     """
+#     Form for alumnus to edit education details (a tab within the profile edit page)
+#     """
+#     # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+
+#     class Meta:
+#         model = models.IITGExperience
+#         exclude = ('profile',)
+
+#     def __init__(self, *args, **kwargs):
+#         super(EditIITGExperienceForm, self).__init__(*args, **kwargs)
+       
+#         for field in self.fields.values():
+#             field.error_messages = {'required':''}
+#         self.helper = FormHelper()
+#         self.helper.form_id = 'id_edit_education_form'
+#         self.helper.form_class = 'form-horizontal col-md-10'
+#         self.helper.label_class = 'col-md-3'
+#         self.helper.field_class = 'col-md-9'
+#         self.helper.form_method = 'post'
+#         self.helper.form_action = '/edit-profile/'
+#         self.helper.layout = Layout(
+#             'club_name',
+#             'experience',
+#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#         )
+
+# class EditProjectForm(forms.ModelForm):
+#     """
+#     Form for alumnus to edit education details (a tab within the profile edit page)
+#     """
+#     # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+
+#     class Meta:
+#         model = models.Project
+#         exclude = ('profile','recent',)
+
+#     def __init__(self, *args, **kwargs):
+#         super(EditProjectForm, self).__init__(*args, **kwargs)
+       
+#         for field in self.fields.values():
+#             field.error_messages = {'required':''}
+#         self.helper = FormHelper()
+#         self.helper.form_id = 'id_edit_education_form'
+#         self.helper.form_class = 'form-horizontal col-md-10'
+#         self.helper.label_class = 'col-md-3'
+#         self.helper.field_class = 'col-md-9'
+#         self.helper.form_method = 'post'
+#         self.helper.form_action = '/edit-profile/'
+#         self.helper.layout = Layout(
+#             'topic',
+#             'mentor',
+#             'description',
+#             'start_date',
+#             'end_date',
+#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#         )
+
+
+# class EditAchievementForm(forms.ModelForm):
+#     """
+#     Form for alumnus to edit education details (a tab within the profile edit page)
+#     """
+#     # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+
+#     class Meta:
+#         model = models.Achievement
+#         exclude = ('profile','recent',)
+
+#     def __init__(self, *args, **kwargs):
+#         super(EditAchievementForm, self).__init__(*args, **kwargs)
+       
+#         for field in self.fields.values():
+#             field.error_messages = {'required':''}
+#         self.helper = FormHelper()
+#         self.helper.form_id = 'id_edit_education_form'
+#         self.helper.form_class = 'form-horizontal col-md-10'
+#         self.helper.label_class = 'col-md-3'
+#         self.helper.field_class = 'col-md-9'
+#         self.helper.form_method = 'post'
+#         self.helper.form_action = '/edit-profile/'
+#         self.helper.layout = Layout(
+            
+#             'achievement',
+#             'achievement_type',
+#             'year',
+#             'description',
+#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#         )
+
+
+
+# class EditJobForm(forms.ModelForm):
+#     """
+#     Form for alumnus to edit education details (a tab within the profile edit page)
+#     """
+#     # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+
+#     class Meta:
+#         model = models.Job
+#         exclude = ('profile',)
+
+#     def __init__(self, *args, **kwargs):
+#         super(EditJobForm, self).__init__(*args, **kwargs)
+       
+#         for field in self.fields.values():
+#             field.error_messages = {'required':''}
+#         self.helper = FormHelper()
+#         self.helper.form_id = 'id_edit_education_form'
+#         self.helper.form_class = 'form-horizontal col-md-10'
+#         self.helper.label_class = 'col-md-3'
+#         self.helper.field_class = 'col-md-9'
+#         self.helper.form_method = 'post'
+#         self.helper.form_action = '/edit-profile/'
+#         self.helper.layout = Layout(
+#             'company',
+#             'position',
+#             'description',
+#             'start_date',
+#             'end_date',
+#             'city',
+#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#         )
 
 
 
