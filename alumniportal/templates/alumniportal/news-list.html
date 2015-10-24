@@ -12,7 +12,7 @@
             </div>
             <div class="row " >
               <div class="col-md-12 col-left news-container" >
-                <h3 class='column-header news-header'>News <a href="" class='column-addbutton'>(add)</a></h3>
+                <h3 class='column-header news-header'>{{item_type}} <a href="" class='column-addbutton'>(add)</a></h3>
                 
                 <!-- This is a template news row -->
                 {% for item in items %}
@@ -21,7 +21,7 @@
                     <img {% if item.image %} src="{{item.image.url}}" {% endif %} alt="{{item.post_type}}{{item.achievement_type}}" width="150" height="150" >
 
                     <div class="teaser-container">
-                      <a class="news-topic-teaser" href="/{{class_type}}/{{item.get_post_type_display|lower}}{{item.get_achievement_type_display|lower}}">{{item.get_post_type_display}}{{item.get_achievement_type_display}}</a>
+                      <a class="news-topic-teaser" href="/{{class_type}}/{{item.get_post_type_display}}{{item.get_achievement_type_display}}">{{item.get_post_type_display}}{{item.get_achievement_type_display}}</a>
                     </div>
                     <h4><a>{{item.heading}}{{item.achievement}}</a></h4>
                     <div class="news-date">{{item.timestamp}}{{item.year}}</div>

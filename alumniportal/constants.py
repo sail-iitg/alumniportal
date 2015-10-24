@@ -125,11 +125,11 @@ HOSTELS = (
 )
 
 ACTIVITY_TYPE = (
-    ('Event', 'Event'),
-    ('Meet', 'Alumni Meet'),
-    ('Volunteering', 'Start a Volunteering Activity'),
-    ('Survey', 'Take a Survey'),
-    ('Project', 'Float a Project'),
+    ('E', 'Event'),
+    ('M', 'Alumni Meet'),
+    ('V', 'Start a Volunteering Activity'),
+    ('S', 'Take a Survey'),
+    ('P', 'Float a Project'),
     )
 
 POST_TYPE = (
@@ -137,16 +137,16 @@ POST_TYPE = (
     ('A', 'Alumni'),
     ('S', 'Student'),
     ('R', 'Research'),
-    ('B', 'Blog'),
+    ('C', 'Achievement'),
     )
 
 PROFILE_TYPE = (
-    ('is_iitg', 'IITG'),
     ('is_alumni', 'Alumni'),
     ('is_stud', 'Current Student'),
     ('is_prof', 'Professor'),
     )
 
+#To be changed wrt individual's perspectives
 ACHIEVEMENT_TYPE = (
     ('A', 'Alumni'),
     ('I','IITG'),

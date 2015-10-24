@@ -6,8 +6,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
-from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
 from django.db import IntegrityError, transaction
+from django.core.exceptions import ObjectDoesNotExist
 import time
 
 
@@ -23,7 +24,7 @@ def edit_profile(request):
     # get user profile if exists
     if hasattr(request.user, 'profile'):
         profile = request.user.profile
-        IITGExperienceFormSet = formset_factory(forms.EditIITGExperienceForm)
+        IITGExperienceFormSet = modelformset_factory(forms.EditIITGExperienceForm)
         IITGExperienceObjects = models.IITGExperience.objects.filter(profile=profile)
         IITGExperienceData = [{'club_name': l.club_name, 'experience': l.experience} for l in IITGExperienceObjects]
     else:
@@ -394,3 +395,227 @@ def blog_details_edit(request):
                   {'page': 'blog-details-edit',
                    'form': form})
 
+@login_required
+def edit_iitg(request):
+    try :
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        print("profile doesn't exist")
+        messages.error(request,'Please fill your personal details first.')
+        return HttpResponseRedirect('/edit-profile/personal')
+    if profile:
+        formset = modelformset_factory(models.IITGExperience,exclude=('profile',),extra=1 )
+
+        if request.method == "POST":
+            _formset = formset(request.POST,request.FILES)
+            if _formset.is_valid():
+                for ExperienceForm in _formset:
+                    task = ExperienceForm.save(commit=False)
+                    task.profile = profile
+                    task.save()
+                messages.success(request,'Data Saved.')
+        else :
+            _formset = formset(queryset=models.IITGExperience.objects.filter(profile=profile).reverse())
+        helper = forms.IITGExperienceFormSetHelper()
+        return render(request,'alumniportal/edit-profile.html',{
+            'formset':_formset,
+            'page':'edit-profile',
+            'profile':'iitg',
+            'helper':helper
+            })
+
+
+    else :
+        return HttpResponseRedirect('/')
+
+
+@login_required
+def edit_project(request):
+    try :
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        print("profile doesn't exist")
+        messages.error(request,'Please fill your personal details first.')
+        return HttpResponseRedirect('/edit-profile/personal')
+    if profile:
+        formset = modelformset_factory(models.Project,exclude=('profile','recent',),extra=1 )
+        if request.method == "POST":
+            _formset = formset(request.POST,request.FILES)
+            if _formset.is_valid():
+                for Project in _formset:
+                    task = Project.save(commit=False)
+
+                    today = datetime.today()
+                    week_no = today.isocalendar()[1]
+                    year_no = today.isocalendar()[0]
+                    recent_week= str(models.Recent.objects.latest('week'))[:2]
+                    recent_year= str(models.Recent.objects.latest('week'))[-4:]
+                    
+                    if week_no == recent_week and year_no == recent_year :
+                        recent= models.Recent.objects.latest('week')
+                    else :
+                        recent = models.Recent(week=str(week_no)+str(year_no))
+                        recent.save()
+                    task.recent = models.Recent.objects.latest('week')
+                    task.profile = profile
+                    task.save()
+                messages.success(request,'Data Saved.')
+        else :
+            _formset = formset(queryset=models.Project.objects.filter(profile=profile).reverse())
+        helper = forms.ProjectFormSetHelper()
+        return render(request,'alumniportal/edit-profile.html',{
+            'formset':_formset,
+            'page':'edit-profile',
+            'profile':'project',
+            'helper':helper
+            })
+
+
+    else :
+        return HttpResponseRedirect('/')
+
+
+
+@login_required
+def edit_education(request):
+    try :
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        print("profile doesn't exist")
+        messages.error(request,'Please fill your personal details first.')
+        return HttpResponseRedirect('/edit-profile/personal')
+    if profile:
+        formset = modelformset_factory(models.Education,exclude=('profile',),extra=1 )
+        if request.method == "POST":
+            _formset = formset(request.POST,request.FILES)
+            if _formset.is_valid():
+                for Education in _formset:
+                    task = Education.save(commit=False)
+                    task.profile = profile
+                    task.save()
+                messages.success(request,'Data Saved.')
+        else :
+            _formset = formset(queryset=models.Education.objects.filter(profile=profile).reverse())
+        helper = forms.EducationFormSetHelper()
+        return render(request,'alumniportal/edit-profile.html',{
+            'formset':_formset,
+            'page':'edit-profile',
+            'profile':'education',
+            'helper':helper
+            })
+
+
+    else :
+        ##redirect to create profile - personal
+        return HttpResponseRedirect('/')
+
+
+@login_required
+def edit_professional(request):
+    try :
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        print("profile doesn't exist")
+        messages.error(request,'Please fill your personal details first.')
+        return HttpResponseRedirect('/edit-profile/personal')
+    if profile:
+        formset = modelformset_factory(models.Job,exclude=('profile',),extra=1 )
+
+        if request.method == "POST":
+            _formset = formset(request.POST,request.FILES)
+            if _formset.is_valid():
+                for Job in _formset:
+                    task = Job.save(commit=False)
+                    task.profile = profile
+                    task.save()
+                messages.success(request,'Data Saved.')
+        else :
+            _formset = formset(queryset=models.Job.objects.filter(profile=profile).reverse())
+        helper = forms.JobFormSetHelper()
+        return render(request,'alumniportal/edit-profile.html',{
+            'formset':_formset,
+            'page':'edit-profile',
+            'profile':'professional',
+            'helper':helper
+            })
+
+
+    else :
+        ##redirect to create profile - personal
+        return HttpResponseRedirect('/')
+
+@login_required
+def edit_achievement(request):
+    try :
+        profile = request.user.profile
+    except ObjectDoesNotExist:
+        print("profile doesn't exist")
+        messages.error(request,'Please fill your personal details first.')
+        return HttpResponseRedirect('/edit-profile/personal')
+    
+    if profile:
+        formset = modelformset_factory(models.Achievement,exclude=('profile','recent',),extra=1 )
+        if request.method == "POST":
+            _formset = formset(request.POST,request.FILES)
+            if _formset.is_valid():
+                for Achievement in _formset:
+                    task = Achievement.save(commit=False)
+
+                    today = datetime.today()
+                    week_no = today.isocalendar()[1]
+                    year_no = today.isocalendar()[0]
+                    recent_week= str(models.Recent.objects.latest('week'))[:2]
+                    recent_year= str(models.Recent.objects.latest('week'))[-4:]
+                    
+                    if week_no == recent_week and year_no == recent_year :
+                        recent= models.Recent.objects.latest('week')
+                    else :
+                        recent = models.Recent(week=str(week_no)+str(year_no))
+                        recent.save()
+                    task.recent = models.Recent.objects.latest('week')
+                    task.profile = profile
+                    task.save()
+                messages.success(request,'Data Saved.')
+        else :
+            _formset = formset(queryset=models.Achievement.objects.filter(profile=profile).reverse())
+        helper = forms.AchievementFormSetHelper()
+        return render(request,'alumniportal/edit-profile.html',{
+            'formset':_formset,
+            'page':'edit-profile',
+            'profile':'achievement',
+            'helper':helper
+            })
+
+
+    else :
+        return HttpResponseRedirect('/')
+
+@login_required
+def edit_personal(request):
+    # get user profile if exists
+    if hasattr(request.user, 'profile'):
+        profile = request.user.profile
+    else:
+        profile = None
+
+    if request.method == "POST":
+        if profile:
+            form = forms.EditProfileForm(request.POST, request.FILES, instance=profile)
+        else:
+            form = forms.EditProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.last_edited = datetime.now()
+            if not profile:
+                task.user = request.user
+            task.save()
+            messages.success(request, 'Profile saved.')
+    else:
+        if profile:
+            form = forms.EditProfileForm(instance=profile)
+        else:
+            form = forms.EditProfileForm()
+    return render(request, 'alumniportal/edit-profile.html',
+               {'page': 'edit-profile',
+                'form': form,
+                'profile':'personal'})

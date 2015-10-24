@@ -26,45 +26,30 @@
 
                 <div class="row news-row">
                   <div class="col-md-12 col-element">
-                    <a class='column-more' href="all">More news...</a>
+                    <a class='column-more' href="All">More news...</a>
                   </div>
                 </div>
-
-
             </div>
           </div>
           <div class="row">
-              <div class="col-md-6 col-left news-container" >
-              <h3 class='column-header news-header'>Research <a href="" class='column-addbutton'>(add)</a></h3>
-                <div class="row news-row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if research.image %} src="{{research.image.url}}" {% endif %} alt="{{research.post_type}}" width="150" height="150" >
-                    <h4><a>{{research.heading}}</a></h4>
-                    <p class="col-elem-data">
-                      {{research.content|linebreaks}}
-                    </p>
-                  </div>
-                </div>
-            <div class="row news-row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="research">More research...</a>
-                  </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-right news-container " >
+              <div class="col-md-12 col-left news-container" >
               <h3 class='column-header news-header'>Achievements <a href="" class='column-addbutton'>(add)</a></h3>
+                {% for a in achievements %}
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
-                    <img {% if achievement.image %} src="{{achievement.image.url}}" {% endif %} alt="{{achievement.achievement_type}}" width="150" height="150" >
-                    <h4><a>{{achievement.achievement}}</a></h4>
+                    <img {% if a.image %} src="{{a.image.url}}" {% endif %} alt="{{a.post_type}}" width="150" height="150" >
+                    <h4><a>{{a.heading}}</a></h4>
+                    <h6>{{a.timestamp}}</h4>
                     <p class="col-elem-data">
-                      {{achievement.content|linebreaks}}
+                      {{a.content|linebreaks}}
                     </p>
                   </div>
                 </div>
+                {% endfor %}
+
                 <div class="row news-row">
                   <div class="col-md-12 col-element">
-                    <a class='column-more' href="/achievement/all">More achievements...</a>
+                    <a class='column-more' href="/news/Achievement/">More achievements...</a>
                   </div>
                 </div>
             </div>

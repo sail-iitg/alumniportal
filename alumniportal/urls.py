@@ -21,16 +21,19 @@ urlpatterns = [
     url(r'^$', display_views.home , name='home'),
     url(r'^activity/$', display_views.activity , name='activity'),
     ####my edit
-    url(r'^activity/add/$', forms_views.add_activity , name='add_activity'),
+    url(r'^activity/$', forms_views.add_activity , name='add_activity'),
     url(r'^blog/edit/$', forms_views.blog_details_edit , name='blog_details_edit'),
     ##edit end
     url(r'^community/$', display_views.community , name='community'),
     url(r'^news/$', display_views.news , name='news'),
-    # url(r'^news/(?P<task_id>\b(alumni|student)\b)/topic/$', display_views.items, name='news-items'),
-
-    # url(r'^(?P<class_type>\b(news|achievement)\b)/(?P<item_type>.*)/$', display_views.items, name='news-items'),
-    url(r'^(?P<class_type>\b(news|achievement|activity)\b)/(?P<item_type>\b(all|add|research|iitg|student|alumni)\b)/$', display_views.items, name='news-items'),
+    url(r'^(?P<class_type>\b(news|activity)\b)/(?P<item_type>\b(All|add|Research|IITG|Student|Alumni|Achievement)\b)/$', display_views.items, name='news-items'),
     # url(r'^achievement/(?P<type>\b(all|iitg|alumni|student)\b)/$', display_views.items , name='news-items'),
     url(r'^profile/$', display_views.profile , name='profile'),
-    url(r'^edit-profile/$', forms_views.edit_profile , name='edit-profile'),
+    url(r'^edit-profile/personal/$', forms_views.edit_personal , name='edit-personal'),
+    url(r'^edit-profile/$', forms_views.edit_personal , name='edit-profile'),
+    url(r'^edit-profile/professional/$', forms_views.edit_professional , name='edit-professional'),
+    url(r'^edit-profile/education/$', forms_views.edit_education , name='edit-education'),
+    url(r'^edit-profile/achievement/$', forms_views.edit_achievement , name='edit-achievement'),
+    url(r'^edit-profile/iitg/$', forms_views.edit_iitg , name='edit-iitg'),
+    url(r'^edit-profile/project/$', forms_views.edit_project , name='edit-project'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
