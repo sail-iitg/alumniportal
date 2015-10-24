@@ -131,7 +131,6 @@ def blog_details_edit(request):
                   {'page': 'blog-details-edit',
                    'form': form})
 
-<<<<<<< HEAD
 @login_required
 def edit_iitg(request):
     try :
@@ -612,7 +611,6 @@ def edit_personal(request):
 #  #                EducationForm = forms.EditEducationForm(instance=education)
 #  #            else :
 #  #                EducationForm = forms.EditEducationForm()
-=======
 
 @user_passes_test(lambda u: u.is_superuser)
 def add_news(request):
@@ -653,4 +651,4 @@ def edit_news(request, news_id):
                   {'page': 'add-news',
                    'form': form,
                    'edit': True})
->>>>>>> ckeditor
+

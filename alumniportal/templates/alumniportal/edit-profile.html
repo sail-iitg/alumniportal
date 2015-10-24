@@ -123,7 +123,7 @@
                 $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'"> Add new</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
               }
               else{
-              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
+              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title" style="width:600px"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4><input style="float: right; bottom: 20px; position: relative;" type="radio" name="current" value='+name+'></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
               }
             });
             
@@ -137,7 +137,6 @@
             });
             
             //$('.checkboxinput').attr('checked') = true
-
         });
         // var csrfmiddlewaretoken =  $('input[name="csrfmiddlewaretoken"]').val();
         // var profile_form = $('#id_edit_profile_form');

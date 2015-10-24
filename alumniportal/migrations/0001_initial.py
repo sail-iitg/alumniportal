@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations, models
 import alumniportal.models
+import ckeditor.fields
 from django.conf import settings
 
 
@@ -33,16 +34,23 @@ class Migration(migrations.Migration):
                 ('activity_type', models.CharField(max_length=32, choices=[(b'E', b'Event'), (b'M', b'Alumni Meet'), (b'V', b'Start a Volunteering Activity'), (b'S', b'Take a Survey'), (b'P', b'Float a Project')])),
                 ('name', models.CharField(max_length=32)),
                 ('purpose', models.CharField(max_length=128)),
-                ('image', models.ImageField(null=True, upload_to=alumniportal.models.get_image_path, blank=True)),
+                ('image', models.ImageField(upload_to=alumniportal.models.get_image_path)),
                 ('created', models.DateTimeField(blank=True)),
                 ('end_date', models.DateTimeField(null=True, blank=True)),
                 ('requirement', models.TextField(blank=True)),
                 ('description', models.TextField(blank=True)),
-                ('images', models.TextField(blank=True)),
             ],
             options={
                 'ordering': ['-created'],
             },
+        ),
+        migrations.CreateModel(
+            name='ActivityImage',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('image', models.ImageField(upload_to=alumniportal.models.get_image_path)),
+                ('activity', models.ForeignKey(related_name='images', to='alumniportal.Activity')),
+            ],
         ),
         migrations.CreateModel(
             name='Blog',
@@ -82,7 +90,7 @@ class Migration(migrations.Migration):
                 ('institute', models.CharField(max_length=100)),
                 ('in_iitg', models.BooleanField()),
                 ('start_year', models.IntegerField(null=True)),
-                ('end_year', models.IntegerField(null=True)),
+                ('end_year', models.IntegerField(null=True, blank=True)),
                 ('department', models.CharField(max_length=50, choices=[(b'bt', b'Biotechnology [BT]'), (b'cl', b'Chemical [CL]'), (b'che', b'Chemistry [CHE]'), (b'ce', b'Civil [CE]'), (b'cse', b'Computer Science [CSE]'), (b'ds', b'Design [DD]'), (b'eee', b'Electrical [EEE]'), (b'ece', b'Electronics [ECE]'), (b'hss', b'Humanities &amp; Social Sciences [HSS]'), (b'ma', b'Mathematics [MA]'), (b'me', b'Mechanical [ME]'), (b'ep', b'Physics [EP]'), (b'cfe', b'Centre for Energy'), (b'cfte', b'Centre for the Environment'), (b'cnt', b'Centre for Nanotechnology'), (b'o', b'Other')])),
                 ('specialization', models.CharField(max_length=50, blank=True)),
             ],
@@ -101,7 +109,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('company', models.CharField(max_length=50)),
                 ('position', models.CharField(max_length=50, blank=True)),
-                ('start_date', models.IntegerField(blank=True, null=True, choices=[(1994, 1994), (1995, 1995), (1996, 1996), (1997, 1997), (1998, 1998), (1999, 1999), (2000, 2000), (2001, 2001), (2002, 2002), (2003, 2003), (2004, 2004), (2005, 2005), (2006, 2006), (2007, 2007), (2008, 2008), (2009, 2009), (2010, 2010), (2011, 2011), (2012, 2012), (2013, 2013), (2014, 2014)])),
+                ('start_date', models.IntegerField(choices=[(1994, 1994), (1995, 1995), (1996, 1996), (1997, 1997), (1998, 1998), (1999, 1999), (2000, 2000), (2001, 2001), (2002, 2002), (2003, 2003), (2004, 2004), (2005, 2005), (2006, 2006), (2007, 2007), (2008, 2008), (2009, 2009), (2010, 2010), (2011, 2011), (2012, 2012), (2013, 2013), (2014, 2014)])),
                 ('end_date', models.IntegerField(blank=True, null=True, choices=[(1994, 1994), (1995, 1995), (1996, 1996), (1997, 1997), (1998, 1998), (1999, 1999), (2000, 2000), (2001, 2001), (2002, 2002), (2003, 2003), (2004, 2004), (2005, 2005), (2006, 2006), (2007, 2007), (2008, 2008), (2009, 2009), (2010, 2010), (2011, 2011), (2012, 2012), (2013, 2013), (2014, 2014)])),
                 ('description', models.CharField(max_length=50, blank=True)),
                 ('city', models.CharField(max_length=50, blank=True)),
@@ -114,12 +122,20 @@ class Migration(migrations.Migration):
                 ('post_type', models.CharField(max_length=2, choices=[(b'I', b'IITG'), (b'A', b'Alumni'), (b'S', b'Student'), (b'R', b'Research'), (b'C', b'Achievement')])),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('heading', models.CharField(max_length=128)),
-                ('content', models.TextField()),
+                ('content', ckeditor.fields.RichTextField()),
                 ('image', models.ImageField(null=True, upload_to=alumniportal.models.get_image_path, blank=True)),
             ],
             options={
                 'ordering': ['-timestamp'],
             },
+        ),
+        migrations.CreateModel(
+            name='NewsImage',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('image', models.ImageField(upload_to=alumniportal.models.get_image_path)),
+                ('news', models.ForeignKey(related_name='images', to='alumniportal.News')),
+            ],
         ),
         migrations.CreateModel(
             name='Post',
@@ -198,7 +214,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='news',
             name='recent',
-            field=models.ForeignKey(related_name='news', blank=True, to='alumniportal.Recent'),
+            field=models.ForeignKey(related_name='news', blank=True, to='alumniportal.Recent', null=True),
         ),
         migrations.AddField(
             model_name='job',
