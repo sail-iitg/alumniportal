@@ -34,8 +34,25 @@ def volunteer(request):
         'page':'volunteer',
         'volunteers':volunteers,
         })
+
 def activity(request):
-    return render(request,'alumniportal/activities.html', {'page': 'activity'})
+    activities = models.Activity.objects.exclude(activity_type = 'V')
+    return render(request,'alumniportal/activity.html', {
+        'page': 'activity',
+        'items':activities,
+        'item_type':"ALL",
+        })
+
+def activity_items(request, item_type):
+    for a in ACTIVITY_TYPE:
+        if a[1]==item_type:
+            activities = models.Activity.objects.filter(activity_type=a[0])
+            return render(request, 'alumniportal/activity.html', {
+                'page':'activity', 
+                'items':activities,
+                'item_type':item_type, 
+                })
+    return HttpResponseRedirect('/activity')
 
 def community(request):
     return render(request,'alumniportal/communities.html', {'page': 'community'})
@@ -60,6 +77,7 @@ def profile(request):
         'page': 'profile',
         'profile':profile,
         })
+
 
 def items(request, class_type, item_type):
     #####need to add continuously loading of news
