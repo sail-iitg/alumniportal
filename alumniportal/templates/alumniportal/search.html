@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/profile1.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/search.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/jquery.dataTables.min.css' %}">
 <div class="col-md-4 main-content" >
 	<div class="panel panel-default">
 		<div class="panel-heading profile-panel-heading"> 
@@ -80,12 +81,7 @@
 					<div class="col-md-12">
 				 		<div class="form-radio-container col-md-12">
 					 		<h5>Other Degree :</h5>
-					 		<label class="control-label" for="radios-other">Batch :</label>
-						    <label for="radios-0-other">
-						      <input type="radio" name="radios-other" id="radios-0-other" value="1">
-						      <label class="form-radio-option-label">All Classes</label>
-						    </label>
-					    	<input type="radio" name="radios-1-other" id="radios-1-other" value="1">
+					 		
 					      <!-- <div class="label-container"> -->
 						 		<label for="class-year-from-other">From :</label>
 						  <!-- </div> -->
@@ -100,29 +96,6 @@
 						</div>
 					</div>
 					
-				 	<div class="col-md-6">
-						<div class="label-container">
-						      <label for="select-major">Select Majors:</label>
-							      <select class="form-control" id="select-major">
-							        <option>1</option>
-							        <option>2</option>
-							        <option>3</option>
-							        <option>4</option>
-							      </select>
-						</div>
-					</div>
-
-					<div class="col-md-6">
-						<div class="label-container">
-					      <label for="select-degree">Select Degree:</label>
-							      <select class="form-control" id="select-degree">
-							        <option>1</option>
-							        <option>2</option>
-							        <option>3</option>
-							        <option>4</option>
-							      </select>
-						</div>
-					</div>
 
 				</div>
 
@@ -133,6 +106,36 @@
 </div>
 </div>
 <div class="col-md-8">
-The main content block
+	
+	
+	
+	<table id="searchtable" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Age</th>
+				<th>Gender</th>
+				<th>Hostel</th>
+				<th>City</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+			{% for profile in profiles%}
+			<tr>
+				<td>{{profile.name}}</td>
+				<td>{{profile.age}}</td>
+				<td>{{profile.gender}}</td>
+				<td>{{profile.hostel}}</td>
+				<td>{{profile.city}}</td>
+			</tr>
+			{% endfor %}
+			
+		</tbody>
+	</table>
 </div>
+<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript">
+	$("#searchtable").DataTable();
+</script>
 {% endblock %}
