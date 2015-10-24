@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block edit-profile  %}
+
         {% load staticfiles %}
+
         {% load crispy_forms_tags %}
+
         <div class="col-md-9 main-content" >
             <div class="panel panel-default">
                 <div class="panel-heading profile-panel-heading"> 
@@ -35,34 +38,44 @@
                     <!-- EDITED!!!!! -->
                     <div class="col-md-10">
                       <ul class="nav nav-tabs profile-tabs">
-                        <li class="active"><a data-toggle="tab" href="#tab-personal">Personal</a></li>
-                        <li><a data-toggle="tab" href="#tab-education">Education</a></li>
-                        <li><a data-toggle="tab" href="#tab-iitg">IITG</a></li>
-                        <li><a data-toggle="tab" href="#tab-project">Project</a></li>
-                        <li><a data-toggle="tab" href="#tab-achievement">Achievement</a></li>
-                        <li><a data-toggle="tab" href="#tab-professional">Professional</a></li>
+                        <li><a  href="/edit-profile/personal">Personal</a></li>
+                        <li><a  href="/edit-profile/education">Education</a></li>
+                        <li><a  href="/edit-profile/iitg">IITG</a></li>
+                        <li><a  href="/edit-profile/project">Project</a></li>
+                        <li><a  href="/edit-profile/achievement">Achievement</a></li>
+                        <li><a  href="/edit-profile/professional">Professional</a></li>
                       </ul>
                     </div>
                     <div class="tab-content">
-                      <div id="tab-personal" class="tab-pane fade in active profile-personal">
-                        {% crispy PersonalForm PersonalForm.helper %} 
-                      </div>
 
-                      <div id="tab-education" class="tab-pane fade in active profile-education">
-                         {% crispy EducationForm EducationForm.helper %}
-                      </div>
+                    
+                    {% if profile == "iitg" %}
                       <div id="tab-iitg" class="tab-pane fade in active profile-iitg">
-                        {% crispy IITGExperienceForm IITGExperienceForm.helper %}
+                        {% crispy formset helper%}
                       </div>
+                    
+                    {% elif profile == "project" %}
                       <div id="tab-project" class="tab-pane fade in active profile-project">
-                        {% crispy ProjectForm ProjectForm.helper %}
+                        {% crispy formset helper %}
                       </div>
+                    {% elif profile == "personal" %}
+                      <div id="tab-personal" class="tab-pane fade in active profile-personal">
+                        {% crispy form form.helper %} 
+                      </div>
+                    {% elif profile == "education" %}
+                      <div id="tab-education" class="tab-pane fade in active profile-education">
+                         {% crispy formset helper %}
+                      </div>
+                    {% elif profile == "achievement" %} 
                       <div id="tab-achievement" class="tab-pane fade in active profile-achievement">
-                        {% crispy AchievementForm AchievementForm.helper %}
+                        {% crispy formset helper %}
                       </div>
+                    {% elif profile == "professional" %}
                       <div id="tab-professional" class="tab-pane fade in active profile-professional">
-                        {% crispy JobForm JobForm.helper %}
+                        {% crispy formset helper %}
                       </div>
+                    {% else %}
+                    {% endif %}
                     </div>     
                 </div>  
             </div>
@@ -72,8 +85,59 @@
         <script type="text/javascript">
           $( document ).ready(function() {
           $(".tab-pane").removeClass( "active" )
-          $("#tab-personal").addClass("active")
-          
+          console.log("{{profile}}")
+          if("{{profile}}"=="iitg"){
+            $("#tab-iitg").addClass("active")
+            $('a[href="/edit-profile/iitg"]').parent('li').addClass("active")
+            
+          }else if("{{profile}}"=="project"){
+            $("#tab-project").addClass("active")
+            $('a[href="/edit-profile/project"]').parent('li').addClass("active")
+          }
+          else if("{{profile}}"=="education"){
+            $("#tab-education").addClass("active")
+            $('a[href="/edit-profile/education"]').parent('li').addClass("active")
+          }
+          else if("{{profile}}"=="achievement"){
+            $("#tab-achievement").addClass("active")
+            $('a[href="/edit-profile/achievement"]').parent('li').addClass("active")
+          }
+          else if("{{profile}}"=="professional"){
+            $("#tab-professional").addClass("active")
+            $('a[href="/edit-profile/professional"]').parent('li').addClass("active")
+          }else if("{{profile}}"=="personal"){
+            $("#tab-personal").addClass("active")
+            $('a[href="/edit-profile/personal"]').parent('li').addClass("active")
+          }
+
+
+
+
+          var html = '<div class="row col-md-12"><div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>';
+
+            // SETUP CODE BELOW FOR ACCORDION
+            $( "form" ).wrap( html );
+            $($('.edit_form_container').get().reverse()).each(function(i, obj) {
+              var name = $(this).children("div").first().children("div").first().children("*").first().val();
+              if(!name){
+                $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'"> Add new</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
+              }
+              else{
+              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
+              }
+            });
+            
+            $('.checkboxinput').click(function(){
+              $(this).closest(".panel-body").find(".disable_institute").attr('disabled',this.checked);
+              if(this.checked){
+                $(this).closest(".panel-body").find(".disable_institute").val("IIT Guwahati")
+              }else{
+                $(this).closest(".panel-body").find(".disable_institute").val("")
+              }
+            });
+            
+            //$('.checkboxinput').attr('checked') = true
+
         });
         // var csrfmiddlewaretoken =  $('input[name="csrfmiddlewaretoken"]').val();
         // var profile_form = $('#id_edit_profile_form');

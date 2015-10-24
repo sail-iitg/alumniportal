@@ -15,7 +15,7 @@ from django.core.validators import RegexValidator
 from datetime import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
 
-####edited
+
 from multiupload.fields import MultiFileField
 
 
@@ -23,7 +23,7 @@ class EditProfileForm(forms.ModelForm):
     """
     Form for alumnus to edit profile
     """
-    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+    date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
 
     class Meta:
         model = models.Profile
@@ -42,12 +42,13 @@ class EditProfileForm(forms.ModelForm):
         for field in self.fields.values():
             field.error_messages = {'required':''}
         self.helper = FormHelper()
+
         self.helper.form_id = 'id_edit_profile_form'
         self.helper.form_class = 'form-horizontal col-md-10'
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-9'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/edit-profile/'
+        self.helper.form_action = '/edit-profile/personal/'
         self.helper.layout = Layout(
             Accordion(
                 AccordionGroup('Personal',
@@ -168,6 +169,7 @@ class EditEducationForm(forms.ModelForm):
         self.helper.field_class = 'col-md-9'
         self.helper.form_method = 'post'
         self.helper.form_action = '/edit-profile/'
+
         self.helper.layout = Layout(
             'degree',
             'institute',
@@ -303,4 +305,130 @@ class EditJobForm(forms.ModelForm):
             'city',
             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
         )
+
+
+class IITGExperienceFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(IITGExperienceFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_method = 'post'
+        self.form_action = '/edit-profile/iitg/'
+        self.form_class = 'form-horizontal col-md-10'
+        self.label_class = 'col-md-3'
+        self.field_class = 'col-md-9'
+        self.form_method = 'post'
+        self.layout = Layout(
+            Div( 
+                'club_name',
+                'experience',
+
+                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                css_class="edit_form_container",
+            ),
+        )
+        self.render_required_fields = True
+
+class ProjectFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(ProjectFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_method = 'post'
+        self.form_action = '/edit-profile/project/'
+        self.form_class = 'form-horizontal col-md-10'
+        self.label_class = 'col-md-3'
+        self.field_class = 'col-md-9'
+        self.form_method = 'post'
+        self.layout = Layout(
+            Div( 
+                'topic',
+                'mentor',
+                'description',
+                'start_date',
+                'end_date',
+
+                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                css_class="edit_form_container",
+            ),
+        )
+        self.render_required_fields = True
+
+class EducationFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(EducationFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_method = 'post'
+        self.form_action = '/edit-profile/education/'
+        self.form_class = 'form-horizontal col-md-10'
+        self.label_class = 'col-md-3'
+        self.field_class = 'col-md-9'
+        self.form_method = 'post'
+
+        self.layout = Layout(
+            Div( 
+                'degree',
+                Field('institute', value="IIT Guwahati" , css_class="disable_institute", disabled='true'),
+                Field('in_iitg', checked=True),
+                'start_year',
+                'end_year',
+                'department',
+                'specialization',
+                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                css_class="edit_form_container",
+            ),
+        )
+        self.render_required_fields = True
+
+class JobFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(JobFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_method = 'post'
+        self.form_action = '/edit-profile/professional/'
+        self.form_class = 'form-horizontal col-md-10'
+        self.label_class = 'col-md-3'
+        self.field_class = 'col-md-9'
+        self.form_method = 'post'
+        self.layout = Layout(
+            Div( 
+            'company',
+            'position',
+            'description',
+            'start_date',
+            'end_date',
+            'city',
+                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                css_class="edit_form_container",
+            ),
+        )
+        self.render_required_fields = True
+
+class AchievementFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(AchievementFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_method = 'post'
+        self.form_action = '/edit-profile/achievement/'
+        self.form_class = 'form-horizontal col-md-10'
+        self.label_class = 'col-md-3'
+        self.field_class = 'col-md-9'
+        self.form_method = 'post'
+        self.layout = Layout(
+            Div( 
+            'achievement',
+            'achievement_type',
+            'year',
+            'description',
+                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                css_class="edit_form_container",
+            ),
+        )
+        self.render_required_fields = True
+
+
+
+
+
+
+
+
+
+
+
+
+
 
