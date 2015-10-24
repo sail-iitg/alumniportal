@@ -4,6 +4,7 @@ from alumniportal import models
 from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.conf import settings
@@ -130,6 +131,7 @@ def blog_details_edit(request):
                   {'page': 'blog-details-edit',
                    'form': form})
 
+<<<<<<< HEAD
 @login_required
 def edit_iitg(request):
     try :
@@ -610,3 +612,45 @@ def edit_personal(request):
 #  #                EducationForm = forms.EditEducationForm(instance=education)
 #  #            else :
 #  #                EducationForm = forms.EditEducationForm()
+=======
+
+@user_passes_test(lambda u: u.is_superuser)
+def add_news(request):
+    """
+    Display form for adding news and redirect to published news
+    """
+    if request.method == 'POST':
+        form = forms.AddNewsForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save()
+            return HttpResponseRedirect('/' + str(task.id) + '/news/')
+    else:
+        form = forms.AddNewsForm()
+    return render(request, 'alumniportal/add-news.html',
+                  {'page': 'add-news',
+                   'form': form})
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def edit_news(request, news_id):
+    """
+    Display form for editing published and redirect to published news
+    """
+    try:
+        news = models.News.objects.get(id=news_id)
+    except models.News.DoesNotExist:
+        return HttpResponse('News (id: ' + str(news_id) + ') does not exist.')
+
+    if request.method == 'POST':
+        form = forms.AddNewsForm(request.POST, request.FILES, instance=news)
+        if form.is_valid():
+            task = form.save()
+            return HttpResponseRedirect('/' + str(task.id) + '/news/')
+    else:
+        form = forms.AddNewsForm(instance=news)
+        form.helper.form_action = '/' + str(news_id) + '/edit/news/'
+        return render(request, 'alumniportal/add-news.html',
+                  {'page': 'add-news',
+                   'form': form,
+                   'edit': True})
+>>>>>>> ckeditor

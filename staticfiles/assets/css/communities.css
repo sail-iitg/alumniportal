@@ -1,0 +1,23 @@
+.activities-header{
+  background-color:#E0E0E0;
+  padding : 10px 10px;
+  border:1px solid #D0D0D0 ;
+}
+.activities-container{
+  border: 1px solid #D0D0D0 ;
+  margin:5px 0px;
+  border-radius: 4px;
+}
+
+.activities-row{
+  padding: 5px 14px;
+  
+}
+.col-element{
+  padding-bottom:20px;
+  
+  background-color:#F8F8F8  ;
+}
+.activities-intro{
+  font-size:15px;
+}

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from ckeditor.fields import RichTextField
 from constants import *
 import os
 from time import strftime
@@ -204,9 +205,9 @@ class News(models.Model):
     post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
     timestamp = models.DateTimeField(auto_now_add=True)
     heading = models.CharField(max_length=128)
-    content = models.TextField()
+    content = RichTextField()
     image = models.ImageField(blank=True, null=True, upload_to=get_image_path)  #Currently just one
-    recent = models.ForeignKey(Recent, blank=True, related_name='news')
+    recent = models.ForeignKey(Recent, null=True, blank=True, related_name='news')
 
     class Meta:
         ordering = ['-timestamp']

@@ -432,3 +432,31 @@ class AchievementFormSetHelper(FormHelper):
 
 
 
+
+class AddNewsForm(forms.ModelForm):
+    """
+    Form for admin to add news
+    """
+
+    class Meta:
+        model = models.News
+        exclude = ('timestamp', 'image', 'recent')
+
+    def __init__(self, *args, **kwargs):
+        super(AddNewsForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.error_messages = {'required':''}
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_add_news_form'
+        self.helper.form_class = 'form-horizontal col-md-12'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-10'
+        self.helper.form_method = 'post'
+        self.helper.form_action = '/add/news/'
+        self.helper.layout = Layout(
+            'post_type',
+            'heading',
+            'content',
+            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+        )

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block news-detail  %}
+        {% load staticfiles %}
+        {% load crispy_forms_tags %}
+        <div class="col-md-9 main-content" >
+            <div class="panel panel-default">
+                <div class="panel-heading profile-panel-heading"> 
+                    <h3>{{ heading }}</h3>
+                    {% if is_admin %}
+                        <!-- TODO: better styling for edit link -->
+                        <a href="/{{ news_id }}/edit/news/">edit</a>
+                    {% endif %}
+                </div>
+                <div class="panel-body">
+                    {% autoescape off %} {{ content }} {% endautoescape %}
+                </div>  
+            </div>
+        </div>
+{% endblock %}
