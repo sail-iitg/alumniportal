@@ -42,4 +42,7 @@ urlpatterns = [
     url(r'^edit-profile/achievement/$', forms_views.edit_achievement , name='edit-achievement'),
     url(r'^edit-profile/iitg/$', forms_views.edit_iitg , name='edit-iitg'),
     url(r'^edit-profile/project/$', forms_views.edit_project , name='edit-project'),
+    url(r'^add/news/$', forms_views.add_news, name='add-news'),
+    url(r'^(?P<news_id>\d+)/edit/news/$', forms_views.edit_news, name='edit-news'),
+    url(r'^(?P<news_id>\d+)/news/$', display_views.news_detail, name='news-detail'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

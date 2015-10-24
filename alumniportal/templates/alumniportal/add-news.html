@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block add-news  %}
+        {% load staticfiles %}
+        {% load crispy_forms_tags %}
+        <div class="col-md-9 main-content" >
+            <div class="panel panel-default">
+                <div class="panel-heading profile-panel-heading"> 
+                    {% if edit %}
+                        <h3>Edit News</h3>
+                    {% else %}
+                        <h3>Add News</h3>
+                    {% endif %}
+                </div>
+                <div class="panel-body">
+                    {% crispy form form.helper %}      
+                </div>  
+            </div>
+        </div>
+{% endblock %}

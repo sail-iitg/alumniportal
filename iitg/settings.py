@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'bootstrap3_datetime',
     ######edited
     'multiupload',
+    'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -126,9 +127,39 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'alumniportal/media/')
 MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
-
+STATIC_ROOT = 'staticfiles'
 
 # PATH_TO_DATABASE_IMPORT = '/home/jayadeep/Downloads/sailDb.sql'
 
 # Template pack for django-crispy-forms
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+
+# CKEditor settings
+CKEDITOR_JQUERY_URL = '/static/assets/js/jquery.min.js'
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            {'name': 'basicstyles',
+             'items': ['Bold', 'Italic', 'Underline', 'Subscript',
+                       'Superscript', '-', 'RemoveFormat', 'NumberedList',
+                       'BulletedList', 'Blockquote', 'SpecialChar', '-',
+                       'Language', 'Link', 'Unlink', '-', 'Maximize', 'About']},
+        ],
+        'height': 200,
+        'width': '100%',
+        'uiColor': '#FFFFFF',
+        'tabSpaces': 4,
+        'extraPlugins': ','.join(
+            [
+                # extra plugins
+                'autolink',
+                'autogrow',
+                'lineutils',
+                'clipboard',
+                'dialog',
+                'dialogui',
+                'elementspath'
+            ]),
+    }
+}
