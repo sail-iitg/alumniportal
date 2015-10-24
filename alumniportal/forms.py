@@ -84,8 +84,8 @@ class AddActivityForm(forms.ModelForm):
     """
     Form to create a new Activity
     """
-    files = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5)
-    # date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+    files = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5, required=False)
+    end_date = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
 
     class Meta:
         model = models.Activity

@@ -169,7 +169,7 @@ class Activity(models.Model):
     activity_type = models.CharField(max_length=32, choices=ACTIVITY_TYPE)  
     name = models.CharField(max_length=32)  #Name of the Voluteer Activity being proposed
     purpose = models.CharField(max_length=128)  #Purpose of the activity eg. Welfare of society, CrowdSourcing, Survey
-    image = models.ImageField(upload_to=get_image_path, blank=True, null=True)
+    image = models.ImageField(upload_to=get_image_path)
     created = models.DateTimeField(blank=True)   #Date and time of the start of the activity (Could be timestamp for some)
     end_date = models.DateTimeField(blank=True, null=True)   #
     requirement = models.TextField(blank=True)    #Requirements if any

@@ -12,17 +12,23 @@
             </div>
             <div class="row " >
               <div class="col-md-12 col-left news-container" >
-                <h3 class='column-header news-header'>{{item_type|upper}} <a href="" class='column-addbutton'>(add)</a></h3>
+                <h3 class='column-header news-header'>{{item_type|upper}} <a href="add" class='column-addbutton'>(add)</a></h3>
                 
                 <!-- This is a template news row -->
                 {% for item in items %}
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
-                    <img {% if item.image %} src="{{item.image.url}}" {% endif %} alt="{{item.activity_type}}" width="150" height="150" >
-
+                    <img 
+                    {% if item.image %} 
+                      src="{{item.image.url}}" 
+                    {% else %}
+                      src="{{item.images.first.image.url}}"
+                    {% endif %} alt="{{item.activity_type}}" width="150" height="150" >
+                    {% if item_type == "ALL" %}
                     <div class="teaser-container">
                       <a class="news-topic-teaser" href="/activity/{{item.get_activity_type_display}}">{{item.get_activity_type_display}}</a>
                     </div>
+                    {% endif %}
                     <h4><a>{{item.name}}</a></h4>
                     <div class="news-date">{{item.created}}</div>
                     <p class="col-elem-data">

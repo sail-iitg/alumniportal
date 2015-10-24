@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.db.models import Q
 import time
 from datetime import datetime
 from constants import *
@@ -95,4 +96,32 @@ def items(request, class_type, item_type):
         'page': 'items',
         'items':items,
         'item_type':item_type,
+        })
+
+def createQuery(request, result, field):
+    result = result & Q(**{field + "__icontains" : request.POST[field]})
+    return result
+
+@login_required
+def search(request):
+    if request.POST:
+        query = Q()
+        # import pdb; pdb.set_trace()
+        for field in request.POST:
+            if field == "csrfmiddlewaretoken":
+                continue
+            if request.POST[field]:
+                query = createQuery(request, query, field)
+                # query = query & Q(**field{field + "__icontains" : request.POST[field]})
+                # list_of_words = request.POST['name']
+            # for word in list_of_words:
+                # profiles = profiles.filter(name__icontains=word)
+        profiles = models.Profile.objects.filter(query)
+        print query
+        print profiles
+    return render(request, 'alumniportal/search.html', {
+        'page':"search", 
+        'batches':PASS_OUT_YEARS,
+        'majors':DEPARTMENTS,
+        # 'profiles':profiles,
         })
