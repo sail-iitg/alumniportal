@@ -66,6 +66,7 @@ def news(request):
         'page': 'news',
         'news':news,
         'achievements':achievements,
+        'is_admin': request.user.is_superuser,
         })
 
 @login_required
@@ -104,6 +105,7 @@ def items(request, class_type, item_type):
         'page': 'items',
         'items':items,
         'item_type':item_type,
+        'is_admin': request.user.is_superuser,
         })
 
 def createQuery(request, result, field):
