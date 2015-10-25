@@ -145,10 +145,13 @@ def edit_iitg(request):
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
-                for ExperienceForm in _formset:
-                    task = ExperienceForm.save(commit=False)
-                    task.profile = profile
-                    task.save()
+                for Experience in _formset:
+                    if Experience.has_changed():
+                        task = Experience.save(commit=False)
+                        task.profile = profile
+                        if not task.club_name:
+                            import pdb; pdb.set_trace()
+                        task.save()
                 messages.success(request,'Data Saved.')
         else :
             _formset = formset(queryset=models.IITGExperience.objects.filter(profile=profile).reverse())
@@ -179,22 +182,17 @@ def edit_project(request):
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
                 for Project in _formset:
-                    task = Project.save(commit=False)
+                    if Project.has_changed():
+                        task = Project.save(commit=False)
 
-                    today = datetime.today()
-                    week_no = today.isocalendar()[1]
-                    year_no = today.isocalendar()[0]
-                    recent_week= str(models.Recent.objects.latest('week'))[:2]
-                    recent_year= str(models.Recent.objects.latest('week'))[-4:]
-                    
-                    if week_no == recent_week and year_no == recent_year :
-                        recent= models.Recent.objects.latest('week')
-                    else :
-                        recent = models.Recent(week=str(week_no)+str(year_no))
-                        recent.save()
-                    task.recent = models.Recent.objects.latest('week')
-                    task.profile = profile
-                    task.save()
+                        today = datetime.today().isocalendar()
+                        week = str(today[1])+str(today[0])
+                        tmp = models.Recent.objects.get_or_create(week=week)
+                        if tmp[1]:
+                            tmp[0].save()
+                        task.recent = tmp[0]
+                        task.profile = profile
+                        task.save()
                 messages.success(request,'Data Saved.')
         else :
             _formset = formset(queryset=models.Project.objects.filter(profile=profile).reverse())
@@ -224,6 +222,7 @@ def edit_education(request):
         formset = modelformset_factory(models.Education,exclude=('profile',),extra=1 )
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
+            # import pdb; pdb.set_trace();
             if _formset.is_valid():
                 for Education in _formset:
                     task = Education.save(commit=False)
@@ -258,12 +257,17 @@ def edit_professional(request):
         formset = modelformset_factory(models.Job,exclude=('profile',),extra=1 )
 
         if request.method == "POST":
+            if 'current' in request.POST.keys():
+                pass
+                # import pdb; pdb.set_trace()
+                                
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
                 for Job in _formset:
-                    task = Job.save(commit=False)
-                    task.profile = profile
-                    task.save()
+                    if Job.has_changed():
+                        task = Job.save(commit=False)
+                        task.profile = profile
+                        task.save()
                 messages.success(request,'Data Saved.')
         else :
             _formset = formset(queryset=models.Job.objects.filter(profile=profile).reverse())
@@ -295,22 +299,17 @@ def edit_achievement(request):
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
                 for Achievement in _formset:
-                    task = Achievement.save(commit=False)
+                    if Achievement.has_changed():
+                        task = Achievement.save(commit=False)
 
-                    today = datetime.today()
-                    week_no = today.isocalendar()[1]
-                    year_no = today.isocalendar()[0]
-                    recent_week= str(models.Recent.objects.latest('week'))[:2]
-                    recent_year= str(models.Recent.objects.latest('week'))[-4:]
-                    
-                    if week_no == recent_week and year_no == recent_year :
-                        recent= models.Recent.objects.latest('week')
-                    else :
-                        recent = models.Recent(week=str(week_no)+str(year_no))
-                        recent.save()
-                    task.recent = models.Recent.objects.latest('week')
-                    task.profile = profile
-                    task.save()
+                        today = datetime.today().isocalendar()
+                        week = str(today[1])+str(today[0])
+                        tmp = models.Recent.objects.get_or_create(week=week)
+                        if tmp[1]:
+                            tmp[0].save()
+                        task.recent = tmp[0]
+                        task.profile = profile
+                        task.save()
                 messages.success(request,'Data Saved.')
         else :
             _formset = formset(queryset=models.Achievement.objects.filter(profile=profile).reverse())
@@ -339,6 +338,7 @@ def edit_personal(request):
             form = forms.EditProfileForm(request.POST, request.FILES, instance=profile)
         else:
             form = forms.EditProfileForm(request.POST, request.FILES)
+        # import pdb; pdb.set_trace()
         if form.is_valid():
             task = form.save(commit=False)
             task.last_edited = datetime.now()

@@ -23,7 +23,7 @@ class EditProfileForm(forms.ModelForm):
     """
     Form for alumnus to edit profile
     """
-    date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+    date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime":False}))
 
     class Meta:
         model = models.Profile
@@ -86,7 +86,7 @@ class AddActivityForm(forms.ModelForm):
     Form to create a new Activity
     """
     files = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5, required=False)
-    end_date = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+    end_date = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY HH:MM:SS", "pickSeconds":False}))
 
     class Meta:
         model = models.Activity
@@ -205,7 +205,7 @@ class EducationFormSetHelper(FormHelper):
         self.layout = Layout(
             Div( 
                 'degree',
-                Field('institute', value="IIT Guwahati" , css_class="disable_institute", disabled='true'),
+                Field('institute', value="Indian Institute of Technology Guwahati"),
                 Field('in_iitg', checked=True),
                 'start_year',
                 'end_year',

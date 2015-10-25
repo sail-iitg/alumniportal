@@ -10,8 +10,38 @@
 	padding-bottom:0px;
 }
 .form-radio-container label{
-	padding:0px 10px;
+	padding:0px 5px;
 }
 .form-radio-container .form-radio-option-label{
 	padding:0px 5px;
 }
+.form-radio-container{
+	padding:0px 15px;
+}
+
+#advanced_search_sidebar{
+	padding:10px;
+}
+.panel-group{
+	margin-bottom:5px;
+}
+.panel.body{
+	padding:0px;
+}
+.label-container{
+	padding:8px 15px 0px 0px;
+}
+.form-group{
+	padding-right:10px;
+}
+#wrapper_clear{
+	margin:0px;
+	padding:0px;
+	display:block;
+	float:left;
+}
+
+/*#adv_search_button{
+	display:block;
+	margin:auto;
+}*/

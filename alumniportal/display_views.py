@@ -73,6 +73,7 @@ def profile(request):
     try:
         profile = models.Profile.objects.get(user = request.user)
     except:
+        messages.error(request, "You can access profile unless you create your own profile.")
         return HttpResponseRedirect('/edit-profile')
     return render(request,'alumniportal/profile.html', {
         'page': 'profile',
@@ -125,10 +126,6 @@ def search(request):
                 continue
             if request.POST[field]:
                 query = createQuery(request, query, field)
-                # query = query & Q(**field{field + "__icontains" : request.POST[field]})
-                # list_of_words = request.POST['name']
-            # for word in list_of_words:
-                # profiles = profiles.filter(name__icontains=word)
         profiles = models.Profile.objects.filter(query)
         print query
         print profiles
@@ -137,6 +134,7 @@ def search(request):
         'batches':PASS_OUT_YEARS,
         'majors':DEPARTMENTS,
         'profiles':profiles,
+        'hostels':HOSTELS,
         })
 
 

@@ -29,7 +29,7 @@ class Profile(models.Model):
     roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
     name = models.CharField(max_length=50, blank=True)  #Full Name with the designation
     gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
-    date_of_birth = models.DateField(blank=True, null=True)  #Date of Birth
+    date_of_birth = models.DateTimeField(blank=True, null=True)  #Date of Birth
     current_job = models.OneToOneField('Job', blank=True, null=True, related_name='current_job')   #Row ID of the job object currently doing
     current_education = models.OneToOneField('Education', blank=True, null =True, related_name='current_education')
     # past_jobs_id = models.TextField()   #List of Row IDs of the job objects

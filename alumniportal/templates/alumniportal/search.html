@@ -1,4 +1,4 @@
-<!-- Sumeet Bhaiya , you need to load the bottom three css files from staticfiles -->
+<!-- Please implement the select hostel and the other hostel fields -->
 {% extends "base.html" %}
 {% block search %}
 {% load staticfiles %} 
@@ -6,133 +6,159 @@
 <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/profile1.css' %}">
 <link rel="stylesheet" href="{% static 'assets/css/search.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/jquery.dataTables.min.css' %}">
 <div class="col-md-4 main-content" >
 	<div class="panel panel-default">
 		<div class="panel-heading profile-panel-heading"> 
 			<h3>Advanced Search</h3>
 		</div>
-		<div class="panel-body">
+		<div class="panel-body" id="advanced_search_sidebar">
 			<form role="form" method="POST" action="/search/">
 			{% csrf_token %}
-      			<button class="btn-primary">Submit</button>
-				<div class="bs-callout bs-callout-default">
-					<h4>Personal Information</h4>
-					<div class="row form-group">
-					 	<div class="col-md-12">
-					 		<div class="label-container">
-						 		<label for="name">Name :</label>
-							</div>
-					 		<div class="form-element-container">
-						 		<input type="text" class="form-control" name="name" id="name">
-					 		</div>
-						</div>
-					</div>
-					<div class="row form-group">
-					 	<div class="col-md-12">
-							<div class="form-radio-container col-md-12">
-						 		<div class="row">
-						 			<label class="control-label" for="radios">Gender : </label>
-						 		</div>
-							    <div class="row">
-								    <label for="gender-m">
-								      <input type="radio" name="gender" id="gender-m" value="m">
-									      <label class="form-radio-option-label">Male</label>
-								    </label>
-								    <label for="gender-f">
-								      <input type="radio" name="gender" id="gender-f" value="f">
-								      <label class="form-radio-option-label">Female</label>
-								    </label>
-								</div>
-							</div>
-					 	</div>
-					</div>
-					
-				</div>
+      			
+      			    <div class="panel-group" id="accordion">
+				        <div class="panel panel-default">
+				            <div class="panel-heading">
+				                <h4 class="panel-title">
+				                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Personal Information</a>
+				                </h4>
+				            </div>
+				            <div id="collapseOne" class="panel-collapse collapse in">
+				                <div class="panel-body">
+									<div class="col-md-12 form-group">
+								 		<div class="label-container col-md-4">
+									 		<label for="name">Name</label>
+										</div>
+								 		<div class="form-element-container col-md-8">
+									 		<input type="text" class="form-control" name="name" id="name">
+								 		</div>
+									</div>
+									<div class="col-md-12 form-group ">
+								 		<div class="label-container col-md-4">
+									 		<label for="city">City</label>
+										</div>
+								 		<div class="form-element-container col-md-8">
+									 		<input type="text" class="form-control" name="city" id="city">
+								 		</div>
+									</div>
+									<div class="col-md-12 form-group">
+								 		<div class="label-container col-md-4">
+									 		<label for="country">Country</label>
+										</div>
+								 		<div class="form-element-container col-md-8">
+									 		<input type="text" class="form-control" name="country" id="country">
+								 		</div>
+									</div>
+									<div class="col-md-12 form-group">
+											<div class="form-radio-container col-md-12">
+										 		<div class="row">
+										 			<label class="label-container col-md-4" for="gender">Gender</label>
+										 			<div class="form-element container col-md-8" id="wrapper_clear">   
+												    <label for="gender-m" class="col-md-6">
+												      <input type="radio" name="gender" id="gender-m" value="m">
+													      <label class="form-radio-option-label">Male</label>
+												    </label>
+												    <label for="gender-f" class="col-md-6">
+												      <input type="radio" name="gender" id="gender-f" value="f">
+												      <label class="form-radio-option-label">Female</label>
+												    </label>
+												    </div>
+												</div>
+											</div>
+									</div>
+									<div class="col-md-12 row form-group">
+										<div class="form-container">
+									        <label for="select-hostel">Select Hostel:</label>
+										 		<input list="select-hostel" name="hostel" type="text" class="form-control" placeholder="Hostel in IITG">
 
-			<div class="bs-callout bs-callout-default">
-			    <h4>Academic Information</h4>
-					<h5>IITG Degree :</h5>
-	            <div class="row form-group">
-					<div class="col-md-12">
-				 		<div class="form-container">
-					 		<label class="control-label" for="datalist-batch">Batch :</label>
-						 		<input list="batch" name="batch" type="text" class="form-control" placeholder="Pass out year and Program">
-						 		<datalist id="batch" size="10"> 
-						 		{% for batch in batches %}
-						 			<option value="{{batch.0}}">{{batch.1}}</option>
-						 		{% endfor %}
-						 		</datalist>
-						 </div>
-					</div>
-					<div class="col-md-12">
-						<div class="form-container">
-					      <label for="select-major">Select Majors:</label>
-						      <select class="form-control" id="select-major">
-							        {% for major in majors %}
-							        <option value="{{major.0}}">{{major.1}}</option>
-							        {% endfor %}
-						      </select>
-						</div>
-					</div>
-				</div>
-	
-			    <div class="row form-group">
-					<div class="col-md-12">
-				 		<div class="form-radio-container col-md-12">
-					 		<h5>Other Degree :</h5>
-					 		<label class="control-label" for="radios-other">Batch :</label>
-						    <label for="radios-0-other">
-						      <input type="radio" name="radios-other" id="radios-0-other" value="1">
-						      <label class="form-radio-option-label">All Classes</label>
-						    </label>
-					    	<input type="radio" name="radios-1-other" id="radios-1-other" value="1">
-					      <!-- <div class="label-container"> -->
-						 		<label for="class-year-from-other">From :</label>
-						  <!-- </div> -->
-					 		<input type="text" class="form-control" id="class-year-from-other">
-				 	  
-							<!--  <div class="label-container">
-							   	<label class="form-radio-option-label">To :</label>
-							</div>
-							<div class="form-element-container"></div>
-							  	<input type="text" class="form-control" id="class-year-to">
-							</div> -->
-						</div>
-					</div>
-					
-				 	<div class="col-md-6">
-						<div class="label-container">
-						      <label for="select-major">Select Majors:</label>
-							      <select class="form-control" id="select-major">
-							        <option>1</option>
-							        <option>2</option>
-							        <option>3</option>
-							        <option>4</option>
-							      </select>
-						</div>
-					</div>
-
-					<div class="col-md-6">
-						<div class="label-container">
-					      <label for="select-degree">Select Degree:</label>
-							      <select class="form-control" id="select-degree">
-							        <option>1</option>
-							        <option>2</option>
-							        <option>3</option>
-							        <option>4</option>
-							      </select>
-						</div>
-					</div>
-
-				</div>
-
-      		</div>
+										        <datalist id="select-hostel" size="3">
+											        {% for hostel in hostels %}
+											        <option value="{{hostel.0}}">{{hostel.1}}</option>
+											        {% endfor %}
+										        </datalist>
+										</div>	
+									</div>
+									
+				                </div>
+				            </div>
+				        </div>
+				        <div class="panel panel-default">
+				            <div class="panel-heading">
+				                <h4 class="panel-title">
+				                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Academic Information</a>
+				                </h4>
+				            </div>
+				            <div id="collapseTwo" class="panel-collapse collapse">
+				                <div class="panel-body">
+				                	<h5>IITG Degree :</h5>
+									<div class="col-md-12 row form-group">
+								 		<div class="form-container">
+									 		<label class="control-label" for="datalist-batch">Batch :</label>
+										 		<input list="batch" name="batch" type="text" class="form-control" placeholder="Pass out year and Program">
+										 		<datalist id="batch" size="10"> 
+										 		{% for batch in batches %}
+										 			<option value="{{batch.0}}">{{batch.1}}</option>
+										 		{% endfor %}
+										 		</datalist>
+										</div>
+									</div>
+									<div class="col-md-12 row form-group">
+										<div class="form-container">
+									        <label for="select-major">Select Majors:</label>
+										        <input list="depts" name="department" type="text" class="form-control" placeholder="Department/Major">
+										 		<datalist id="depts" size="10"> 
+										 		{% for major in majors %}
+										 			<option value="{{major.0}}">{{major.1}}</option>
+										 		{% endfor %}
+										 		</datalist>
+										</div>	
+									</div>
+									<h5>Other Degree :</h5>
+									<div class="col-md-12 row form-group">
+								 		<div class="form-container">
+									 		<label class="control-label" for="datalist-batch">Institue Name :</label>
+										 		<input type="text" name="institute" class="form-control" placeholder="Name of Institute">
+										</div>
+									</div>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+					<button class="btn btn-primary btn-primary" id="adv_search_button">Submit</button>
+			
 			</form>
 	</div>
 					      		
 </div>
 </div>
 <div class="col-md-8">
-The main content block
+	<table id="searchtable" class="display" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Age</th>
+				<th>Gender</th>
+				<th>Hostel</th>
+				<th>City</th>
+			</tr>
+		</thead>
+		<tbody>
+		
+			{% for profile in profiles%}
+			<tr>
+				<td>{{profile.name}}</td>
+				<td>{{profile.age}}</td>
+				<td>{{profile.gender}}</td>
+				<td>{{profile.hostel}}</td>
+				<td>{{profile.city}}</td>
+			</tr>
+			{% endfor %}
+			
+		</tbody>
+	</table>
 </div>
+<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript">
+	$("#searchtable").DataTable();
+</script>
 {% endblock %}
