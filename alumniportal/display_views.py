@@ -149,3 +149,29 @@ def news_detail(request, news_id):
         'news_id': news.id,
         'is_admin': request.user.is_superuser,
         })
+
+@login_required(login_url='/login/')
+def blog(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponse('Username does not exist.')
+    blog = user.profile.blog
+    posts = blog.post_set.all()
+    return render(request,'alumniportal/blog.html', {
+        'page': 'items',
+        'posts': posts,
+        'is_editor': (blog.profile.user == request.user),
+        })
+
+@login_required(login_url='/login/')
+def post_detail(request, post_id):
+    post = models.Post.objects.get(id=post_id)
+    return render(request, 'alumniportal/post-detail.html', {
+        'page': 'post-detail',
+        'heading': post.heading,
+        'content': post.content,
+        'post_id': post.id,
+        'is_editor': (post.blog.profile.user == request.user),
+        })
+
