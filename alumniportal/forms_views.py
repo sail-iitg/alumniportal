@@ -219,6 +219,7 @@ def edit_education(request):
         messages.error(request,'Please fill your personal details first.')
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
+        educations = models.Education.objects.filter(profile=profile)
         formset = modelformset_factory(models.Education,exclude=('profile',),extra=1 )
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
@@ -230,13 +231,14 @@ def edit_education(request):
                     task.save()
                 messages.success(request,'Data Saved.')
         else :
-            _formset = formset(queryset=models.Education.objects.filter(profile=profile).reverse())
+            _formset = formset(queryset=educations.reverse())
         helper = forms.EducationFormSetHelper()
         return render(request,'alumniportal/edit-profile.html',{
             'formset':_formset,
             'page':'edit-profile',
             'profile':'education',
-            'helper':helper
+            'helper':helper,
+            'currents':educations,
             })
 
 
@@ -255,12 +257,8 @@ def edit_professional(request):
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
         formset = modelformset_factory(models.Job,exclude=('profile',),extra=1 )
-
+        jobs = models.Job.objects.filter(profile=profile)
         if request.method == "POST":
-            if 'current' in request.POST.keys():
-                pass
-                # import pdb; pdb.set_trace()
-                                
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
                 for Job in _formset:
@@ -270,13 +268,14 @@ def edit_professional(request):
                         task.save()
                 messages.success(request,'Data Saved.')
         else :
-            _formset = formset(queryset=models.Job.objects.filter(profile=profile).reverse())
+            _formset = formset(queryset=jobs.reverse())
         helper = forms.JobFormSetHelper()
         return render(request,'alumniportal/edit-profile.html',{
             'formset':_formset,
             'page':'edit-profile',
             'profile':'professional',
-            'helper':helper
+            'helper':helper, 
+            'currents':jobs,
             })
 
 

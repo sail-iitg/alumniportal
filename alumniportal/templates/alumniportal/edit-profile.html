@@ -34,7 +34,19 @@
                     
                     <!-- EDITED!!!!! -->
                     <div class="col-md-10">
-                    {% if profile == "professional" or profile == "education" %}<h4>Use radio button to choose your current Job or Education</h4>{% endif %}
+                    <!-- Current Job and Education Implementation -->
+                    <!-- Still in Progress 
+                    {% if profile == "professional" or profile == "education" %}
+                      <h4>Choose from the list your current Job or Education</h4>
+                      <input list="current" type="text">
+                      <datalist id="current">
+                      {% for current in currents %}
+                          <option value="{{current.degree}}{{current.company}} | {{current.institute}}{{current.start_date}}"></option>
+                      {% endfor %}
+                      </datalist>
+                    {% endif %}
+                    -->
+                    <!-- Implementation for Current Jo and Education ends here -->
                       <ul class="nav nav-tabs profile-tabs">
                         <li><a  href="/edit-profile/personal">Personal</a></li>
                         <li><a  href="/edit-profile/education">Education</a></li>
@@ -119,7 +131,7 @@
                 $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'"> Add new</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
               }
               else{
-              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title" style="width:600px"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4>{% if profile == "professional" or profile == "education" %}<input style="float: right; bottom: 20px; position: relative;" type="radio" name="current" value='+name+' title="Choose your current Job"></div>{% endif %}<div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
+              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title" style="width:600px"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
               }
             });
             
