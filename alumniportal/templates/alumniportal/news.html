@@ -11,14 +11,18 @@
             </div>
             <div class="row " >
               <div class="col-md-12 col-left news-container" >
-                <h3 class='column-header news-header'>News <a href="" class='column-addbutton'>(add)</a></h3>
+                <h3 class='column-header news-header'>News
+                  {% if is_admin %}
+                    <a href="/add/news/" class='column-addbutton'>(add)</a>
+                  {% endif %}
+                </h3>
                 {% for new in news %}
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
                     <img {% if new.image %} src="{{new.image.url}}" {% endif %} alt="{{new.post_type}}" width="150" height="150" >
-                    <h4><a>{{new.heading}}</a></h4>
+                    <h4><a href="/{{ new.id }}/news/">{{new.heading}}</a></h4>
                     <p class="col-elem-data">
-                      {{new.content|linebreaks}}
+                      {% autoescape off %} {{new.content|linebreaks}} {% endautoescape %}
                     </p>
                   </div>
                 </div>

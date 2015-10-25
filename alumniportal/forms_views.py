@@ -631,7 +631,7 @@ def add_news(request):
 @user_passes_test(lambda u: u.is_superuser)
 def edit_news(request, news_id):
     """
-    Display form for editing published and redirect to published news
+    Display form for editing news and redirect to published news
     """
     try:
         news = models.News.objects.get(id=news_id)
@@ -650,4 +650,50 @@ def edit_news(request, news_id):
                   {'page': 'add-news',
                    'form': form,
                    'edit': True})
+
+
+@login_required(login_url='/login/')
+def add_post(request):
+    """
+    Display form for adding blog post and redirect to published post
+    """
+    if request.method == 'POST':
+        form = forms.AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.blog = request.user.profile.blog
+            task.save()
+            return HttpResponseRedirect('/' + str(task.id) + '/post/')
+    else:
+        form = forms.AddPostForm()
+    return render(request, 'alumniportal/add-post.html',
+                  {'page': 'add-post',
+                   'form': form})
+
+
+@login_required(login_url='/login/')
+def edit_post(request, post_id):
+    """
+    Display form for editing published blog post and redirect to published post
+    """
+    try:
+        post = models.Post.objects.get(id=post_id)
+    except models.Post.DoesNotExist:
+        return HttpResponse('Post (id: ' + str(post_id) + ') does not exist.')
+    if post.blog.profile.user != request.user:
+        return HttpResponse('You do not have edit access to this post.')
+
+    if request.method == 'POST':
+        form = forms.AddPostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            task = form.save()
+            return HttpResponseRedirect('/' + str(task.id) + '/post/')
+    else:
+        form = forms.AddPostForm(instance=post)
+        form.helper.form_action = '/' + str(post_id) + '/edit/post/'
+        return render(request, 'alumniportal/add-post.html',
+                  {'page': 'add-post',
+                   'form': form,
+                   'edit': True})
+
 
