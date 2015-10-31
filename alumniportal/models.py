@@ -27,7 +27,7 @@ class Profile(models.Model):
     profile_type = models.CharField(max_length=16, choices=PROFILE_TYPE, blank=True)
     user = models.OneToOneField(User, blank=True)  #webmail ID of the person (it acts as the username)
     roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
-    name = models.CharField(max_length=50, blank=True)  #Full Name with the designation
+    name = models.CharField(max_length=50)  #Full Name with the designation
     gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
     date_of_birth = models.DateTimeField(blank=True, null=True)  #Date of Birth
     current_job = models.OneToOneField('Job', blank=True, null=True, related_name='current_job')   #Row ID of the job object currently doing

@@ -32,6 +32,7 @@ def add_activity(request):
     if request.method == "POST":
         form = forms.AddActivityForm(request.POST, request.FILES)
         recent = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
+        # import pdb; pdb.set_trace()
         if form.is_valid():
             task = form.save(commit=False)
             image_list = request.FILES.getlist('files')
@@ -239,6 +240,7 @@ def edit_education(request):
             'profile':'education',
             'helper':helper,
             'currents':educations,
+            'current_education':profile.current_education,
             })
 
 
@@ -276,6 +278,7 @@ def edit_professional(request):
             'profile':'professional',
             'helper':helper, 
             'currents':jobs,
+            'current_job':profile.current_job,
             })
 
 
@@ -344,6 +347,7 @@ def edit_personal(request):
             if not profile:
                 task.user = request.user
             task.save()
+            models.Blog.objects.create(profile=task)
             messages.success(request, 'Profile saved.')
     else:
         if profile:
@@ -354,6 +358,23 @@ def edit_personal(request):
                {'page': 'edit-profile',
                 'form': form,
                 'profile':'personal'})
+
+def current(request):
+    if request.POST:
+        profile = request.user.profile
+        if request.path == '/edit-profile/professional/current/':
+            profile.current_job = models.Job.objects.get(id=request.POST['current'])
+            profile.save()
+            messages.success(request, "Changes Saved")
+        elif request.path == '/edit-profile/education/current/':
+            profile.current_education = models.Education.objects.get(id=request.POST['current'])
+            profile.save()
+            messages.success(request, "Changes Saved")
+        else:
+            messages.error(request, "Some invalid activity detected")
+            return HttpResponseRedirect("/edit-profile")
+    return HttpResponseRedirect("/edit-profile")
+
 # @login_required(login_url='/login/')
 # def edit_profile(request):
 #     """

@@ -34,18 +34,28 @@
                     
                     <!-- EDITED!!!!! -->
                     <div class="col-md-10">
-                    <!-- Current Job and Education Implementation -->
-                    <!-- Still in Progress 
-                    {% if profile == "professional" or profile == "education" %}
-                      <h4>Choose from the list your current Job or Education</h4>
-                      <input list="current" type="text">
-                      <datalist id="current">
-                      {% for current in currents %}
-                          <option value="{{current.degree}}{{current.company}} | {{current.institute}}{{current.start_date}}"></option>
-                      {% endfor %}
-                      </datalist>
-                    {% endif %}
-                    -->
+                      <form method="post" action="current/">
+                      {% csrf_token %}
+                      <!-- Current Job and Education Implementation -->
+                      <!-- Still in Progress  -->
+                      {% if profile == "professional" and current_job %}
+                      <h3>Currently working in {{current_job.company}} since {{current_job.start_date}}</h3>
+                      {% endif %}
+                      {% if profile == "education" and current_education %}
+                      <h3>Currently studying in {{current_education.institute}} in {{current_education.deparment}}</h3>
+                      {% endif %}
+                      <hr>
+                      {% if profile == "professional" or profile == "education" %}
+                        <h4>Choose from the list your current Job or Education</h4>
+                        <select name="current">
+                        {% for current in currents %}
+                            <option value="{{current.id}}">{{current.company}} {{current.start_date}}</option>
+                        {% endfor %}
+                        </select>
+                      <button type="submit">Save Changes</button>
+                      {% endif %}
+                      </form>
+                   
                     <!-- Implementation for Current Jo and Education ends here -->
                       <ul class="nav nav-tabs profile-tabs">
                         <li><a  href="/edit-profile/personal">Personal</a></li>
