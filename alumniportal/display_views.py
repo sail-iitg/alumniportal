@@ -136,6 +136,7 @@ def search(request):
         'page':"search", 
         'batches':PASS_OUT_YEARS,
         'majors':DEPARTMENTS,
+        'hostels':HOSTELS,
         'profiles':profiles,
         })
 

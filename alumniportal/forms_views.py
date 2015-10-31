@@ -651,4 +651,4 @@ def edit_news(request, news_id):
                   {'page': 'add-news',
                    'form': form,
                    'edit': True})
-        
+
