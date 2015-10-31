@@ -3,7 +3,7 @@ db.sqlite3
 .DS_STORE
 *.jpeg
 alumniportal/media/*
-
+institutes.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -49,7 +49,7 @@
                         <h4>Choose from the list your current Job or Education</h4>
                         <select name="current">
                         {% for current in currents %}
-                            <option value="{{current.id}}">{{current.company}} {{current.start_date}}</option>
+                            <option value="{{current.id}}">{{current.company}}{{current.institute}} {{current.start_date}}{{current.start_year}}</option>
                         {% endfor %}
                         </select>
                       <button type="submit">Save Changes</button>

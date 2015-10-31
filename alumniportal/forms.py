@@ -206,7 +206,6 @@ class EducationFormSetHelper(FormHelper):
             Div( 
                 'degree',
                 Field('institute', value="Indian Institute of Technology Guwahati"),
-                Field('in_iitg', checked=True),
                 'start_year',
                 'end_year',
                 'department',

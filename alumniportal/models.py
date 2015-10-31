@@ -4,6 +4,7 @@ from ckeditor.fields import RichTextField
 from constants import *
 import os
 from time import strftime
+from institutes import *
 # from datetime import datetime
 # Create your models here.
 # mydict = {
@@ -132,8 +133,7 @@ class Education(models.Model):
     """
     profile = models.ForeignKey(Profile, blank=True, related_name='educations')  #roll_no referring to the person to which the education object belongs
     degree = models.CharField(max_length=40, choices=PROGRAMS)  #Name of the degree
-    institute = models.CharField(max_length=100)    #Name of the institute
-    in_iitg = models.BooleanField() #Whether it is IITG or not. Used in filling the NonIITG_degrees and IITG_degrees in the Profile Class object.
+    institute = models.CharField(max_length=100, choices = INSTITUTES)    #Name of the institute
     start_year = models.IntegerField(null=True) #Start Year of the education
     end_year = models.IntegerField(blank=True, null=True)   #PassOut Year of the education
     department = models.CharField(max_length=50, choices=DEPARTMENTS) #
