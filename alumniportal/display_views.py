@@ -76,6 +76,7 @@ def profile(request):
     except:
         messages.error(request, "You can access profile unless you create your own profile.")
         return HttpResponseRedirect('/edit-profile')
+    # import pdb; pdb.set_trace()
     return render(request,'alumniportal/profile.html', {
         'page': 'profile',
         'profile':profile,

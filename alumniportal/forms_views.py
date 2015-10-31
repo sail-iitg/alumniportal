@@ -32,6 +32,7 @@ def add_activity(request):
     if request.method == "POST":
         form = forms.AddActivityForm(request.POST, request.FILES)
         recent = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
+        # import pdb; pdb.set_trace()
         if form.is_valid():
             task = form.save(commit=False)
             image_list = request.FILES.getlist('files')
@@ -219,6 +220,7 @@ def edit_education(request):
         messages.error(request,'Please fill your personal details first.')
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
+        educations = models.Education.objects.filter(profile=profile)
         formset = modelformset_factory(models.Education,exclude=('profile',),extra=1 )
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
@@ -230,13 +232,15 @@ def edit_education(request):
                     task.save()
                 messages.success(request,'Data Saved.')
         else :
-            _formset = formset(queryset=models.Education.objects.filter(profile=profile).reverse())
+            _formset = formset(queryset=educations.reverse())
         helper = forms.EducationFormSetHelper()
         return render(request,'alumniportal/edit-profile.html',{
             'formset':_formset,
             'page':'edit-profile',
             'profile':'education',
-            'helper':helper
+            'helper':helper,
+            'currents':educations,
+            'current_education':profile.current_education,
             })
 
 
@@ -255,12 +259,8 @@ def edit_professional(request):
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
         formset = modelformset_factory(models.Job,exclude=('profile',),extra=1 )
-
+        jobs = models.Job.objects.filter(profile=profile)
         if request.method == "POST":
-            if 'current' in request.POST.keys():
-                pass
-                # import pdb; pdb.set_trace()
-                                
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
                 for Job in _formset:
@@ -270,13 +270,15 @@ def edit_professional(request):
                         task.save()
                 messages.success(request,'Data Saved.')
         else :
-            _formset = formset(queryset=models.Job.objects.filter(profile=profile).reverse())
+            _formset = formset(queryset=jobs.reverse())
         helper = forms.JobFormSetHelper()
         return render(request,'alumniportal/edit-profile.html',{
             'formset':_formset,
             'page':'edit-profile',
             'profile':'professional',
-            'helper':helper
+            'helper':helper, 
+            'currents':jobs,
+            'current_job':profile.current_job,
             })
 
 
@@ -345,6 +347,7 @@ def edit_personal(request):
             if not profile:
                 task.user = request.user
             task.save()
+            models.Blog.objects.create(profile=task)
             messages.success(request, 'Profile saved.')
     else:
         if profile:
@@ -355,6 +358,23 @@ def edit_personal(request):
                {'page': 'edit-profile',
                 'form': form,
                 'profile':'personal'})
+
+def current(request):
+    if request.POST:
+        profile = request.user.profile
+        if request.path == '/edit-profile/professional/current/':
+            profile.current_job = models.Job.objects.get(id=request.POST['current'])
+            profile.save()
+            messages.success(request, "Changes Saved")
+        elif request.path == '/edit-profile/education/current/':
+            profile.current_education = models.Education.objects.get(id=request.POST['current'])
+            profile.save()
+            messages.success(request, "Changes Saved")
+        else:
+            messages.error(request, "Some invalid activity detected")
+            return HttpResponseRedirect("/edit-profile")
+    return HttpResponseRedirect("/edit-profile")
+
 # @login_required(login_url='/login/')
 # def edit_profile(request):
 #     """
