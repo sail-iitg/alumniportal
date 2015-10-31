@@ -11,7 +11,7 @@
 			  <li>|</li>
 			  <li><a href="#">View all profile data</a></li>
 			  <li>|</li>
-			  <li><a href="#">Privacy</a></li>
+			  <li><a href="/{{ profile.user.username }}/blog/">Blog</a></li>
 			  <li>|</li>
 			  <li><a href="#">Change Password</a></li>
 			</ul>
@@ -31,7 +31,9 @@
 					<div class="panel-heading">  
 						<div class="row summary-info-row">
 							<div class="col-md-4 summary-img">
-								<img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
+								{% if profile.blog.profile_picture %}
+									<img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
+								{% endif %}
 							</div>
 							<div class="col-md-8">
 								<h4 class="profile-summary-name">
@@ -73,7 +75,9 @@
 					<div class="panel-heading">  
 						<div class="row summary-info-row">
 							<div class="col-md-4 summary-img">
+								{% if profile.blog.profile_picture %}
 								<img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
+								{% endif %}
 							</div>
 							<div class="col-md-8">
 								<h4 class="profile-summary-name">
@@ -166,7 +170,9 @@
 					<div class="panel-heading">  
 						<div class="row summary-info-row">
 							<div class="col-md-4 summary-img">
+							{% if profile.blog.profile_picture %}
 								<img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
+							{% endif %}
 							</div>
 							<div class="col-md-8">
 								<h4 class="profile-summary-name">

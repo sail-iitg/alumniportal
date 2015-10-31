@@ -42,7 +42,16 @@ urlpatterns = [
     url(r'^edit-profile/achievement/$', forms_views.edit_achievement , name='edit-achievement'),
     url(r'^edit-profile/iitg/$', forms_views.edit_iitg , name='edit-iitg'),
     url(r'^edit-profile/project/$', forms_views.edit_project , name='edit-project'),
+
     url(r'^add/news/$', forms_views.add_news, name='add-news'),
     url(r'^(?P<news_id>\d+)/edit/news/$', forms_views.edit_news, name='edit-news'),
     url(r'^(?P<news_id>\d+)/news/$', display_views.news_detail, name='news-detail'),
+
+
+    url(r'^add/post/$', forms_views.add_post, name='add-post'),
+    url(r'^(?P<post_id>\d+)/edit/post/$', forms_views.edit_post, name='edit-post'),
+    url(r'^(?P<post_id>\d+)/post/$', display_views.post_detail, name='post-detail'),
+
+    url(r'^(?P<username>.+)/blog/$', display_views.blog, name='blog'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

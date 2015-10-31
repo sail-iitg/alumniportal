@@ -1,11 +1,8 @@
 {% extends "base.html" %}
 
 {% block edit-profile  %}
-
         {% load staticfiles %}
-
         {% load crispy_forms_tags %}
-
         <div class="col-md-9 main-content" >
             <div class="panel panel-default">
                 <div class="panel-heading profile-panel-heading"> 
@@ -13,7 +10,7 @@
                     <ul class="list-inline">
                       <li><a href="/profile">View all profile data</a></li>
                       <li>|</li>
-                      <li><a href="#">Privacy</a></li>
+                      <li><a href="/{{ profile.user.username }}/blog/">Blog</a></li>
                       <li>|</li>
                       <li><a href="#">Change Password</a></li>
                       
@@ -37,6 +34,7 @@
                     
                     <!-- EDITED!!!!! -->
                     <div class="col-md-10">
+                    {% if profile == "professional" or profile == "education" %}<h4>Use radio button to choose your current Job or Education</h4>{% endif %}
                       <ul class="nav nav-tabs profile-tabs">
                         <li><a  href="/edit-profile/personal">Personal</a></li>
                         <li><a  href="/edit-profile/education">Education</a></li>
@@ -80,8 +78,6 @@
                 </div>  
             </div>
         </div>
-        {% load staticfiles %}
-        <script src="{% static 'assets/js/jquery.min.js' %}"></script>
         <script type="text/javascript">
           $( document ).ready(function() {
           $(".tab-pane").removeClass( "active" )
@@ -123,64 +119,20 @@
                 $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'"> Add new</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
               }
               else{
-              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title" style="width:600px"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4><input style="float: right; bottom: 20px; position: relative;" type="radio" name="current" value='+name+'></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
+              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title" style="width:600px"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4>{% if profile == "professional" or profile == "education" %}<input style="float: right; bottom: 20px; position: relative;" type="radio" name="current" value='+name+' title="Choose your current Job"></div>{% endif %}<div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
               }
             });
             
-            $('.checkboxinput').click(function(){
-              $(this).closest(".panel-body").find(".disable_institute").attr('disabled',this.checked);
-              if(this.checked){
-                $(this).closest(".panel-body").find(".disable_institute").val("IIT Guwahati")
-              }else{
-                $(this).closest(".panel-body").find(".disable_institute").val("")
-              }
-            });
+            // $('.checkboxinput').click(function(){
+            //   $(this).closest(".panel-body").find(".disable_institute").attr('disabled',this.checked);
+            //   if(this.checked){
+            //     $(this).closest(".panel-body").find(".disable_institute").val("IIT Guwahati")
+            //   }else{
+            //     $(this).closest(".panel-body").find(".disable_institute").val("")
+            //   }
+            // });
             
             //$('.checkboxinput').attr('checked') = true
         });
-        // var csrfmiddlewaretoken =  $('input[name="csrfmiddlewaretoken"]').val();
-        // var profile_form = $('#id_edit_profile_form');
-        // var education_form = $('#id_edit_education_form');
-        
-        // function create_post() {
-        //     console.log("create post is working!") // sanity check
-        //     console.log(profile_form.serialize())
-        //     $.ajax({
-        //         url : "/edit-profile/", // the endpoint
-        //         type : "POST", // http method
-        //         data : profile_form.serialize() // data sent with the post request
-
-        //         // handle a successful response
-        //         success : function(json) {
-        //            // remove the value from the input
-        //             //console.log(json); // log the returned json to the console
-        //             console.log("success"); // another sanity check
-        //         },
-
-                // handle a non-successful response
-                // error : function(xhr,errmsg,err) {
-                //     $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-                //         " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-                //     console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-                // }
-        //     });
-        // };
-        
-
-        // $('input[type="submit"]').click(function(event){
-            
-            
-        //     console.log($("#id_edit_education_form").serialize());
-        //     event.preventDefault();
-       
-        // });
-          // $(form input[type='submit']).click( function(){
-          //   console.log("Going to submit")
-          //   submitForms();
-          // });
-          
-        // $( form input[type='submit'] ).click(function() {
-        //       // $( "#target" ).click();
-        // });
         </script>
 {% endblock %}

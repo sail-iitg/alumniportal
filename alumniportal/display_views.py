@@ -66,6 +66,7 @@ def news(request):
         'page': 'news',
         'news':news,
         'achievements':achievements,
+        'is_admin': request.user.is_superuser,
         })
 
 @login_required
@@ -73,6 +74,7 @@ def profile(request):
     try:
         profile = models.Profile.objects.get(user = request.user)
     except:
+        messages.error(request, "You can access profile unless you create your own profile.")
         return HttpResponseRedirect('/edit-profile')
     return render(request,'alumniportal/profile.html', {
         'page': 'profile',
@@ -103,6 +105,7 @@ def items(request, class_type, item_type):
         'page': 'items',
         'items':items,
         'item_type':item_type,
+        'is_admin': request.user.is_superuser,
         })
 
 def createQuery(request, result, field):
@@ -125,10 +128,6 @@ def search(request):
                 continue
             if request.POST[field]:
                 query = createQuery(request, query, field)
-                # query = query & Q(**field{field + "__icontains" : request.POST[field]})
-                # list_of_words = request.POST['name']
-            # for word in list_of_words:
-                # profiles = profiles.filter(name__icontains=word)
         profiles = models.Profile.objects.filter(query)
         print query
         print profiles
@@ -138,6 +137,7 @@ def search(request):
         'majors':DEPARTMENTS,
         'hostels':HOSTELS,
         'profiles':profiles,
+        'hostels':HOSTELS,
         })
 
 
@@ -150,3 +150,29 @@ def news_detail(request, news_id):
         'news_id': news.id,
         'is_admin': request.user.is_superuser,
         })
+
+@login_required(login_url='/login/')
+def blog(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return HttpResponse('Username does not exist.')
+    blog = user.profile.blog
+    posts = blog.post_set.all()
+    return render(request,'alumniportal/blog.html', {
+        'page': 'items',
+        'posts': posts,
+        'is_editor': (blog.profile.user == request.user),
+        })
+
+@login_required(login_url='/login/')
+def post_detail(request, post_id):
+    post = models.Post.objects.get(id=post_id)
+    return render(request, 'alumniportal/post-detail.html', {
+        'page': 'post-detail',
+        'heading': post.heading,
+        'content': post.content,
+        'post_id': post.id,
+        'is_editor': (post.blog.profile.user == request.user),
+        })
+

@@ -29,7 +29,7 @@ class Profile(models.Model):
     roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
     name = models.CharField(max_length=50, blank=True)  #Full Name with the designation
     gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
-    date_of_birth = models.DateField(blank=True, null=True)  #Date of Birth
+    date_of_birth = models.DateTimeField(blank=True, null=True)  #Date of Birth
     current_job = models.OneToOneField('Job', blank=True, null=True, related_name='current_job')   #Row ID of the job object currently doing
     current_education = models.OneToOneField('Education', blank=True, null =True, related_name='current_education')
     # past_jobs_id = models.TextField()   #List of Row IDs of the job objects
@@ -56,7 +56,8 @@ class Profile(models.Model):
     department = models.CharField(max_length=25, choices=DEPARTMENTS, blank=True)    #Department in which he was in IITG
 
     def __unicode__(self):
-        return str(self.name)
+        return str(self.user.username)
+
 
 class Blog(models.Model):
     """
@@ -65,6 +66,7 @@ class Blog(models.Model):
     """
     # profile_id = models.IntegerField(unique=True, primary_key=True) #Unique to the person
     profile = models.OneToOneField('Profile', blank=True)  #Row ID of Blog Class
+    # TODO: Shift profile_picture to Profile model instead of Blog
     profile_picture = models.ImageField(blank=True, null=True, upload_to=get_image_path)   #Profile Picture of the person
     videos = models.TextField(blank=True) #List of path to the videos that the person with profile_id = roll_no has uploaded
     # posts = models.TextField(blank=True)      #List of lists. [["TimeStamp", "Header of Post", "Content"]]. It will be updated from the end. 
@@ -72,6 +74,10 @@ class Blog(models.Model):
     interests = models.TextField(blank=True)  #Interests/Hobbies
     message_to_the_world = models.TextField(blank=True)   #What the person wants to say to the world
     images = models.TextField(blank=True) #List of path to the images that the person with profile_id = roll_no has uploaded
+
+    def __unicode__(self):
+        return str(self.profile.user.username)
+
 
 class IITGExperience(models.Model):
     """
@@ -218,6 +224,7 @@ class News(models.Model):
 class NewsImage(models.Model):
     news = models.ForeignKey(News, related_name='images')
     image = models.ImageField(upload_to=get_image_path)
+
 class Post(models.Model):
     """
     Denotes a General Class for News and Blog posts.
@@ -229,7 +236,7 @@ class Post(models.Model):
     heading = models.CharField(max_length=128)
     content = models.TextField()
     image = models.ImageField(blank=True, null=True, upload_to=get_image_path)
-    recent = models.ForeignKey(Recent, blank=True, related_name='posts')
+    recent = models.ForeignKey(Recent, null=True, blank=True, related_name='posts')
 
     class Meta:
         ordering = ['-timestamp']

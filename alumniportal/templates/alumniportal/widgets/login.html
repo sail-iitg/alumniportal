@@ -38,7 +38,9 @@
         {% if request.user.is_authenticated %}
           <div class="row">
             <div class="well">
-                            <p>Welcome {{ request.user.username }}</p>
+                            <p>Welcome {{ request.user.username }}<br>
+                            <a href="/edit-profile/">Improve your Profile</a>
+                            </p>
                               <a href='/login/logout/' class="btn btn-default btn-block" >Logout</a>
                               
                           </form>

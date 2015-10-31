@@ -27,7 +27,11 @@
 				                <div class="panel-body">
 									<div class="col-md-12 form-group">
 								 		<div class="label-container col-md-4">
+
 									 		<label for="name">Name :</label>
+
+									 		<label for="name">Name</label>
+
 										</div>
 								 		<div class="form-element-container col-md-8">
 									 		<input type="text" class="form-control" name="name" id="name">
@@ -35,7 +39,11 @@
 									</div>
 									<div class="col-md-12 form-group ">
 								 		<div class="label-container col-md-4">
+
 									 		<label for="city">City :</label>
+
+									 		<label for="city">City</label>
+
 										</div>
 								 		<div class="form-element-container col-md-8">
 									 		<input type="text" class="form-control" name="city" id="city">
@@ -43,7 +51,11 @@
 									</div>
 									<div class="col-md-12 form-group">
 								 		<div class="label-container col-md-4">
+
 									 		<label for="country">Country :</label>
+
+									 		<label for="country">Country</label>
+
 										</div>
 								 		<div class="form-element-container col-md-8">
 									 		<input type="text" class="form-control" name="country" id="country">
@@ -52,8 +64,13 @@
 									<div class="col-md-12 form-group">
 											<div class="form-radio-container col-md-12">
 										 		<div class="row">
+
 										 			<label class="control-label col-md-4" for="radios">Gender : </label>
 										 			<div class="wrapper-search col-md-8" id="wrapper_clear">   
+
+										 			<label class="label-container col-md-4" for="gender">Gender</label>
+										 			<div class="form-element container col-md-8" id="wrapper_clear">   
+
 												    <label for="gender-m" class="col-md-6">
 												      <input type="radio" name="gender" id="gender-m" value="m">
 													      <label class="form-radio-option-label">Male</label>
@@ -69,11 +86,21 @@
 									<div class="col-md-12 row form-group">
 										<div class="form-container">
 									        <label for="select-hostel">Select Hostel:</label>
+
 										        <select class="form-control" id="select-hostel">
 											        {% for hostel in hostels %}
 											        <option value="{{hostel.0}}">{{hostel.1}}</option>
 											        {% endfor %}
 										        </select>
+
+										 		<input list="select-hostel" name="hostel" type="text" class="form-control" placeholder="Hostel in IITG">
+
+										        <datalist id="select-hostel" size="3">
+											        {% for hostel in hostels %}
+											        <option value="{{hostel.0}}">{{hostel.1}}</option>
+											        {% endfor %}
+										        </datalist>
+
 										</div>	
 									</div>
 									
@@ -103,18 +130,31 @@
 									<div class="col-md-12 row form-group">
 										<div class="form-container">
 									        <label for="select-major">Select Majors:</label>
+
 										        <select class="form-control" id="select-major">
 											        {% for major in majors %}
 											        <option value="{{major.0}}">{{major.1}}</option>
 											        {% endfor %}
 										        </select>
+
+										        <input list="depts" name="department" type="text" class="form-control" placeholder="Department/Major">
+										 		<datalist id="depts" size="10"> 
+										 		{% for major in majors %}
+										 			<option value="{{major.0}}">{{major.1}}</option>
+										 		{% endfor %}
+										 		</datalist>
+
 										</div>	
 									</div>
 									<h5>Other Degree :</h5>
 									<div class="col-md-12 row form-group">
 								 		<div class="form-container">
 									 		<label class="control-label" for="datalist-batch">Institue Name :</label>
+
 										 		<input type="text" class="form-control" placeholder="Name of Institute">
+
+										 		<input type="text" name="institute" class="form-control" placeholder="Name of Institute">
+
 										</div>
 									</div>
 				                </div>
@@ -128,11 +168,56 @@
 					      		
 </div>
 </div>
-<div class="col-md-8">
+</div>
+<div class="col-md-8" style="padding:0px;">
+<div class="col-md-12" style="padding:0px;">
+<div class="profile-tiles-container">
+	{% for profile in profiles%}
 	
-	
-	
-	<table id="searchtable" class="display" cellspacing="0" width="100%">
+	<div class="col-md-4 " style="margin-bottom:10px;" >
+                <div class="row ">
+                  <div class="col-md-12 col-element profile-tiles" >
+                    <img {% if profile.image %} src="{{profile.image.url}}" {% endif %} width="150" height="150" >
+
+                    <h4><a>{{profile.name}}</a></h4>
+                    <div>Age : {{profile.age}}</div>
+					<div>Gender : {{profile.get_gender_display}}</div>
+					<div>Hostel : {{profile.hostel}}</div>
+					<div>City : {{profile.city}}</div>
+                  </div>
+                </div>
+    </div>
+    <div class="col-md-4 " style="margin-bottom:10px;" >
+                <div class="row ">
+                  <div class="col-md-12 col-element profile-tiles" >
+                    <img {% if profile.image %} src="{{profile.image.url}}" {% endif %} width="150" height="150" >
+
+                    <h4><a>{{profile.name}}</a></h4>
+                    <div>Age : {{profile.age}}</div>
+					<div>Gender : {{profile.get_gender_display}}</div>
+					<div>Hostel : {{profile.hostel}}</div>
+					<div>City : {{profile.city}}</div>
+                  </div>
+                </div>
+    </div>
+    <div class="col-md-4 " style="margin-bottom:10px;" >
+                <div class="row ">
+                  <div class="col-md-12 col-element profile-tiles" >
+                    <img {% if profile.image %} src="{{profile.image.url}}" {% endif %} width="150" height="150" >
+
+                    <h4><a>{{profile.name}}</a></h4>
+                    <div>Age : {{profile.age}}</div>
+					<div>Gender : {{profile.get_gender_display}}</div>
+					<div>Hostel : {{profile.hostel}}</div>
+					<div>City : {{profile.city}}</div>
+                  </div>
+                </div>
+    </div>
+
+	{% endfor %}
+</div>
+
+	<!-- <table id="searchtable" class="display" cellspacing="0" width="100%">
 		<thead>
 			<tr>
 				<th>Name</th>
@@ -155,8 +240,10 @@
 			{% endfor %}
 			
 		</tbody>
-	</table>
+	</table> -->
 </div>
+</div>
+
 <script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
 <script type="text/javascript">
 	$("#searchtable").DataTable();

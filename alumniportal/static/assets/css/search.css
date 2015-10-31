@@ -40,6 +40,19 @@
 	display:block;
 	float:left;
 }
+.profile-tiles-container{
+	margin-top:10px;
+}
+.profile-tiles{
+	background-color:#F0F0F0;
+	border-radius: 3px;
+    border: 1px solid #D0D0D0;
+    padding:10px 0px;
+}
+.profile-tiles img{
+	padding:0px 8px;
+	width:120px;
+}
 
 /*#adv_search_button{
 	display:block;

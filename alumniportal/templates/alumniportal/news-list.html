@@ -12,8 +12,12 @@
             </div>
             <div class="row " >
               <div class="col-md-12 col-left news-container" >
-                <h3 class='column-header news-header'>{{item_type}} <a href="" class='column-addbutton'>(add)</a></h3>
-                
+                <h3 class='column-header news-header'>
+                  {{item_type}}
+                  {% if is_admin %}
+                    <a href="/add/news/" class='column-addbutton'>(add)</a>
+                  {% endif %}
+                </h3>
                 <!-- This is a template news row -->
                 {% for item in items %}
                 <div class="row news-row">
@@ -23,10 +27,10 @@
                     <div class="teaser-container">
                       <a class="news-topic-teaser" href="/{{class_type}}/{{item.get_post_type_display}}{{item.get_achievement_type_display}}">{{item.get_post_type_display}}{{item.get_achievement_type_display}}</a>
                     </div>
-                    <h4><a>{{item.heading}}{{item.achievement}}</a></h4>
+                    <h4><a href="/{{ item.id }}/news/">{{item.heading}}{{item.achievement}}</a></h4>
                     <div class="news-date">{{item.timestamp}}{{item.year}}</div>
                     <p class="col-elem-data">
-                      {{item.content}}{{item.description}} 
+                      {% autoescape off %} {{item.content}}{{item.description}} {% endautoescape %}
                     </p>
                   </div>
                 </div>

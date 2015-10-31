@@ -23,7 +23,7 @@ class EditProfileForm(forms.ModelForm):
     """
     Form for alumnus to edit profile
     """
-    date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+    date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime":False}))
 
     class Meta:
         model = models.Profile
@@ -86,7 +86,7 @@ class AddActivityForm(forms.ModelForm):
     Form to create a new Activity
     """
     files = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5, required=False)
-    end_date = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY", "pickTime":False}))
+    end_date = forms.DateTimeField(widget=DateTimePicker(options={"format": "DD-MM-YYYY HH:MM:SS", "pickSeconds":False}))
 
     class Meta:
         model = models.Activity
@@ -205,7 +205,7 @@ class EducationFormSetHelper(FormHelper):
         self.layout = Layout(
             Div( 
                 'degree',
-                Field('institute', value="IIT Guwahati" , css_class="disable_institute", disabled='true'),
+                Field('institute', value="Indian Institute of Technology Guwahati"),
                 Field('in_iitg', checked=True),
                 'start_year',
                 'end_year',
@@ -440,7 +440,7 @@ class AddNewsForm(forms.ModelForm):
 
     class Meta:
         model = models.News
-        exclude = ('timestamp', 'image', 'recent')
+        exclude = ('timestamp', 'recent')
 
     def __init__(self, *args, **kwargs):
         super(AddNewsForm, self).__init__(*args, **kwargs)
@@ -458,5 +458,35 @@ class AddNewsForm(forms.ModelForm):
             'post_type',
             'heading',
             'content',
+            'image',
+            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+        )
+
+
+class AddPostForm(forms.ModelForm):
+    """
+    Form for users to add posts to their blogs
+    """
+
+    class Meta:
+        model = models.Post
+        exclude = ('blog', 'timestamp', 'recent')
+
+    def __init__(self, *args, **kwargs):
+        super(AddPostForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.error_messages = {'required':''}
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_add_post_form'
+        self.helper.form_class = 'form-horizontal col-md-12'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-10'
+        self.helper.form_method = 'post'
+        self.helper.form_action = '/add/post/'
+        self.helper.layout = Layout(
+            'heading',
+            'content',
+            'image',
             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
         )

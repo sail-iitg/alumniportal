@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block items  %}
+{% load staticfiles %}
+          <div class="col-md-9 main-content" >
+            <div class="row " >
+              <div class="col-md-12 col-left news-container" >
+                <h3 class='column-header news-header'>Blog
+                  {% if is_editor %}
+                    <a href="/add/post/" class='column-addbutton'>(add post)</a>
+                  {% endif %}
+                </h3>
+                <!-- This is a template news row -->
+                {% for post in posts %}
+                <div class="row news-row">
+                  <div class="col-md-12 col-element" >
+                    <img {% if post.image %} src="{{ post.image.url }}" {% endif %} width="150" height="150">
+                    <h4><a href="/{{ post.id }}/post/">{{post.heading}}</a></h4>
+                    <div class="post-date">{{ post.timestamp }}</div>
+                    <p class="col-elem-data">
+                      {% autoescape off %} {{ post.content }} {% endautoescape %}
+                    </p>
+                  </div>
+                </div>
+                {% endfor %}
+                <!-- News row end -->
+
+          </div>
+         
+
+          </div>
+
+          </div>
+         
+{% endblock %}

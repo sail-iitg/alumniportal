@@ -6,6 +6,9 @@
 	<!-- Title of page to be added dynamically -->	
 	<title></title>
 	{% load staticfiles %}
+	<!-- JQuery Loaded first -->
+	<script src="{% static 'assets/js/jquery.min.js' %}"></script>
+	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
 	<!-- CSS files to be added dynamically or load all -->
 	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}"> <!--  -->
 	<link rel="stylesheet" href="{% static 'assets/css/main-body.css' %}"> <!--  -->
@@ -18,17 +21,17 @@
 	<link rel="stylesheet" href="{% static 'assets/css/profile1.css' %}"> <!--  -->
 	<link rel="stylesheet" href="{% static 'assets/css/search.css' %}"> <!--  -->
 	<link rel="stylesheet" href="{% static 'assets/css/sidebar.css' %}"> <!--  -->
-	<!-- JQuery Loaded first -->
-	<script src="{% static 'assets/js/jquery.min.js' %}"></script>
 
 
 </head>
 <body>
 	<!-- Same header across all pages -->
-	<header class="header-basic">
+	<header >
+		<div class="header-basic">
 			<div class="header-title">
 				<h1><a href="/">Alumni</a></h1>
 			</div>
+		</div>
 			<!-- Navigation bar -->
 			<div class="header-limiter navbar">
 				<div class="navbar-inner">
@@ -84,6 +87,10 @@
 	          	{% block add-news %}{% endblock %}
 	          {% elif page == "news-detail" %}
 	          	{% block news-detail %}{% endblock %}
+	          {% elif page == "add-post" %}
+	          	{% block add-post %}{% endblock %}
+	          {% elif page == "post-detail" %}
+	          	{% block post-detail %}{% endblock %}
 	          {% endif %}
         
          	  <!--  End Main Content-->
@@ -93,7 +100,6 @@
 	          <div class="col-md-3 sidebar" >
 	          <!--  Widget - add the block (complete contents of file) here -->
               {% include "widgets/login.html" %}
-              {% include "widgets/question.html" %}
               {% include "widgets/twitter.html" %}
 			  <!--  End Widget-->
 	          </div>
@@ -165,7 +171,6 @@
 
 	<!-- Scripts -->
 	
-	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
 	
 </body>
 </html>
