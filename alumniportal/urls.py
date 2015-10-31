@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^edit-profile/professional/current/$', forms_views.current , name='current'),
 
     url(r'^edit-profile/education/$', forms_views.edit_education , name='edit-education'),
+    url(r'^edit-profile/education/current/$', forms_views.current , name='current'),
     url(r'^edit-profile/achievement/$', forms_views.edit_achievement , name='edit-achievement'),
     url(r'^edit-profile/iitg/$', forms_views.edit_iitg , name='edit-iitg'),
     url(r'^edit-profile/project/$', forms_views.edit_project , name='edit-project'),
