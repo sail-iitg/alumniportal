@@ -56,7 +56,11 @@ def activity_items(request, item_type):
     return HttpResponseRedirect('/activity')
 
 def community(request):
-    return render(request,'alumniportal/communities.html', {'page': 'community'})
+    post = models.Post.objects.first()
+    return render(request,'alumniportal/communities.html', {
+        'page': 'community',
+        'post':post,
+        })
 
 def news(request):
     admin_posts = models.News.objects

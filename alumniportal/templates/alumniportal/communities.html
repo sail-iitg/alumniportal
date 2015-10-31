@@ -13,6 +13,102 @@
             
           
           <div class="row">
+              <div class="col-md-6 col-left" >
+                <h3 class='column-header'>IITG Connect</h3>
+                <div class="row">
+                  <div class="col-md-12 col-element" >
+                    <img width="150" height="150" >
+                    <h4><a></a></h4>
+                    <p class="col-elem-data">
+                      
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="/news/research">Lets revive memories...</a>
+                  </div>
+                </div>
+
+
+            </div>
+              
+            <div class="col-md-6 right" >
+                <h3 class='column-header'>Classes, Clubs, Groups</h3>
+                <div class="row">
+                  <div class="col-md-12 col-element" >
+                    <img {% if activity.image %} src="{{activity.image.url}}" {% endif %} alt="{{activity.activity_type}}" width="150" height="150" >
+
+                    <h4><a>{{activity.name}}</a></h4>
+                    <p class="col-elem-data">
+                      {{activity.created}}<br>Coming Soon
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="/activity/all">Coming Soon...</a>
+                  </div>
+                </div>
+
+
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-md-6 col-left" >
+              <h3 class='column-header'>Make a donation</h3>
+                <div class="row">
+                  <div class="col-md-12 col-element" >
+                    <img {% if volunteer.image %} src="{{volunteer.image.url}}" {% endif %} alt="{{volunteer.activity_type}}" width="150" height="150" >
+                    <h4><a>{{volunteer.name}}</a></h4>
+                    <p class="col-elem-data">
+                      {{volunteer.created}}<br>Blah Blah Blah ...
+                    </p>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="/activity/all">Let's help each other...</a>
+                  </div>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 right" >
+              <h3 class='column-header'>Community</h3>
+                <div class="row">
+                  <div class="col-md-12 col-element" >
+                    <img {% if post.image %} src="{{post.image.url}}" {% endif %} alt="{{post.heading}}" width="150" height="150" >
+
+                    <h4><a>{{post.heading}}</a></h4>
+                    <p class="col-elem-data">
+                      {{post.content}}
+                    </p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-element">
+                    <a class='column-more' href="/activity/all">More about the community...</a>
+                  </div>
+                </div>
+            </div>
+          </div>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+          <div class="row">
               <div class="col-md-12 col-left activities-container" >
               <h3 class='column-header activities-header'>Technical <a href="" class='column-addbutton'>(add)</a></h3>
                 <div class="row activities-row">

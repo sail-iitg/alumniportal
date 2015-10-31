@@ -16,8 +16,8 @@
                 
                 <!-- This is a template news row -->
                 {% for item in items %}
-                <div class="row news-row">
-                  <div class="col-md-12 col-element" >
+                
+                  <div class="col-md-6 col-element" >
                     <img 
                     {% if item.image %} 
                       src="{{item.image.url}}" 
@@ -35,7 +35,6 @@
                       {{item.purpose}} 
                     </p>
                   </div>
-                </div>
                 {% endfor %}
                 <!-- News row end -->
 
