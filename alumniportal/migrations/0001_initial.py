@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import migrations, models
+from django.db import models, migrations
 import alumniportal.models
 import ckeditor.fields
 from django.conf import settings
@@ -88,7 +88,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('degree', models.CharField(max_length=40, choices=[(b'B. Tech', b'B.Tech.'), (b'M. Tech', b'M.Tech.'), (b'B. Des', b'B.Des.'), (b'Ph.D.', b'Ph.D.'), (b'Other', b'Other')])),
                 ('institute', models.CharField(max_length=100)),
-                ('in_iitg', models.BooleanField()),
                 ('start_year', models.IntegerField(null=True)),
                 ('end_year', models.IntegerField(null=True, blank=True)),
                 ('department', models.CharField(max_length=50, choices=[(b'bt', b'Biotechnology [BT]'), (b'cl', b'Chemical [CL]'), (b'che', b'Chemistry [CHE]'), (b'ce', b'Civil [CE]'), (b'cse', b'Computer Science [CSE]'), (b'ds', b'Design [DD]'), (b'eee', b'Electrical [EEE]'), (b'ece', b'Electronics [ECE]'), (b'hss', b'Humanities &amp; Social Sciences [HSS]'), (b'ma', b'Mathematics [MA]'), (b'me', b'Mechanical [ME]'), (b'ep', b'Physics [EP]'), (b'cfe', b'Centre for Energy'), (b'cfte', b'Centre for the Environment'), (b'cnt', b'Centre for Nanotechnology'), (b'o', b'Other')])),
@@ -156,9 +155,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('profile_type', models.CharField(blank=True, max_length=16, choices=[(b'is_alumni', b'Alumni'), (b'is_stud', b'Current Student'), (b'is_prof', b'Professor')])),
                 ('roll_no', models.IntegerField(unique=True, serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=50, blank=True)),
+                ('name', models.CharField(max_length=50)),
                 ('gender', models.CharField(blank=True, max_length=7, choices=[(b'm', b'Male'), (b'f', b'Female'), (b'o', b'Other')])),
-                ('date_of_birth', models.DateField(null=True, blank=True)),
+                ('date_of_birth', models.DateTimeField(null=True, blank=True)),
                 ('current_address', models.TextField(blank=True)),
                 ('city', models.CharField(max_length=32, blank=True)),
                 ('country', models.CharField(max_length=32, blank=True)),
@@ -209,7 +208,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='post',
             name='recent',
-            field=models.ForeignKey(related_name='posts', blank=True, to='alumniportal.Recent'),
+            field=models.ForeignKey(related_name='posts', blank=True, to='alumniportal.Recent', null=True),
         ),
         migrations.AddField(
             model_name='news',

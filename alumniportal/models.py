@@ -4,13 +4,12 @@ from ckeditor.fields import RichTextField
 from constants import *
 import os
 from time import strftime
-from institutes import *
 # from datetime import datetime
 # Create your models here.
 # mydict = {
 #     "Blog" : os.path.join('profile_picture', str(instance.profile.roll_no), filename),
 #     "Post" : os.path.join('posts', instance.blog.profile.user.username, instance.timestamp, filename),
-#     "Activity" : os.path.join('activity',instance.activity_type, instance.name, str(instance.created), filename), 
+#     "Activity" : os.path.join('activity',instance.activity_type, instance.name, str(instance.created), filename),
 #     "News"  : os.path.join('news',instance.timestamp, filename),
 #     }
 # datetime_dir = strftime("%Y%m%d_%H%M%S")
@@ -36,7 +35,7 @@ class Profile(models.Model):
     # past_jobs_id = models.TextField()   #List of Row IDs of the job objects
     current_address = models.TextField(blank=True)    #Complete Address
     city = models.CharField(max_length=32, blank=True)  #City currently living in. Useful to filter people on the basis of the city
-    country = models.CharField(max_length=32, blank=True)   #Country currently living in. Useful to filter people on the basis of the country 
+    country = models.CharField(max_length=32, blank=True)   #Country currently living in. Useful to filter people on the basis of the country
     nationality = models.CharField(max_length=32, blank=True)   #Nationality of the person
     alternate_email = models.EmailField(blank=True)   #Alternate EmailID (Non IITG)
     # IITG_degrees_id = models.TextField()    #List of education objects with in_iitg=True and profile_id = self.roll_no
@@ -70,7 +69,7 @@ class Blog(models.Model):
     # TODO: Shift profile_picture to Profile model instead of Blog
     profile_picture = models.ImageField(blank=True, null=True, upload_to=get_image_path)   #Profile Picture of the person
     videos = models.TextField(blank=True) #List of path to the videos that the person with profile_id = roll_no has uploaded
-    # posts = models.TextField(blank=True)      #List of lists. [["TimeStamp", "Header of Post", "Content"]]. It will be updated from the end. 
+    # posts = models.TextField(blank=True)      #List of lists. [["TimeStamp", "Header of Post", "Content"]]. It will be updated from the end.
     about_me = models.TextField(blank=True)   #About me
     interests = models.TextField(blank=True)  #Interests/Hobbies
     message_to_the_world = models.TextField(blank=True)   #What the person wants to say to the world
@@ -125,7 +124,7 @@ class Achievement(models.Model):
 
     class Meta:
         ordering = ['-year']
-        # order_with_respect_to = 'recent'   
+        # order_with_respect_to = 'recent'
 
 class Education(models.Model):
     """
@@ -133,7 +132,7 @@ class Education(models.Model):
     """
     profile = models.ForeignKey(Profile, blank=True, related_name='educations')  #roll_no referring to the person to which the education object belongs
     degree = models.CharField(max_length=40, choices=PROGRAMS)  #Name of the degree
-    institute = models.CharField(max_length=100, choices = INSTITUTES)    #Name of the institute
+    institute = models.CharField(max_length=100)
     start_year = models.IntegerField(null=True) #Start Year of the education
     end_year = models.IntegerField(blank=True, null=True)   #PassOut Year of the education
     department = models.CharField(max_length=50, choices=DEPARTMENTS) #
@@ -173,7 +172,7 @@ class Activity(models.Model):
     Includes volunteering activities as well as any meet or event, survey, project floated.
     """
     profile = models.ForeignKey(Profile, related_name='activities', blank=True)
-    activity_type = models.CharField(max_length=32, choices=ACTIVITY_TYPE)  
+    activity_type = models.CharField(max_length=32, choices=ACTIVITY_TYPE)
     name = models.CharField(max_length=32)  #Name of the Voluteer Activity being proposed
     purpose = models.CharField(max_length=128)  #Purpose of the activity eg. Welfare of society, CrowdSourcing, Survey
     image = models.ImageField(upload_to=get_image_path)
@@ -181,7 +180,7 @@ class Activity(models.Model):
     end_date = models.DateTimeField(blank=True, null=True)   #
     requirement = models.TextField(blank=True)    #Requirements if any
     description = models.TextField(blank=True)    #Short summary of the activity. How to be performed etc
-    peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved. 
+    peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved.
     recent = models.ForeignKey(Recent, blank=True, null=True, related_name='activities')
 
     def __unicode__(self):
@@ -219,8 +218,8 @@ class News(models.Model):
         ordering = ['-timestamp']
         # order_with_respect_to = 'recent'
     def __unicode__(self):
-        return str(self.post_type + " " + str(self.timestamp))    
-      
+        return str(self.post_type + " " + str(self.timestamp))
+
 class NewsImage(models.Model):
     news = models.ForeignKey(News, related_name='images')
     image = models.ImageField(upload_to=get_image_path)
@@ -228,7 +227,7 @@ class NewsImage(models.Model):
 class Post(models.Model):
     """
     Denotes a General Class for News and Blog posts.
-    Admin if uses post_type other than 'B' are considered as news. 'R' categorised as Research News and so on. 
+    Admin if uses post_type other than 'B' are considered as news. 'R' categorised as Research News and so on.
     If post_type = 'B' then they re individual BLOGS.
     """
     blog = models.ForeignKey(Blog)
