@@ -5,7 +5,7 @@
         {% load crispy_forms_tags %}
         <div class="col-md-9 main-content" >
             <div class="panel panel-default">
-                <div class="panel-heading profile-panel-heading"> 
+                <div class="panel-heading profile-panel-heading">
                     <h3>Edit Profile</h3>
                     <ul class="list-inline">
                       <li><a href="/profile">View all profile data</a></li>
@@ -13,12 +13,12 @@
                       <li><a href="/{{ profile.user.username }}/blog/">Blog</a></li>
                       <li>|</li>
                       <li><a href="#">Change Password</a></li>
-                      
+
                     </ul>
-                    
+
                 </div>
-                <div class="panel-body">    
-                    
+                <div class="panel-body">
+
                       {% if messages %}
                       <div class="messages">
                           {% for message in messages %}
@@ -31,31 +31,7 @@
                           {% endfor %}
                       </div>
                     {% endif %}
-                    
-                    <!-- EDITED!!!!! -->
-                    <div class="col-md-10">
-                      <form method="post" action="current/">
-                      {% csrf_token %}
-                      <!-- Current Job and Education Implementation -->
-                      <!-- Still in Progress  -->
-                      {% if profile == "professional" and current_job %}
-                      <h3>Currently working in {{current_job.company}} since {{current_job.start_date}}</h3>
-                      {% endif %}
-                      {% if profile == "education" and current_education %}
-                      <h3>Currently studying in {{current_education.institute}} in {{current_education.deparment}}</h3>
-                      {% endif %}
-                      <hr>
-                      {% if profile == "professional" or profile == "education" %}
-                        <h4>Choose from the list your current Job or Education</h4>
-                        <select name="current">
-                        {% for current in currents %}
-                            <option value="{{current.id}}">{{current.company}}{{current.institute}} {{current.start_date}}{{current.start_year}}</option>
-                        {% endfor %}
-                        </select>
-                      <button type="submit">Save Changes</button>
-                      {% endif %}
-                      </form>
-                   
+
                     <!-- Implementation for Current Jo and Education ends here -->
                       <ul class="nav nav-tabs profile-tabs">
                         <li><a  href="/edit-profile/personal">Personal</a></li>
@@ -68,25 +44,25 @@
                     </div>
                     <div class="tab-content">
 
-                    
+
                     {% if profile == "iitg" %}
                       <div id="tab-iitg" class="tab-pane fade in active profile-iitg">
                         {% crispy formset helper%}
                       </div>
-                    
+
                     {% elif profile == "project" %}
                       <div id="tab-project" class="tab-pane fade in active profile-project">
                         {% crispy formset helper %}
                       </div>
                     {% elif profile == "personal" %}
                       <div id="tab-personal" class="tab-pane fade in active profile-personal">
-                        {% crispy form form.helper %} 
+                        {% crispy form form.helper %}
                       </div>
                     {% elif profile == "education" %}
                       <div id="tab-education" class="tab-pane fade in active profile-education">
                          {% crispy formset helper %}
                       </div>
-                    {% elif profile == "achievement" %} 
+                    {% elif profile == "achievement" %}
                       <div id="tab-achievement" class="tab-pane fade in active profile-achievement">
                         {% crispy formset helper %}
                       </div>
@@ -96,8 +72,42 @@
                       </div>
                     {% else %}
                     {% endif %}
-                    </div>     
-                </div>  
+
+                    <!-- Form for selecting current job/education -->
+                    {% if currents %}
+                      <div class="col-md-10">
+                        <form method="post" action="current/" class="form-inline">
+                          {% csrf_token %}
+                          {% if profile == "professional" %}
+                          <hr><h4>Choose your current job</h4>
+                          <div class="form-group">
+                            <select name="current" id="current" class="form-control">
+                              {% for current in currents %}
+                                <option value="{{ current.id }}">{{ current.company }} {{ current.start_date }}{{ current.start_year }}
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <div class="btn-group">
+                            <button type="submit" class="btn">Save Changes</button>
+                          </div>
+
+                          {% elif profile == "education" %}
+                          <hr><h4>Choose your current job</h4>
+                          <div class="form-group">
+                            <select name="current" id="current" class="form-control">
+                              {% for current in currents %}
+                                <option value="{{ current.id }}">{{ current.institute }} {{ current.start_date }}{{ current.start_year }}
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <div class="btn-group">
+                            <button type="submit" class="btn">Save Changes</button>
+                          </div>
+                          {% endif %}
+                        </form>
+                      </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         <script type="text/javascript">
@@ -107,7 +117,7 @@
           if("{{profile}}"=="iitg"){
             $("#tab-iitg").addClass("active")
             $('a[href="/edit-profile/iitg"]').parent('li').addClass("active")
-            
+
           }else if("{{profile}}"=="project"){
             $("#tab-project").addClass("active")
             $('a[href="/edit-profile/project"]').parent('li').addClass("active")
@@ -144,7 +154,7 @@
               $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title" style="width:600px"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
               }
             });
-            
+
             // $('.checkboxinput').click(function(){
             //   $(this).closest(".panel-body").find(".disable_institute").attr('disabled',this.checked);
             //   if(this.checked){
@@ -153,7 +163,7 @@
             //     $(this).closest(".panel-body").find(".disable_institute").val("")
             //   }
             // });
-            
+
             //$('.checkboxinput').attr('checked') = true
         });
         </script>
