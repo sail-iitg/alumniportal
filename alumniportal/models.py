@@ -25,35 +25,33 @@ def get_image_path(instance, filename):
 
 class Profile(models.Model):
     profile_type = models.CharField(max_length=16, choices=PROFILE_TYPE, blank=True)
+    # Personal
     user = models.OneToOneField(User, blank=True)  #webmail ID of the person (it acts as the username)
-    roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
     name = models.CharField(max_length=50)  #Full Name with the designation
     gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
     date_of_birth = models.DateTimeField(blank=True, null=True)  #Date of Birth
-    current_job = models.OneToOneField('Job', blank=True, null=True, related_name='current_job')   #Row ID of the job object currently doing
-    current_education = models.OneToOneField('Education', blank=True, null =True, related_name='current_education')
-    # past_jobs_id = models.TextField()   #List of Row IDs of the job objects
+    alternate_email = models.EmailField(blank=True)   #Alternate EmailID (Non IITG)
+    hostel = models.CharField(max_length=15, choices=HOSTELS, blank=True)    #Name of the hostel
+    room_no = models.CharField(max_length=10, blank=True)    #Room No. of that person while living in IITG
+    roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
+    batch = models.CharField(max_length=16, choices=PASS_OUT_YEARS)  #Batch (Pass Out Year) of the person
+    department = models.CharField(max_length=25, choices=DEPARTMENTS, blank=True)    #Department in which he was in IITG
+    # Contact
+    home_contact_no = models.CharField(max_length=15, blank=True)   #Home Contact No.
+    work_contact_no = models.CharField(max_length=15, blank=True)   #Work Contact No.
     current_address = models.TextField(blank=True)    #Complete Address
     city = models.CharField(max_length=32, blank=True)  #City currently living in. Useful to filter people on the basis of the city
     country = models.CharField(max_length=32, blank=True)   #Country currently living in. Useful to filter people on the basis of the country
     nationality = models.CharField(max_length=32, blank=True)   #Nationality of the person
-    alternate_email = models.EmailField(blank=True)   #Alternate EmailID (Non IITG)
-    # IITG_degrees_id = models.TextField()    #List of education objects with in_iitg=True and profile_id = self.roll_no
-    # NonIITG_degrees_id = models.TextField() #List of education objects with in_iitg=False and profile_id = self.roll_no
+    # Social
     google_link = models.URLField(blank=True) #Google Plus Profile link
     linkedin_link = models.URLField(blank=True)   #LinkedIn Profile Link
     facebook_link = models.URLField(blank=True)   #Facebook Profile Link
     github_link = models.URLField(blank=True) #Github Repo Link
     twitter_link = models.URLField(blank=True)    #Twitter Profile Link
-    home_contact_no = models.CharField(max_length=15, blank=True)   #Home Contact No.
-    work_contact_no = models.CharField(max_length=15, blank=True)   #Work Contact No.
-    # projects_id = models.TextField()    #List of Project IDs that the person has done
-    # achievements_id = models.TextField()    #List of Achievement IDs for that person
-    # IITG_experiences_id = models.TextField()    #List of Experience IDs for that person
-    hostel = models.CharField(max_length=15, choices=HOSTELS, blank=True)    #Name of the hostel
-    room_no = models.CharField(max_length=10, blank=True)    #Room No. of that person while living in IITG
-    batch = models.CharField(max_length=16, choices=PASS_OUT_YEARS)  #Batch (Pass Out Year) of the person
-    department = models.CharField(max_length=25, choices=DEPARTMENTS, blank=True)    #Department in which he was in IITG
+
+    current_job = models.OneToOneField('Job', blank=True, null=True, related_name='current_job')   #Row ID of the job object currently doing
+    current_education = models.OneToOneField('Education', blank=True, null =True, related_name='current_education')
 
     def __unicode__(self):
         return str(self.user.username)

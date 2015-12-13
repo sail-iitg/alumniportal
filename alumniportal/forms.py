@@ -52,7 +52,7 @@ class EditProfileForm(forms.ModelForm):
         self.helper.layout = Layout(
             Accordion(
                 AccordionGroup('Personal',
-                    'name', 
+                    'name',
                     'gender',
                     'date_of_birth',
                     'alternate_email',
@@ -64,7 +64,7 @@ class EditProfileForm(forms.ModelForm):
                 AccordionGroup('Contact',
                     'home_contact_no',
                     'work_contact_no',
-                    'current_address', 
+                    'current_address',
                     'city',
                     'country',
                     'nationality',
@@ -72,7 +72,7 @@ class EditProfileForm(forms.ModelForm):
                 AccordionGroup('Social',
                     'google_link',
                     'linkedin_link',
-                    'facebook_link', 
+                    'facebook_link',
                     'github_link',
                     'twitter_link',
                 ),
@@ -121,7 +121,7 @@ class BlogDetailsEdit(forms.ModelForm):
     """
     images_field = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5)
     videos_field = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5)
-    
+
     class Meta:
         model = models.Blog
         exclude = ('profile','videos','images','recent')
@@ -159,7 +159,7 @@ class IITGExperienceFormSetHelper(FormHelper):
         self.field_class = 'col-md-9'
         self.form_method = 'post'
         self.layout = Layout(
-            Div( 
+            Div(
                 'club_name',
                 'experience',
 
@@ -179,7 +179,7 @@ class ProjectFormSetHelper(FormHelper):
         self.field_class = 'col-md-9'
         self.form_method = 'post'
         self.layout = Layout(
-            Div( 
+            Div(
                 'topic',
                 'mentor',
                 'description',
@@ -203,7 +203,7 @@ class EducationFormSetHelper(FormHelper):
         self.form_method = 'post'
 
         self.layout = Layout(
-            Div( 
+            Div(
                 'degree',
                 Field('institute', value="Indian Institute of Technology Guwahati"),
                 'start_year',
@@ -226,7 +226,7 @@ class JobFormSetHelper(FormHelper):
         self.field_class = 'col-md-9'
         self.form_method = 'post'
         self.layout = Layout(
-            Div( 
+            Div(
             'company',
             'position',
             'description',
@@ -249,7 +249,7 @@ class AchievementFormSetHelper(FormHelper):
         self.field_class = 'col-md-9'
         self.form_method = 'post'
         self.layout = Layout(
-            Div( 
+            Div(
             'achievement',
             'achievement_type',
             'year',
@@ -273,7 +273,7 @@ class AchievementFormSetHelper(FormHelper):
 
 #     def __init__(self, *args, **kwargs):
 #         super(EditEducationForm, self).__init__(*args, **kwargs)
-       
+
 #         for field in self.fields.values():
 #             field.error_messages = {'required':''}
 #         self.helper = FormHelper()
@@ -307,7 +307,7 @@ class AchievementFormSetHelper(FormHelper):
 
 #     def __init__(self, *args, **kwargs):
 #         super(EditIITGExperienceForm, self).__init__(*args, **kwargs)
-       
+
 #         for field in self.fields.values():
 #             field.error_messages = {'required':''}
 #         self.helper = FormHelper()
@@ -335,7 +335,7 @@ class AchievementFormSetHelper(FormHelper):
 
 #     def __init__(self, *args, **kwargs):
 #         super(EditProjectForm, self).__init__(*args, **kwargs)
-       
+
 #         for field in self.fields.values():
 #             field.error_messages = {'required':''}
 #         self.helper = FormHelper()
@@ -367,7 +367,7 @@ class AchievementFormSetHelper(FormHelper):
 
 #     def __init__(self, *args, **kwargs):
 #         super(EditAchievementForm, self).__init__(*args, **kwargs)
-       
+
 #         for field in self.fields.values():
 #             field.error_messages = {'required':''}
 #         self.helper = FormHelper()
@@ -378,7 +378,7 @@ class AchievementFormSetHelper(FormHelper):
 #         self.helper.form_method = 'post'
 #         self.helper.form_action = '/edit-profile/'
 #         self.helper.layout = Layout(
-            
+
 #             'achievement',
 #             'achievement_type',
 #             'year',
@@ -400,7 +400,7 @@ class AchievementFormSetHelper(FormHelper):
 
 #     def __init__(self, *args, **kwargs):
 #         super(EditJobForm, self).__init__(*args, **kwargs)
-       
+
 #         for field in self.fields.values():
 #             field.error_messages = {'required':''}
 #         self.helper = FormHelper()
