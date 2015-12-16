@@ -472,6 +472,7 @@ class AddPostForm(forms.ModelForm):
         exclude = ('blog', 'timestamp', 'recent')
 
     def __init__(self, *args, **kwargs):
+        username = kwargs.pop('username', None)
         super(AddPostForm, self).__init__(*args, **kwargs)
 
         for field in self.fields.values():
@@ -482,7 +483,6 @@ class AddPostForm(forms.ModelForm):
         self.helper.label_class = 'col-md-2'
         self.helper.field_class = 'col-md-10'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/add/post/'
         self.helper.layout = Layout(
             'heading',
             'content',

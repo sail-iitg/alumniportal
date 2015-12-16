@@ -45,7 +45,7 @@ def add_activity(request):
                 tmp[0].save()
             task.recent = tmp[0]
             task.save()
-            
+
             for image in image_list:
                 models.ActivityImage.objects.create(activity=task, image=image).save()
             messages.success(request, 'Activity Created')
@@ -276,7 +276,7 @@ def edit_professional(request):
             'formset':_formset,
             'page':'edit-profile',
             'profile':'professional',
-            'helper':helper, 
+            'helper':helper,
             'currents':jobs,
             'current_job':profile.current_job,
             })
@@ -294,7 +294,7 @@ def edit_achievement(request):
         print("profile doesn't exist")
         messages.error(request,'Please fill your personal details first.')
         return HttpResponseRedirect('/edit-profile/personal')
-    
+
     if profile:
         formset = modelformset_factory(models.Achievement,exclude=('profile','recent',),extra=1 )
         if request.method == "POST":
@@ -389,13 +389,13 @@ def current(request):
 #         IITGExperienceData = [{'club_name': l.club_name, 'experience': l.experience} for l in IITGExperienceObjects]
 #     else:
 #         profile = None
-    
+
 
 #     if request.method == "POST" :
 #         print(request.POST)
 #         if request.POST.get("roll_no"):
 #             if profile:
-                
+
 #                 PersonalForm = forms.EditProfileForm(request.POST, request.FILES, instance=profile)
 
 #                     # print(request.POST.get('form'))
@@ -445,9 +445,9 @@ def current(request):
 #             else :
 #                 print("reached")
 #                 messages.error(request, 'Please enter information in all required(*) fields.')
-                
 
-        
+
+
 #         elif request.POST.get("experience"):
 #             IITGExperience_formset = IITGExperienceFormSet(request.POST,request.FILES)
 
@@ -464,13 +464,13 @@ def current(request):
 #                     task.save()
 #                     print(type(task))
 #                 messages.success(request, 'Experiences saved.')
-                
+
 
 #             else :
 #                 print("reached")
 #                 messages.error(request, 'Please enter information in all required(*) fields.')
-        
-        
+
+
 
 
 #         elif request.POST.get("topic"):
@@ -496,7 +496,7 @@ def current(request):
 #                 year_no = today.isocalendar()[0]
 #                 recent_week= str(models.Recent.objects.latest('week'))[:2]
 #                 recent_year= str(models.Recent.objects.latest('week'))[-4:]
-                
+
 #                 if week_no == recent_week and year_no == recent_year :
 #                     recent= models.Recent.objects.latest('week')
 #                 else :
@@ -532,7 +532,7 @@ def current(request):
 #                 year_no = today.isocalendar()[0]
 #                 recent_week= str(models.Recent.objects.latest('week'))[:2]
 #                 recent_year= str(models.Recent.objects.latest('week'))[-4:]
-                
+
 #                 if week_no == recent_week and year_no == recent_year :
 #                     recent= models.Recent.objects.latest('week')
 #                 else :
@@ -572,7 +572,7 @@ def current(request):
 #                 messages.error(request, 'Please enter information in all required(*) fields.')
 
 
-            
+
 #     if profile:
 #         PersonalForm = forms.EditProfileForm(instance=profile)
 #         try:
@@ -615,7 +615,7 @@ def current(request):
 #         ProjectForm = forms.EditProjectForm()
 #         JobForm = forms.EditJobForm()
 #         AchievementForm=forms.AchievementForm
-       
+
 #     return render(request, 'alumniportal/edit-profile.html',
 #                   {'page': 'edit-profile',
 #                    'PersonalForm': PersonalForm,
@@ -674,26 +674,30 @@ def edit_news(request, news_id):
 
 
 @login_required(login_url='/login/')
-def add_post(request):
+def add_post(request, username):
     """
     Display form for adding blog post and redirect to published post
     """
+    if request.user.username != username:
+        return HttpResponse('You do not have edit access to this blog')
     if request.method == 'POST':
         form = forms.AddPostForm(request.POST, request.FILES)
         if form.is_valid():
             task = form.save(commit=False)
             task.blog = request.user.profile.blog
             task.save()
-            return HttpResponseRedirect('/' + str(task.id) + '/post/')
+            url = '/' + username + '/blog/' + str(task.id) + '/post/'
+            return HttpResponseRedirect(url)
     else:
         form = forms.AddPostForm()
+        form.helper.form_action = '/' + username + '/blog/add/post/'
     return render(request, 'alumniportal/add-post.html',
                   {'page': 'add-post',
                    'form': form})
 
 
 @login_required(login_url='/login/')
-def edit_post(request, post_id):
+def edit_post(request, username, post_id):
     """
     Display form for editing published blog post and redirect to published post
     """
@@ -701,20 +705,19 @@ def edit_post(request, post_id):
         post = models.Post.objects.get(id=post_id)
     except models.Post.DoesNotExist:
         return HttpResponse('Post (id: ' + str(post_id) + ') does not exist.')
-    if post.blog.profile.user != request.user:
+    if post.blog.profile.user != request.user or username != request.user.username:
         return HttpResponse('You do not have edit access to this post.')
 
     if request.method == 'POST':
         form = forms.AddPostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             task = form.save()
-            return HttpResponseRedirect('/' + str(task.id) + '/post/')
+            url = '/' + username + '/blog/' + str(task.id) + '/post/'
+            return HttpResponseRedirect(url)
     else:
         form = forms.AddPostForm(instance=post)
-        form.helper.form_action = '/' + str(post_id) + '/edit/post/'
+        form.helper.form_action = '/' + username + '/blog/' + str(post_id) + '/edit/post/'
         return render(request, 'alumniportal/add-post.html',
                   {'page': 'add-post',
                    'form': form,
                    'edit': True})
-
-

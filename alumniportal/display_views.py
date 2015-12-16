@@ -13,7 +13,7 @@ from constants import *
 
 ####To pass the required recent objects in required numbers
 def get_recent_objects():
-    pass   
+    pass
 
 def home(request):
     research = models.News.objects.filter(post_type = 'R').first()
@@ -49,9 +49,9 @@ def activity_items(request, item_type):
         if a[1]==item_type:
             activities = models.Activity.objects.filter(activity_type=a[0])
             return render(request, 'alumniportal/activity.html', {
-                'page':'activity', 
+                'page':'activity',
                 'items':activities,
-                'item_type':item_type, 
+                'item_type':item_type,
                 })
     return HttpResponseRedirect('/activity')
 
@@ -137,7 +137,7 @@ def search(request):
         print query
         print profiles
     return render(request, 'alumniportal/search.html', {
-        'page':"search", 
+        'page':"search",
         'batches':PASS_OUT_YEARS,
         'majors':DEPARTMENTS,
         'hostels':HOSTELS,
@@ -168,16 +168,20 @@ def blog(request, username):
         'page': 'items',
         'posts': posts,
         'is_editor': (blog.profile.user == request.user),
+        'username': user.username,
         })
 
 @login_required(login_url='/login/')
-def post_detail(request, post_id):
+def post_detail(request, username, post_id):
     post = models.Post.objects.get(id=post_id)
+    if post.blog.profile.user.username != username:
+        return HttpResponse('User post mismatch error. Please report to'
+                            'administrators if this error persists.')
     return render(request, 'alumniportal/post-detail.html', {
         'page': 'post-detail',
         'heading': post.heading,
         'content': post.content,
         'post_id': post.id,
         'is_editor': (post.blog.profile.user == request.user),
+        'username': username,
         })
-

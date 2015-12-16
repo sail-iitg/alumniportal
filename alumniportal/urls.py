@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^activity/add/$', forms_views.add_activity , name='add_activity'),
     url(r'^activity/(?P<item_type>.*)/$', display_views.activity_items),
     # url(r'^activity/(?P<item_type>\b(event|meet|volunteer|survey|project)\b)/$', display_views.activity_items),
-    url(r'^volunteer/$', display_views.volunteer), 
+    url(r'^volunteer/$', display_views.volunteer),
     url(r'^blog/edit/$', forms_views.blog_details_edit , name='blog_details_edit'),
     ##edit end
     url(r'^community/$', display_views.community , name='community'),
@@ -34,7 +34,7 @@ urlpatterns = [
     url(r'^profile/$', display_views.profile , name='profile'),
     url(r'^profile/(?P<profile_id>.*)/$', display_views.view_profile , name='view-profile'),
     url(r'^search/$', display_views.search),
-    
+
     url(r'^edit-profile/personal/$', forms_views.edit_personal , name='edit-personal'),
     url(r'^edit-profile/$', forms_views.edit_personal , name='edit-profile'),
     url(r'^edit-profile/professional/$', forms_views.edit_professional , name='edit-professional'),
@@ -51,10 +51,9 @@ urlpatterns = [
     url(r'^(?P<news_id>\d+)/news/$', display_views.news_detail, name='news-detail'),
 
 
-    url(r'^add/post/$', forms_views.add_post, name='add-post'),
-    url(r'^(?P<post_id>\d+)/edit/post/$', forms_views.edit_post, name='edit-post'),
-    url(r'^(?P<post_id>\d+)/post/$', display_views.post_detail, name='post-detail'),
-
+    url(r'^(?P<username>.+)/blog/add/post/$', forms_views.add_post, name='add-post'),
+    url(r'^(?P<username>.+)/blog/(?P<post_id>\d+)/edit/post/$', forms_views.edit_post, name='edit-post'),
+    url(r'^(?P<username>.+)/blog/(?P<post_id>\d+)/post/$', display_views.post_detail, name='post-detail'),
     url(r'^(?P<username>.+)/blog/$', display_views.blog, name='blog'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
