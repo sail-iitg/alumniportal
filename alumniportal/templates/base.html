@@ -41,7 +41,7 @@
 							<li><a href="/activity/">Activities</a></li>
 							<li><a href="/volunteer">Let's Join Hands</a></li>
 							<li><a href="/community">Community</a></li>
-							{% if request.user.is_authenticated and request.user.username != "admin" %}
+							{% if request.user.is_authenticated and request.user.username != "admin" and not no_profile %}
 							<li><a href="/profile" class="last-header-item">Profile</a></li> {% endif %}
 						</ul>
 					

@@ -161,7 +161,9 @@ def edit_iitg(request):
             'formset':_formset,
             'page':'edit-profile',
             'profile':'iitg',
-            'helper':helper
+            'helper':helper,
+            'username': request.user.username,
+            'no_profile': not profile,
             })
 
 
@@ -202,7 +204,9 @@ def edit_project(request):
             'formset':_formset,
             'page':'edit-profile',
             'profile':'project',
-            'helper':helper
+            'helper':helper,
+            'username': request.user.username,
+            'no_profile': not profile,
             })
 
 
@@ -241,6 +245,8 @@ def edit_education(request):
             'helper':helper,
             'currents':educations,
             'current_education':profile.current_education,
+            'username': request.user.username,
+            'no_profile': not profile,
             })
 
 
@@ -279,6 +285,8 @@ def edit_professional(request):
             'helper':helper,
             'currents':jobs,
             'current_job':profile.current_job,
+            'username': request.user.username,
+            'no_profile': not profile,
             })
 
 
@@ -320,7 +328,9 @@ def edit_achievement(request):
             'formset':_formset,
             'page':'edit-profile',
             'profile':'achievement',
-            'helper':helper
+            'helper':helper,
+            'username': request.user.username,
+            'no_profile': not profile,
             })
 
 
@@ -354,10 +364,13 @@ def edit_personal(request):
             form = forms.EditProfileForm(instance=profile)
         else:
             form = forms.EditProfileForm()
-    return render(request, 'alumniportal/edit-profile.html',
-               {'page': 'edit-profile',
-                'form': form,
-                'profile':'personal'})
+    return render(request, 'alumniportal/edit-profile.html', {
+        'page': 'edit-profile',
+        'form': form,
+        'profile':'personal',
+        'username': request.user.username,
+        'no_profile': not profile,
+        })
 
 def current(request):
     if request.POST:
@@ -624,6 +637,8 @@ def current(request):
 #                    'ProjectForm':ProjectForm,
 #                    'JobForm':JobForm,
 #                    'AchievementForm':AchievementForm,
+#                    'username': request.user.username,
+#                    'no_profile': not profile,
 #                    })
 
 #  # if models.Education.objects.get(profile=profile):

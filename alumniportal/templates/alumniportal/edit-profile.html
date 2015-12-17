@@ -8,10 +8,12 @@
                 <div class="panel-heading profile-panel-heading">
                     <h3>Edit Profile</h3>
                     <ul class="list-inline">
-                      <li><a href="/profile">View all profile data</a></li>
-                      <li>|</li>
-                      <li><a href="/{{ profile.user.username }}/blog/">Blog</a></li>
-                      <li>|</li>
+                      {% if not no_profile %}
+                        <li><a href="/profile">View all profile data</a></li>
+                        <li>|</li>
+                        <li><a href="/{{ username }}/blog/">Blog</a></li>
+                        <li>|</li>
+                      {% endif %}
                       <li><a href="#">Change Password</a></li>
 
                     </ul>
