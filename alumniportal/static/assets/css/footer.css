@@ -1,8 +1,18 @@
 
-.verticalLine {
-    border-right: thin solid #ffffff; 
-    height:150px;
+@media (min-width: 991px) {
+  .verticalLine {
+      border-right: thin solid #ad3437; 
+      height:150px;
+  }
 }
 .foot1 {
+  margin-top: 20px;
   color: #aaa088;
+  font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+}
+.foot2 {
+  margin-top: -10px;
+  font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+  line-height: 23px;
 }
