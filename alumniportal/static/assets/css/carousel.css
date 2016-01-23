@@ -1,3 +1,8 @@
+.carousel {
+  width: 96%;
+  margin-left: 6px;
+  margin-bottom: 15px;
+}
 .carousel-caption {
       background-color:black;
       opacity: 0.55;

@@ -28,7 +28,7 @@
 	<!-- Same header across all pages -->
 	<header >
 		<div class="header-basic">
-			<div class="header-title">
+			<div class="header-title container">
 				<h1><a href="/">Alumni</a></h1>
 			</div>
 		</div>
@@ -36,6 +36,7 @@
 			<div class="header-limiter navbar">
 				<div class="navbar-inner">
 					<nav class='link-container'>
+						<div class="container">
 						<ul class="nav">
 							<li><a href="/news">News</a></li>
 							<li><a href="/activity/">Activities</a></li>
@@ -44,7 +45,7 @@
 							{% if request.user.is_authenticated and request.user.username != "admin" and not no_profile %}
 							<li><a href="/profile" class="last-header-item">Profile</a></li> {% endif %}
 						</ul>
-					
+						</div>
 						
 					</nav>
 				</div>
@@ -111,7 +112,7 @@
 
 					<footer class="footer" style="background-color:#9a1c1f; border-top:1px">
 					
-						<div class="row"><br>
+						<div class="container"><br>
 							
 								<div class="col-md-3" style="">
 

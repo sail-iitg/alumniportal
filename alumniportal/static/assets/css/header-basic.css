@@ -1,7 +1,7 @@
 header .header-basic {
 	background-color: #9a1c1f;
 	box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.15);
-	padding: 5px 55px;
+	padding: 5px 0px;
 	height:87px;
 	box-sizing: border-box;
 }
@@ -23,7 +23,7 @@ header .header-limiter nav{
 	font:10px Arial, Helvetica, sans-serif;
 	height: 29px;
 	float: left;
-	
+	min-width: 650px;
 }
 
 header .header-limiter nav a{
@@ -48,7 +48,7 @@ header .header-limiter nav{
 	background-color:#f4f2ea;
 	/*border: 1px solid  #5a1112;
 	border-radius:4px;*/
-	padding-left: 55px;
+	padding-left: 0px;
 	-webkit-box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.5);
 	-moz-box-shadow:    0px 1px 5px 0px rgba(50, 50, 50, 0.5);
 	box-shadow:         0px 1px 5px 0px rgba(50, 50, 50, 0.5);
