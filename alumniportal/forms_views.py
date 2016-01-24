@@ -141,19 +141,22 @@ def edit_iitg(request):
         messages.error(request,'Please fill your personal details first.')
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
-        formset = modelformset_factory(models.IITGExperience,exclude=('profile',),extra=1 )
+        formset = modelformset_factory(models.IITGExperience,exclude=('profile',),extra=1, can_delete=True )
 
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
+                instances = _formset.save(commit=False)
                 for Experience in _formset:
-                    if Experience.has_changed():
+                    if Experience.has_changed() and Experience.is_valid():
                         task = Experience.save(commit=False)
                         task.profile = profile
-                        if not task.club_name:
-                            import pdb; pdb.set_trace()
-                        task.save()
-                messages.success(request,'Data Saved.')
+                        if Experience.changed_data == ['DELETE']:
+                            task.delete()
+                        else:
+                            task.save()
+                            messages.success(request,'Validated Data Saved.')
+                return HttpResponseRedirect('/edit-profile/iitg')
         else :
             _formset = formset(queryset=models.IITGExperience.objects.filter(profile=profile).reverse())
         helper = forms.IITGExperienceFormSetHelper()
@@ -180,25 +183,29 @@ def edit_project(request):
         messages.error(request,'Please fill your personal details first.')
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
-        formset = modelformset_factory(models.Project,exclude=('profile','recent',),extra=1 )
+        formset = modelformset_factory(models.Project,exclude=('profile','recent',),extra=1, can_delete=True  )
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
+                instances = _formset.save(commit=False)
                 for Project in _formset:
-                    if Project.has_changed():
+                    if Project.has_changed() and Project.is_valid():
                         task = Project.save(commit=False)
-
-                        today = datetime.today().isocalendar()
-                        week = str(today[1])+str(today[0])
-                        tmp = models.Recent.objects.get_or_create(week=week)
-                        if tmp[1]:
-                            tmp[0].save()
-                        task.recent = tmp[0]
-                        task.profile = profile
-                        task.save()
-                messages.success(request,'Data Saved.')
-        else :
-            _formset = formset(queryset=models.Project.objects.filter(profile=profile).reverse())
+                        if Project.changed_data == ['DELETE']:
+                            task.delete()
+                        else:
+                            today = datetime.today().isocalendar()
+                            week = str(today[1])+str(today[0])
+                            tmp = models.Recent.objects.get_or_create(week=week)
+                            if tmp[1]:
+                                tmp[0].save()
+                            task.recent = tmp[0]
+                            task.profile = profile
+                            task.save()
+                            messages.success(request,'Validated Data Saved.')
+                return HttpResponseRedirect('/edit-profile/project')
+            else :
+                _formset = formset(queryset=models.Project.objects.filter(profile=profile).reverse())
         helper = forms.ProjectFormSetHelper()
         return render(request,'alumniportal/edit-profile.html',{
             'formset':_formset,
@@ -225,18 +232,26 @@ def edit_education(request):
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
         educations = models.Education.objects.filter(profile=profile)
-        formset = modelformset_factory(models.Education,exclude=('profile',),extra=1 )
+        formset = modelformset_factory(models.Education,exclude=('profile',),extra=1, can_delete=True )
+        
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
-            # import pdb; pdb.set_trace();
-            if _formset.is_valid():
-                for Education in _formset:
+        
+            for Education in _formset:
+                if Education.has_changed() and Education.is_valid():
                     task = Education.save(commit=False)
-                    task.profile = profile
-                    task.save()
-                messages.success(request,'Data Saved.')
+                    if Education.changed_data == ['DELETE']:
+                        task.delete()
+                    else:
+                        task.profile = profile
+                        task.save()
+                        messages.success(request,'Validated Data Saved.')
+                return HttpResponseRedirect('/edit-profile/education')
+
+        
         else :
             _formset = formset(queryset=educations.reverse())
+        
         helper = forms.EducationFormSetHelper()
         return render(request,'alumniportal/edit-profile.html',{
             'formset':_formset,
@@ -264,17 +279,20 @@ def edit_professional(request):
         messages.error(request,'Please fill your personal details first.')
         return HttpResponseRedirect('/edit-profile/personal')
     if profile:
-        formset = modelformset_factory(models.Job,exclude=('profile',),extra=1 )
+        formset = modelformset_factory(models.Job,exclude=('profile',),extra=1, can_delete=True  )
         jobs = models.Job.objects.filter(profile=profile)
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
-            if _formset.is_valid():
-                for Job in _formset:
-                    if Job.has_changed():
-                        task = Job.save(commit=False)
+            for Job in _formset:
+                if Job.has_changed() and Job.is_valid():
+                    task = Job.save(commit=False)
+                    if Job.changed_data == ['DELETE']:
+                        Job.delete()
+                    else:
                         task.profile = profile
                         task.save()
-                messages.success(request,'Data Saved.')
+                        messages.success(request,'Data Saved.')
+            return HttpResponseRedirect('/edit-profile/professional')
         else :
             _formset = formset(queryset=jobs.reverse())
         helper = forms.JobFormSetHelper()
@@ -304,23 +322,26 @@ def edit_achievement(request):
         return HttpResponseRedirect('/edit-profile/personal')
 
     if profile:
-        formset = modelformset_factory(models.Achievement,exclude=('profile','recent',),extra=1 )
+        formset = modelformset_factory(models.Achievement,exclude=('profile','recent',),extra=1, can_delete=True  )
         if request.method == "POST":
             _formset = formset(request.POST,request.FILES)
             if _formset.is_valid():
                 for Achievement in _formset:
-                    if Achievement.has_changed():
+                    if Achievement.has_changed() and Achievement.is_valid():
                         task = Achievement.save(commit=False)
-
-                        today = datetime.today().isocalendar()
-                        week = str(today[1])+str(today[0])
-                        tmp = models.Recent.objects.get_or_create(week=week)
-                        if tmp[1]:
-                            tmp[0].save()
-                        task.recent = tmp[0]
-                        task.profile = profile
-                        task.save()
-                messages.success(request,'Data Saved.')
+                        if Achievement.changed_data == ['DELETE']:
+                            Achievement.delete()
+                        else:
+                            today = datetime.today().isocalendar()
+                            week = str(today[1])+str(today[0])
+                            tmp = models.Recent.objects.get_or_create(week=week)
+                            if tmp[1]:
+                                tmp[0].save()
+                            task.recent = tmp[0]
+                            task.profile = profile
+                            task.save()
+                            messages.success(request,'Data Saved.')
+                return HttpResponseRedirect('/edit-profile/achievement')
         else :
             _formset = formset(queryset=models.Achievement.objects.filter(profile=profile).reverse())
         helper = forms.AchievementFormSetHelper()

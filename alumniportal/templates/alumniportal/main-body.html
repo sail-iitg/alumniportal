@@ -84,7 +84,7 @@
 
                     <h4><a>{{activity.name}}</a></h4>
                     <p class="col-elem-data">
-                      {{activity.created}}<br>{{activity.description}}
+                      {{activity.created}}<br>{{activity.description|truncatechars_html:172}}
                     </p>
                   </div>
                 </div>
@@ -106,7 +106,7 @@
                     <img {% if volunteer.image %} src="{{volunteer.image.url}}" {% endif %} alt="{{volunteer.activity_type}}" width="150" height="150" >
                     <h4><a>{{volunteer.name}}</a></h4>
                     <p class="col-elem-data">
-                      {{volunteer.created}}<br>{{volunteer.description}}
+                      {{volunteer.created}}<br>{{volunteer.description|truncatechars_html:172}}
                     </p>
                   </div>
                   <div class="row">
@@ -125,7 +125,7 @@
 
                     <h4><a>{{community.heading}}</a></h4>
                     <p class="col-elem-data">
-                      {{community.content}}
+                      {{community.content|truncatechars_html:172}}
                     </p>
                   </div>
                 </div>

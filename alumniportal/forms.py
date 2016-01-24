@@ -162,7 +162,7 @@ class IITGExperienceFormSetHelper(FormHelper):
             Div(
                 'club_name',
                 'experience',
-
+                Field('DELETE'),
                 FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
@@ -185,6 +185,7 @@ class ProjectFormSetHelper(FormHelper):
                 'description',
                 'start_date',
                 'end_date',
+                Field('DELETE'),
 
                 FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
                 css_class="edit_form_container",
@@ -205,11 +206,12 @@ class EducationFormSetHelper(FormHelper):
         self.layout = Layout(
             Div(
                 'degree',
-                Field('institute', value="Indian Institute of Technology Guwahati"),
+                Field('institute'),
                 'start_year',
                 'end_year',
                 'department',
                 'specialization',
+                Field('DELETE'),
                 FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
@@ -233,6 +235,7 @@ class JobFormSetHelper(FormHelper):
             'start_date',
             'end_date',
             'city',
+                Field('DELETE'),
                 FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
@@ -254,12 +257,80 @@ class AchievementFormSetHelper(FormHelper):
             'achievement_type',
             'year',
             'description',
+                Field('DELETE'),
                 FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
         )
         self.render_required_fields = True
 
+
+
+
+
+
+
+
+
+
+
+class AddNewsForm(forms.ModelForm):
+    """
+    Form for admin to add news
+    """
+
+    class Meta:
+        model = models.News
+        exclude = ('timestamp', 'recent')
+
+    def __init__(self, *args, **kwargs):
+        super(AddNewsForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.error_messages = {'required':''}
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_add_news_form'
+        self.helper.form_class = 'form-horizontal col-md-12'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-10'
+        self.helper.form_method = 'post'
+        self.helper.form_action = '/add/news/'
+        self.helper.layout = Layout(
+            'post_type',
+            'heading',
+            'content',
+            'image',
+            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+        )
+
+
+class AddPostForm(forms.ModelForm):
+    """
+    Form for users to add posts to their blogs
+    """
+
+    class Meta:
+        model = models.Post
+        exclude = ('blog', 'timestamp', 'recent')
+
+    def __init__(self, *args, **kwargs):
+        username = kwargs.pop('username', None)
+        super(AddPostForm, self).__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.error_messages = {'required':''}
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_add_post_form'
+        self.helper.form_class = 'form-horizontal col-md-12'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-10'
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            'heading',
+            'content',
+            'image',
+            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+        )
 
 # class EditEducationForm(forms.ModelForm):
 #     """
@@ -422,70 +493,3 @@ class AchievementFormSetHelper(FormHelper):
 
 
 
-
-
-
-
-
-
-
-
-
-
-class AddNewsForm(forms.ModelForm):
-    """
-    Form for admin to add news
-    """
-
-    class Meta:
-        model = models.News
-        exclude = ('timestamp', 'recent')
-
-    def __init__(self, *args, **kwargs):
-        super(AddNewsForm, self).__init__(*args, **kwargs)
-
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
-        self.helper = FormHelper()
-        self.helper.form_id = 'id_add_news_form'
-        self.helper.form_class = 'form-horizontal col-md-12'
-        self.helper.label_class = 'col-md-2'
-        self.helper.field_class = 'col-md-10'
-        self.helper.form_method = 'post'
-        self.helper.form_action = '/add/news/'
-        self.helper.layout = Layout(
-            'post_type',
-            'heading',
-            'content',
-            'image',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
-        )
-
-
-class AddPostForm(forms.ModelForm):
-    """
-    Form for users to add posts to their blogs
-    """
-
-    class Meta:
-        model = models.Post
-        exclude = ('blog', 'timestamp', 'recent')
-
-    def __init__(self, *args, **kwargs):
-        username = kwargs.pop('username', None)
-        super(AddPostForm, self).__init__(*args, **kwargs)
-
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
-        self.helper = FormHelper()
-        self.helper.form_id = 'id_add_post_form'
-        self.helper.form_class = 'form-horizontal col-md-12'
-        self.helper.label_class = 'col-md-2'
-        self.helper.field_class = 'col-md-10'
-        self.helper.form_method = 'post'
-        self.helper.layout = Layout(
-            'heading',
-            'content',
-            'image',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
-        )
