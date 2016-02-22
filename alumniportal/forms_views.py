@@ -246,7 +246,7 @@ def edit_education(request):
                         task.profile = profile
                         task.save()
                         messages.success(request,'Validated Data Saved.')
-                return HttpResponseRedirect('/edit-profile/education')
+            return HttpResponseRedirect('/edit-profile/education')
 
         
         else :
