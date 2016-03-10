@@ -204,8 +204,8 @@ def edit_project(request):
                             task.save()
                             messages.success(request,'Validated Data Saved.')
                 return HttpResponseRedirect('/edit-profile/project')
-            else :
-                _formset = formset(queryset=models.Project.objects.filter(profile=profile).reverse())
+        else :
+            _formset = formset(queryset=models.Project.objects.filter(profile=profile).reverse())
         helper = forms.ProjectFormSetHelper()
         return render(request,'alumniportal/edit-profile.html',{
             'formset':_formset,
