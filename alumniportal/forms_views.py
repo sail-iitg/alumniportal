@@ -31,6 +31,7 @@ def add_activity(request):
 
     if request.method == "POST":
         form = forms.AddActivityForm(request.POST, request.FILES)
+        form.fields['activity_type'].choices = [choice for choice in form.fields['activity_type'].choices if choice[0] != 'V']
         recent = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
         # import pdb; pdb.set_trace()
         if form.is_valid():
@@ -51,9 +52,52 @@ def add_activity(request):
             messages.success(request, 'Activity Created')
     else:
         form = forms.AddActivityForm()
+        # remove volunteering activity from activity type
+        form.fields['activity_type'].choices = [choice for choice in form.fields['activity_type'].choices if choice[0] != 'V']
     return render(request, 'alumniportal/add-activity.html',
                   {'page': 'add-activity',
                    'form': form})
+
+@login_required(login_url='/login/')
+def add_volunteer(request):
+    """
+    display form to alumnus to add a Volunteering Activity
+    """
+    if hasattr(request.user, 'profile'):
+        profile = request.user.profile
+    else:
+        messages.error(request, "Create your Profile before adding activity")
+        return HttpResponseRedirect('/edit-profile/')
+
+    if request.method == "POST":
+        form = forms.AddActivityForm(request.POST, request.FILES)
+        form.data[u'activity_type'] = u'V'
+        recent = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
+        if form.is_valid():
+            task = form.save(commit=False)
+            image_list = request.FILES.getlist('files')
+            task.profile = profile
+            task.created = datetime.now()
+            today = datetime.today().isocalendar()
+            week = str(today[1])+str(today[0])
+            tmp = models.Recent.objects.get_or_create(week=week)
+            if tmp[1]:
+                tmp[0].save()
+            task.recent = tmp[0]
+            task.save()
+
+            for image in image_list:
+                models.ActivityImage.objects.create(activity=task, image=image).save()
+            messages.success(request, 'Volunteering Activity Created')
+    else:
+        form = forms.AddActivityForm()
+        form.helper.form_action = '/volunteer/add/'
+        # https://github.com/sail-iitg/alumniportal/issues/8
+        del form.fields['activity_type']
+    return render(request, 'alumniportal/add-activity.html',
+                  {'page': 'add-activity',
+                   'form': form,
+                   'volunteer': True})
 
 ########NOT SHOWING UP IN ADMIN
 # @login_required(login_url='/login/')

@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^activity/(?P<item_type>.*)/$', display_views.activity_items),
     # url(r'^activity/(?P<item_type>\b(event|meet|volunteer|survey|project)\b)/$', display_views.activity_items),
     url(r'^volunteer/$', display_views.volunteer),
+    url(r'^volunteer/add/$', forms_views.add_volunteer),
     url(r'^blog/edit/$', forms_views.blog_details_edit , name='blog_details_edit'),
     ##edit end
     url(r'^community/$', display_views.community , name='community'),
