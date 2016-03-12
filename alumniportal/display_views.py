@@ -113,8 +113,10 @@ def items(request, class_type, item_type):
         'is_admin': request.user.is_superuser,
         })
 
-def createQuery(request, result, field):
-    result = result | Q(**{field + "__icontains" : request.POST[field]})
+ignoreField = ['company']
+@login_required
+def createQuery(queryset, result, field):
+    result = result | Q(**{field + "__icontains" : queryset[field]})
     return result
 
 @login_required
@@ -122,18 +124,30 @@ def search(request):
     profiles = []
     if request.POST:
         query = Q()
+        queryset = request.POST.copy()
+        past_company = queryset['company']
+        past_education = queryset['institute']
+        if queryset['name']:
+            list_of_words = queryset['name'].split()
+            for word in list_of_words:
+                query = query | Q(name__icontains = word)
+        
+        del queryset['company']
+        del queryset['csrfmiddlewaretoken']
+        del queryset['institute']
+        del queryset['name']
+        
+        for field in queryset:
+            if queryset[field]:
+                query = createQuery(queryset, query, field)
+        if past_company:
+            query = query | Q(jobs__company__icontains = past_company)
+        if past_education:
+            query = query | Q(educations__institute__icontains = past_education)
+
         # import pdb; pdb.set_trace()
-        for field in request.POST:
-            if field == "csrfmiddlewaretoken":
-                continue
-            if field == "name":
-                list_of_words = request.POST['name'].split()
-                for word in list_of_words:
-                    query = query | Q(name__icontains = word)
-                continue
-            if request.POST[field]:
-                query = createQuery(request, query, field)
-        profiles = models.Profile.objects.filter(query)
+        profiles = models.Profile.objects.filter(query).distinct()
+        # kj
         print query
         print profiles
     return render(request, 'alumniportal/search.html', {

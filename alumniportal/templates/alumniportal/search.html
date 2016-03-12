@@ -30,8 +30,6 @@
 
 									 		<label for="name">Name :</label>
 
-									 		<label for="name">Name</label>
-
 										</div>
 								 		<div class="form-element-container col-md-8">
 									 		<input type="text" class="form-control" name="name" id="name">
@@ -39,8 +37,6 @@
 									</div>
 									<div class="col-md-12 form-group ">
 								 		<div class="label-container col-md-4">
-
-									 		<label for="city">City :</label>
 
 									 		<label for="city">City</label>
 
@@ -52,8 +48,6 @@
 									<div class="col-md-12 form-group">
 								 		<div class="label-container col-md-4">
 
-									 		<label for="country">Country :</label>
-
 									 		<label for="country">Country</label>
 
 										</div>
@@ -64,9 +58,6 @@
 									<div class="col-md-12 form-group">
 											<div class="form-radio-container col-md-12">
 										 		<div class="row">
-
-										 			<label class="control-label col-md-4" for="radios">Gender : </label>
-										 			<div class="wrapper-search col-md-8" id="wrapper_clear">   
 
 										 			<label class="label-container col-md-4" for="gender">Gender</label>
 										 			<div class="form-element container col-md-8" id="wrapper_clear">   
@@ -86,12 +77,6 @@
 									<div class="col-md-12 row form-group">
 										<div class="form-container">
 									        <label for="select-hostel">Select Hostel:</label>
-
-										        <select class="form-control" id="select-hostel">
-											        {% for hostel in hostels %}
-											        <option value="{{hostel.0}}">{{hostel.1}}</option>
-											        {% endfor %}
-										        </select>
 
 										 		<input list="select-hostel" name="hostel" type="text" class="form-control" placeholder="Hostel in IITG">
 
@@ -131,16 +116,10 @@
 										<div class="form-container">
 									        <label for="select-major">Select Majors:</label>
 
-										        <select class="form-control" id="select-major">
-											        {% for major in majors %}
-											        <option value="{{major.0}}">{{major.1}}</option>
-											        {% endfor %}
-										        </select>
-
 										        <input list="depts" name="department" type="text" class="form-control" placeholder="Department/Major">
 										 		<datalist id="depts" size="10"> 
 										 		{% for major in majors %}
-										 			<option value="{{major.0}}">{{major.1}}</option>
+										 			<option value="{{major.1}}"></option>
 										 		{% endfor %}
 										 		</datalist>
 
@@ -150,13 +129,43 @@
 									<div class="col-md-12 row form-group">
 								 		<div class="form-container">
 									 		<label class="control-label" for="datalist-batch">Institue Name :</label>
-
-										 		<input type="text" class="form-control" placeholder="Name of Institute">
-
-										 		<input type="text" name="institute" class="form-control" placeholder="Name of Institute">
-
+									 		<input type="text" name="institute" class="form-control" placeholder="Name of Institute">
 										</div>
 									</div>
+				                </div>
+				            </div>
+				        </div>
+				        <div class="panel panel-default">
+				            <div class="panel-heading">
+				                <h4 class="panel-title">
+				                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Professional Information</a>
+				                </h4>
+				            </div>
+				            <div id="collapseThree" class="panel-collapse collapse">
+				                <div class="panel-body">
+				                	<h5>Current Job</h5>
+									<div class="col-md-12 form-group">
+								 		<div class="label-container col-md-4">
+
+									 		<label for="name">Company :</label>
+
+										</div>
+								 		<div class="form-element-container col-md-8">
+									 		<input type="text" class="form-control" name="current_job__company" id="current_job">
+								 		</div>
+									</div>
+				                	<h5>Past Jobs</h5>
+									<div class="col-md-12 form-group">
+								 		<div class="label-container col-md-4">
+
+									 		<label for="name">Company :</label>
+
+										</div>
+								 		<div class="form-element-container col-md-8">
+									 		<input type="text" class="form-control" name="company" id="company">
+								 		</div>
+									</div>
+
 				                </div>
 				            </div>
 				        </div>
@@ -164,15 +173,14 @@
 					<button class="btn btn-primary btn-primary" id="adv_search_button">Submit</button>
 			
 			</form>
-	</div>
+		</div>
 					      		
-</div>
-</div>
+	</div>
 </div>
 <div class="col-md-8" style="padding:0px;">
 <div class="col-md-12" style="padding:0px;">
 <div class="profile-tiles-container">
-	{% for profile in profiles%}
+	{% for profile in profiles %}
 	
 	<div class="col-md-4 " style="margin-bottom:10px;" >
                 <div class="row ">
@@ -187,32 +195,8 @@
                   </div>
                 </div>
     </div>
-    <div class="col-md-4 " style="margin-bottom:10px;" >
-                <div class="row ">
-                  <div class="col-md-12 col-element profile-tiles" >
-                    <img {% if profile.image %} src="{{profile.image.url}}" {% endif %} width="150" height="150" >
-
-                    <h4><a>{{profile.name}}</a></h4>
-                    <div>Age : {{profile.age}}</div>
-					<div>Gender : {{profile.get_gender_display}}</div>
-					<div>Hostel : {{profile.hostel}}</div>
-					<div>City : {{profile.city}}</div>
-                  </div>
-                </div>
-    </div>
-    <div class="col-md-4 " style="margin-bottom:10px;" >
-                <div class="row ">
-                  <div class="col-md-12 col-element profile-tiles" >
-                    <img {% if profile.image %} src="{{profile.image.url}}" {% endif %} width="150" height="150" >
-
-                    <h4><a>{{profile.name}}</a></h4>
-                    <div>Age : {{profile.age}}</div>
-					<div>Gender : {{profile.get_gender_display}}</div>
-					<div>Hostel : {{profile.hostel}}</div>
-					<div>City : {{profile.city}}</div>
-                  </div>
-                </div>
-    </div>
+    
+    
 
 	{% endfor %}
 </div>
