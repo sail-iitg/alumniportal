@@ -9,6 +9,7 @@
 	<!-- JQuery Loaded first -->
 	<script src="{% static 'assets/js/jquery.min.js' %}"></script>
 	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'assets/js/jquery.vticker.min.js' %}"></script>
 	<!-- CSS files to be added dynamically or load all -->
 	<link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}"> <!--  -->
 	<link rel="stylesheet" href="{% static 'assets/css/main-body.css' %}"> <!--  -->
@@ -100,6 +101,7 @@
 	          {% if page != "search" %}
 	          <div class="col-md-3 sidebar" >
 	          <!--  Widget - add the block (complete contents of file) here -->
+              {% include "widgets/rolling-news.html" %}
               {% include "widgets/login.html" %}
               {% include "widgets/twitter.html" %}
 			  <!--  End Widget-->
@@ -171,7 +173,13 @@
 	
 
 	<!-- Scripts -->
-	
+	<!-- rolling news -->
+	<script>
+	  $(function() {
+	    $('#rolling-news').vTicker();
+	  });
+	</script>
+	</script>
 	
 </body>
 </html>

@@ -116,3 +116,33 @@ h3 {
 	background-color: red; 
     background-size: 80px 60px;
 }
+
+.roll-title{
+	line-height: 120%;
+	font-family: Helvetica, Roboto,"Segoe UI",Calibri,sans-serif;
+	font-size:14px;
+	font-weight: bold;
+	padding: 0px 0px 0px 0px;
+}
+.roll-body{
+	display : inline-block;
+	line-height: 120%;
+	font-family: Helvetica, Roboto,"Segoe UI",Calibri,sans-serif;
+	font-size:14px;
+	padding: 0px 0px 0px 0px;
+}
+.roll-author{
+	font-family: Helvetica, Roboto,"Segoe UI",Calibri,sans-serif;
+	padding: 0px 0px 0px 0px;
+	font-size:12px;
+}
+.roll-ul{
+	list-style-type:none;
+	padding: 0px 0px 0px 0px;
+}
+.roll-image{
+	padding: 0px 0px 0px 0px;
+}
+.roll-title-cont{
+	padding: 0px 0px 0px 3px;
+}
