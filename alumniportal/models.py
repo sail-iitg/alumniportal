@@ -239,4 +239,19 @@ class Post(models.Model):
         ordering = ['-timestamp']
         # order_with_respect_to = 'recent'
     def __unicode__(self):
-        return str(self.post_type + " " + str(self.timestamp))
+        return str(self.blog.profile.name + " " + str(self.timestamp))
+
+
+class PostComment(models.Model):
+    """
+    Comment on a blog post
+    """
+    author = models.ForeignKey(Profile, blank=True, null=True)
+    comment = models.CharField(max_length = 1500)
+    created = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post)
+
+    def __unicode__(self):
+        dt = self.post.timestamp
+        return '%s %s-%s-%s %02d:%d %s...' % (self.post.blog.profile.name,
+            dt.year, dt.month, dt.day, dt.hour, dt.minute, self.comment[:20])

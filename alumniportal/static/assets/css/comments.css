@@ -1,0 +1,8 @@
+#comments-list hr{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#comments-list .comment-author {
+    color: #777;
+}
