@@ -5,7 +5,7 @@ from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render
 from django.conf import settings
 from django.core.files import File
@@ -14,6 +14,7 @@ from django.db import IntegrityError, transaction
 from django.core.exceptions import ObjectDoesNotExist
 ######EDITED
 import time, os
+import json
 
 ###maybe we can use different functions for each subcategory in profile later
 
@@ -801,3 +802,64 @@ def edit_post(request, username, post_id):
                   {'page': 'add-post',
                    'form': form,
                    'edit': True})
+
+
+@login_required(login_url='/login/')
+def add_post_comment(request, username, post_id):
+    """
+    Process form for adding blog post comments
+    """
+    try:
+        post = models.Post.objects.get(id=post_id)
+    except models.Post.DoesNotExist:
+        return HttpResponse('Post (id: ' + str(post_id) + ') does not exist.')
+    if request.method == 'POST':
+        comment = request.POST.get('comment')
+        response_data = {}
+        if not hasattr(request.user, 'profile'):
+            return HttpResponse('Fill your profile to comment.')
+
+        post_comment = models.PostComment(comment=comment, post=post,
+                                          author=request.user.profile)
+        post_comment.save()
+
+        response_data['result'] = 'Create post successful!'
+        response_data['comment_pk'] = post_comment.pk
+        response_data['comment_text'] = post_comment.comment
+        response_data['post_pk'] = post_comment.post.pk
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        raise Http404('Page not found')
+
+
+@login_required(login_url='/login/')
+def post_comments_list(request, username, post_id):
+    """
+    Return required post comments as json object
+    """
+    try:
+        post = models.Post.objects.get(id=post_id)
+    except models.Post.DoesNotExist:
+        return HttpResponse('Post (id: ' + str(post_id) + ') does not exist.')
+    if request.method == 'POST':
+        comments = post.postcomment_set.all()
+        comment_ids = [str(cns.id) for cns in comments]
+        comment_authors = [cns.author.name for cns in comments]
+        comment_texts = [cns.comment for cns in comments]
+
+        response_data = {
+            'comment_ids': comment_ids,
+            'comment_authors': comment_authors,
+            'comment_texts': comment_texts,
+        }
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        raise Http404('Page not found')

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations, models
 import alumniportal.models
 import ckeditor.fields
 from django.conf import settings
@@ -151,6 +151,14 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
+            name='PostComment',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('comment', models.CharField(max_length=1500)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Profile',
             fields=[
                 ('profile_type', models.CharField(blank=True, max_length=16, choices=[(b'is_alumni', b'Alumni'), (b'is_stud', b'Current Student'), (b'is_prof', b'Professor')])),
@@ -204,6 +212,16 @@ class Migration(migrations.Migration):
             model_name='project',
             name='recent',
             field=models.ForeignKey(related_name='projects', blank=True, to='alumniportal.Recent'),
+        ),
+        migrations.AddField(
+            model_name='postcomment',
+            name='author',
+            field=models.ForeignKey(blank=True, to='alumniportal.Profile', null=True),
+        ),
+        migrations.AddField(
+            model_name='postcomment',
+            name='post',
+            field=models.ForeignKey(to='alumniportal.Post'),
         ),
         migrations.AddField(
             model_name='post',

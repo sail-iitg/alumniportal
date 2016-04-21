@@ -198,4 +198,8 @@ def post_detail(request, username, post_id):
         'post_id': post.id,
         'is_editor': (post.blog.profile.user == request.user),
         'username': username,
+        'all_comments': post.postcomment_set.all(),
+        'comment_form': forms.PostCommentForm(),
+        'user_has_profile': hasattr(request.user, 'profile'),
         })
+

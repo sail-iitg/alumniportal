@@ -332,6 +332,25 @@ class AddPostForm(forms.ModelForm):
             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
         )
 
+
+class PostCommentForm(forms.ModelForm):
+    """
+    Form for blog post comments
+    """
+    class Meta:
+        model = models.PostComment
+        exclude = ['post']
+        widgets = {
+            'comment': forms.TextInput(
+                attrs={
+                    'id': 'comment-text',
+                    'required': True,
+                    'placeholder': 'Write a comment...',
+                    'class': 'form-control',
+                }
+            ),
+        }
+
 # class EditEducationForm(forms.ModelForm):
 #     """
 #     Form for alumnus to edit education details (a tab within the profile edit page)
