@@ -56,5 +56,7 @@ urlpatterns = [
     url(r'^(?P<username>.+)/blog/(?P<post_id>\d+)/edit/post/$', forms_views.edit_post, name='edit-post'),
     url(r'^(?P<username>.+)/blog/(?P<post_id>\d+)/post/$', display_views.post_detail, name='post-detail'),
     url(r'^(?P<username>.+)/blog/$', display_views.blog, name='blog'),
+    url(r'^(?P<username>.+)/blog/(?P<post_id>\d+)/post/comment/$', forms_views.add_post_comment, name='post-comment'),
+    url(r'^(?P<username>.+)/blog/(?P<post_id>\d+)/post/list-comments/$', forms_views.post_comments_list, name='post-comment-list'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

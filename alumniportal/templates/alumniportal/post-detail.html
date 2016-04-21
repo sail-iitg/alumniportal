@@ -2,6 +2,7 @@
 {% block post-detail  %}
         {% load staticfiles %}
         {% load crispy_forms_tags %}
+
         <div class="col-md-9 main-content" >
             <div class="panel panel-default">
                 <div class="panel-heading profile-panel-heading">
@@ -15,5 +16,38 @@
                     {% autoescape off %} {{ content }} {% endautoescape %}
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Comments</h4><hr>
+                    <div id="comments-list">
+                        {% for post_comment in all_comments %}
+                        <div id="comment-{{ post_comment.id }}" class="row">
+                            <div class="col-xs-3 col-sm-3 comment-author"><b>{{ post_comment.author.name }}</b></div>
+                            <div class="col-xs-9 col-sm-9 comment-text">{{ post_comment.comment }}</div>
+                        </div><hr>
+                        {% endfor %}
+                    </div>
+
+                    {% if user_has_profile %}
+                    <form method="POST" id="comment-form">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ comment_form.comment }}
+                        </div>
+                        <div id="results"></div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                    {% else %}
+                    <div id="fill-profile">
+                        <a href="/edit-profile/">Fill your basic profile</a> to comment.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
+{% endblock %}
+
+{% block scripts %}
+    {% load staticfiles %}
+    <script src="{% static 'assets/js/blog-comments.js' %}"></script>
 {% endblock %}
