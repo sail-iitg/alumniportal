@@ -116,6 +116,7 @@ def items(request, class_type, item_type):
 ignoreField = ['company']
 @login_required
 def createQuery(queryset, result, field):
+    print queryset, result,field
     result = result | Q(**{field + "__icontains" : queryset[field]})
     return result
 
@@ -139,15 +140,14 @@ def search(request):
         
         for field in queryset:
             if queryset[field]:
+                # import pdb; pdb.set_trace()
                 query = createQuery(queryset, query, field)
         if past_company:
             query = query | Q(jobs__company__icontains = past_company)
         if past_education:
             query = query | Q(educations__institute__icontains = past_education)
 
-        # import pdb; pdb.set_trace()
         profiles = models.Profile.objects.filter(query).distinct()
-        # kj
         print query
         print profiles
     return render(request, 'alumniportal/search.html', {

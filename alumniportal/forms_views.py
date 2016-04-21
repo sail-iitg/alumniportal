@@ -303,7 +303,7 @@ def edit_education(request):
             'profile':'education',
             'helper':helper,
             'currents':educations,
-            'current_education':profile.current_education,
+            'currentEducation':profile.currentEducation,
             'username': request.user.username,
             'no_profile': not profile,
             })
@@ -346,7 +346,7 @@ def edit_professional(request):
             'profile':'professional',
             'helper':helper,
             'currents':jobs,
-            'current_job':profile.current_job,
+            'currentJob':profile.currentJob,
             'username': request.user.username,
             'no_profile': not profile,
             })
@@ -441,11 +441,11 @@ def current(request):
     if request.POST:
         profile = request.user.profile
         if request.path == '/edit-profile/professional/current/':
-            profile.current_job = models.Job.objects.get(id=request.POST['current'])
+            profile.currentJob = models.Job.objects.get(id=request.POST['current'])
             profile.save()
             messages.success(request, "Changes Saved")
         elif request.path == '/edit-profile/education/current/':
-            profile.current_education = models.Education.objects.get(id=request.POST['current'])
+            profile.currentEducation = models.Education.objects.get(id=request.POST['current'])
             profile.save()
             messages.success(request, "Changes Saved")
         else:

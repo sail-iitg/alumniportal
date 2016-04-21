@@ -50,8 +50,8 @@ class Profile(models.Model):
     github_link = models.URLField(blank=True) #Github Repo Link
     twitter_link = models.URLField(blank=True)    #Twitter Profile Link
 
-    current_job = models.OneToOneField('Job', blank=True, null=True, related_name='current_job')   #Row ID of the job object currently doing
-    current_education = models.OneToOneField('Education', blank=True, null =True, related_name='current_education')
+    currentJob = models.OneToOneField('Job', blank=True, null=True, related_name='currentJob')   #Row ID of the job object currently doing
+    currentEducation = models.OneToOneField('Education', blank=True, null =True, related_name='currentEducation')
 
     def __unicode__(self):
         return str(self.user.username)

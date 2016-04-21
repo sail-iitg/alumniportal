@@ -11,9 +11,9 @@ def login(request):
         next_url  = request.GET.get('next',False)
     if not request.user.is_authenticated():
         if next_url is not None:
-            return render(request, 'login-page.html',{'next':next_url})
+            return render(request, 'login-page.html',{'next':next_url,'page':login})
         else :
-            return render(request, 'login-page.html',{'next':''})
+            return render(request, 'login-page.html',{'next':'','page':login})
 
     else:
         return HttpResponseRedirect('/')

@@ -62,6 +62,8 @@
 	          <!--  Main Content - add the block (complete contents of file) here -->
 	          {% if page == "home" %}
 	          	{% block home %}{% endblock %}
+	          {% elif page == "login" %}
+	          	{% block login %}{% endblock %}
 	          {% elif page == "activity" %}
 	          	{% block activity %}{% endblock %}
 	          {% elif page == "volunteer" %}
