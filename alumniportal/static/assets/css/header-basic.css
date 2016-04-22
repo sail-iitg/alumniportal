@@ -1,89 +1,94 @@
-header .header-basic {
-	background-color: #9a1c1f;
-	box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.15);
-	padding: 5px 0px;
-	height:87px;
-	box-sizing: border-box;
+.navbar {
+	background: #AA1F24;
 }
 
-header .header-limiter {
-	text-align: center;
-	margin: 0 auto;
+.navbar-brand {
+	line-height: 90px;
+    height: 90px;
+    padding-top: 0;
 }
 
-
-/* The header links */
-
-header .header-limiter a {
-	color: #f4f2ea;
-	text-decoration: none;
+.navbar-nav li a {
+    line-height: 90px;
+    height: 90px;
+    padding-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff!important;
+    font-size: 15px;
 }
 
-header .header-limiter nav{
-	font:10px Arial, Helvetica, sans-serif;
-	height: 29px;
-	float: left;
-	min-width: 650px;
+.navbar-login > ul > li > a {
+    margin-top: 33px !important;
+    margin-right: 10px;
+	color: #fff!important;
+	font-family: Arial, Helvetica, sans-serif;
+    color: #fff!important;
+    font-size: 15px;
 }
 
-header .header-limiter nav a{
-	display: inline-block;
-	padding: 0px 5px;
-	text-decoration:none;
-	color: #000000;
-	font-size: 16px;
-	opacity: 0.9;
-	float:left;
-	text-align:left;
-	/*border-right:  1px solid  #5a1112;*/
-	padding: 5px 50px 2px 0px;
-	font-family: "Ubuntu", serif;
-	border-bottom:3px solid #f4f2ea ;
-}
-header .clear-nav-li{
-	padding:0px 25px;
-}
-header .header-limiter nav{
-	width:100%;
-	background-color:#f4f2ea;
-	/*border: 1px solid  #5a1112;
-	border-radius:4px;*/
-	padding-left: 0px;
-	-webkit-box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.5);
-	-moz-box-shadow:    0px 1px 5px 0px rgba(50, 50, 50, 0.5);
-	box-shadow:         0px 1px 5px 0px rgba(50, 50, 50, 0.5);
-	
+.navbar-toggle {
+	margin-top: 40px;
+	border-color: #711C1F!important;
 }
 
-header .header-limiter nav a:hover{
-	opacity: 1;
-	border-bottom:3px solid #400000 ;
-}
-header .header-limiter nav .last-header-item{
-	border-right:0px;
+.navbar-toggle:hover {
+	background-color: #AC1E1F!important;
 }
 
-header .header-limiter nav a.selected {
-	color: #608bd2;
-	pointer-events: none;
-	opacity: 1;
+.navbar-toggle .icon-bar {
+	background-color: #711C1F!important;
 }
 
-header .header-title h1 a{
-	color: #f4f2ea; 
-	font-family: "Ubuntu", serif;
-	padding:0px 0px 0px 0px;
-	text-decoration:none;
+.dropdown-toggle:hover, .open .dropdown-toggle {
+	background-color: #AC1E1F!important;
 }
 
-header .header-limiter .filler {
-		width=100%;
+.dropdown-menu {
+    min-width: 350px;
+    padding: 40px;
+}
+
+.dropdown-menu li a {
+	color: #666!important;
+}
+
+.navbar-nav li a {
+    line-height: 90px;
+    height: 90px;
+    padding-top: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff!important;
+    font-size: 15px;
+}
+
+#navbar-brand-logo {
+	display: inline;
+	vertical-align: top;
+}
+
+#navbar-brand-name {
+	font-size: 34px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #fff;
+	padding-left: 15px;
+	display: inline;
+	vertical-align: top;
+}
+
+#login-submit {
+    background: #AA1F24;
+    color: #FFF;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav > li > a:focus {
+    background-color: #AC1E1F;
 }
 
 
 /* For the headers to look good, be sure to reset the margin and padding of the body */
 
 body {
-	margin:0;
-	padding:0;
+    margin:0;
+    padding:0;
 }

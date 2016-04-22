@@ -26,33 +26,48 @@
 
 </head>
 <body>
-	<!-- Same header across all pages -->
-	<header >
-		<div class="header-basic">
-			<div class="header-title container">
-				<h1><a href="/">Alumni</a></h1>
-			</div>
-		</div>
-			<!-- Navigation bar -->
-			<div class="header-limiter navbar">
-				<div class="navbar-inner">
-					<nav class='link-container'>
-						<div class="container">
-						<ul class="nav">
-							<li><a href="/news">News</a></li>
-							<li><a href="/activity/">Activities</a></li>
-							<li><a href="/volunteer">Let's Join Hands</a></li>
-							<li><a href="/community">Community</a></li>
-							{% if request.user.is_authenticated and request.user.username != "admin" and not no_profile %}
-							<li><a href="/profile" class="last-header-item">Profile</a></li> {% endif %}
-						</ul>
-						</div>
-						
-					</nav>
-				</div>
-			</div>
+	<nav class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header pull-left">
+                <a class="navbar-brand" href="/">
+                    <div id="navbar-brand-logo"><img src="{% static 'assets/images/IITG-logo.png' %}"  height=68px width=68px ></div>
+                    <div id="navbar-brand-name">Alumni</div>
+                </a>
+            </div>
 
-	</header>
+            <div class="navbar-header pull-right navbar-login">
+                <ul class="nav pull-left">
+                    <li class="dropdown pull-right">
+                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                            {% if request.user.is_authenticated %}
+                                {{ request.user.username }}
+                            {% else %}
+                                Login
+                            {% endif %}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% include "widgets/login.html" %}
+                        </ul>
+                    </li>
+                </ul>
+
+                <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            </div>
+
+            <div class="collapse navbar-collapse navbar-right">
+                <ul class="nav navbar-nav pull-right">
+                    <li><a href="/news">News</a></li>
+                    <li><a href="/activity/">Activities</a></li>
+                    <li><a href="/volunteer">Let's Join Hands</a></li>
+                    <li><a href="/community">Community</a></li>
+                    {% if request.user.is_authenticated and request.user.username != "admin" and not no_profile %}
+                    <li><a href="/profile" class="last-header-item">Profile</a></li> {% endif %}
+                </ul>
+            </div>
+        </div>
+        <!-- /.container -->
+    </nav>
 	
 
 	<div class="container">
@@ -102,7 +117,6 @@
 	          <div class="col-md-3 sidebar" >
 	          <!--  Widget - add the block (complete contents of file) here -->
               {% include "widgets/rolling-news.html" %}
-              {% include "widgets/login.html" %}
               {% include "widgets/twitter.html" %}
 			  <!--  End Widget-->
 	          </div>
