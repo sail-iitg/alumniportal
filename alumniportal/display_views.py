@@ -15,6 +15,7 @@ from constants import *
 def get_recent_objects():
     pass
 
+rolling_news = list(models.News.objects.all())[-3:]
 def home(request):
     research = models.News.objects.filter(post_type = 'R').first()
     activities = models.Activity.objects
@@ -27,6 +28,7 @@ def home(request):
         'activity': activity,
         'volunteer':volunteer,
         'community':community,
+        'rolling_news':rolling_news,
         })
 
 def volunteer(request):
@@ -113,9 +115,10 @@ def items(request, class_type, item_type):
         'is_admin': request.user.is_superuser,
         })
 
-ignoreField = ['company']
-@login_required
+# ignoreField = ['company']
+# @login_required
 def createQuery(queryset, result, field):
+    # import pdb; pdb.set_trace()
     print queryset, result,field
     result = result | Q(**{field + "__icontains" : queryset[field]})
     return result
@@ -140,7 +143,6 @@ def search(request):
         
         for field in queryset:
             if queryset[field]:
-                # import pdb; pdb.set_trace()
                 query = createQuery(queryset, query, field)
         if past_company:
             query = query | Q(jobs__company__icontains = past_company)

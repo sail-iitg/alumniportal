@@ -37,7 +37,7 @@
           </div>
           <div class="row">
               <div class="col-md-12 col-left news-container" >
-              <h3 class='column-header news-header'>Achievements <a href="" class='column-addbutton'>(add)</a></h3>
+              <h3 class='column-header news-header'>Achievements<!--  <a href="/add/achievement/" class='column-addbutton'>(add)</a> --></h3>
                 {% for a in achievements %}
                 <div class="row news-row">
                   <div class="col-md-12 col-element" >
@@ -45,7 +45,7 @@
                     <h4><a>{{a.heading}}</a></h4>
                     <h6>{{a.timestamp}}</h4>
                     <p class="col-elem-data">
-                      {{a.content|linebreaks}}
+                      {% autoescape off %} {{a.content|linebreaks}} {% endautoescape %}
                     </p>
                   </div>
                 </div>
