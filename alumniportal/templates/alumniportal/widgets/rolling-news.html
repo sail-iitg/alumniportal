@@ -5,28 +5,16 @@
 			    {% for rnews in rolling_news %}
 			    <li>
 			    	<div class="row">
-				    	<div class="roll-image col-md-3"><img {% if rnews.image %} src="{{rnews.image.url}}" {% endif %} alt="{{rnews.post_type}}{{rnews.achievement_type}}" width="60" height="50" ></div>
-				    	<div class="col-md-9 roll-title-cont">
-					    	<div class="roll-title">{{rnews.heading}}</div>
-					    	<!-- <a href="/{{ rnews.id }}/news/">{{rnews.heading}}</a> -->
+							<!-- <div class="roll-image col-md-3"><img {% if rnews.image %} src="{{rnews.image.url}}" {% endif %} alt="{{rnews.post_type}}{{rnews.achievement_type}}" width="60" height="50" ></div> -->
+							<div class="col-md-9 col-md-offset-1 roll-title-cont">
+								<div class="roll-title"><a href="/{{ rnews.id }}/news/">{{ rnews.heading }}</a></div>
+								<div class="roll-body">
+									{% autoescape off %}{{ rnews.content|linebreaks|truncatechars:180 }}{% endautoescape %}
+								</div>
 				    	</div>
 				    </div>
 			    </li>
 			    {% endfor %}
-			    <!-- <li>
-				    <div clas="row">
-				    	<div class="roll-image col-md-3"><img src="https://pbs.twimg.com/profile_images/1757249278/iitg_web_mid_bigger.gif" height="50"></div>
-				    	<div class="col-md-9 roll-title-cont">
-					    	<div class="roll-title">IS ALL NEWS BETTER IN CAPS?!</div>
-					    	<div class="roll-author">Yash Belhe</div>
-				    	</div>
-				    </div>
-				    <div clas="row">
-			    	<div class="roll-body">Well, it got my immediate attention quis nostrud exercitation ullamco laboris nisi ut
-			    	Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut</div>
-			    	</div>
-
-			    </li> -->
 			</ul>
 		</div>
 	</div>
