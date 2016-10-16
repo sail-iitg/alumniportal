@@ -187,7 +187,7 @@
                   <div class="col-md-12 col-element profile-tiles" >
                     <img {% if profile.image %} src="{{profile.image.url}}" {% endif %} width="150" height="150" >
 
-                    <h4><a>{{profile.name}}</a></h4>
+                    <h4><a href="/profile/{{profile.user.username}}">{{profile.name}}</a></h4>
                     <div>Age : {{profile.age}}</div>
 					<div>Gender : {{profile.get_gender_display}}</div>
 					<div>Hostel : {{profile.hostel}}</div>

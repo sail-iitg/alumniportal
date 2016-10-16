@@ -152,3 +152,9 @@ ACHIEVEMENT_TYPE = (
     ('I','IITG'),
     ('S', 'Student'),
     )
+
+STATUS = (
+    ('Accepted', 'Accepted'),
+    ('Denied','Denied'),
+    ('Pending', 'Pending'),
+    )

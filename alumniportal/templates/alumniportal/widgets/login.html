@@ -1,7 +1,13 @@
 <!-- Please implement the select hostel and the other hostel fields -->
 <div class="row">
         {% if not request.user.is_authenticated %}
-          
+          {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
           <div class="well">
                           <form id="loginForm" method="POST" action="/login/auth/" novalidate="novalidate">{% csrf_token %}
                               <div class="form-group">
@@ -17,8 +23,6 @@
 
                               <!-- displayed if the username/password combo is wrong -->
                               <div id="loginErrorMsg" class="alert alert-error hide">Wrong username or password</div>
-
-
 
                               <div class="checkbox">
 

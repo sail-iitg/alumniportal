@@ -2,72 +2,39 @@
 
 {% block news  %}
 {% load staticfiles %}
-          <div class="col-md-9 main-content" >
-            <div class="row">
-            	<h3>News & Views</h3>
-            	<p class="news-intro">
-					Get the latest news on IITG and your fellow alums all in one place. Browse the alumni directory online, follow the latest IITG trends on social media.
-            	</p>
-            </div>
-            <div class="row " >
-              <div class="col-md-12 col-left news-container" >
-                <h3 class='column-header news-header'>News
-                  {% if is_admin %}
-                    <a href="/add/news/" class='column-addbutton'>(add)</a>
-                  {% endif %}
-                </h3>
-                {% for new in news %}
-                <div class="row news-row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if new.image %} src="{{new.image.url}}" {% endif %} alt="{{new.post_type}}" width="150" height="150" >
-                    <h4><a href="/{{ new.id }}/news/">{{new.heading}}</a></h4>
-                    <p class="col-elem-data">
-                      {% autoescape off %} {{new.content|linebreaks}} {% endautoescape %}
-                    </p>
-                  </div>
-                </div>
-                {% endfor %}
-
-                <div class="row news-row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="All">More news...</a>
-                  </div>
-                </div>
-            </div>
+<div class="col-md-9 main-content" >
+  <div class="row">
+   	<h3>News & Views</h3>
+   	<p class="news-intro">
+			Get the latest news on IITG and your fellow alums all in one place. Browse the alumni directory online, follow the latest IITG trends on social media.
+   	</p>
+  </div>
+  <div class="row " >
+    <div class="col-md-12 col-left news-container" >
+      <h3 class='column-header news-header'>News
+      {% if is_admin %}
+        <a href="/add/news/" class='column-addbutton'>(add)</a>
+      {% endif %}
+      </h3>
+      {% for new in news %}
+        <div class="row news-row">
+          <div class="col-md-12 col-element" >
+            <img {% if new.image %} src="{{new.image.url}}" {% endif %} alt="{{new.post_type}}" width="150" height="150" >
+            <h4><a href="/{{ new.id }}/news/">{{new.heading}}</a></h4>
+            <p class="col-elem-data">
+              {% autoescape off %} {{new.content|linebreaks}} {% endautoescape %}
+            </p>
           </div>
-          <div class="row">
-              <div class="col-md-12 col-left news-container" >
-              <h3 class='column-header news-header'>Achievements<!--  <a href="/add/achievement/" class='column-addbutton'>(add)</a> --></h3>
-                {% for a in achievements %}
-                <div class="row news-row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if a.image %} src="{{a.image.url}}" {% endif %} alt="{{a.post_type}}" width="150" height="150" >
-                    <h4><a>{{a.heading}}</a></h4>
-                    <h6>{{a.timestamp}}</h4>
-                    <p class="col-elem-data">
-                      {% autoescape off %} {{a.content|linebreaks}} {% endautoescape %}
-                    </p>
-                  </div>
-                </div>
-                {% endfor %}
-
-                <div class="row news-row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="/news/Achievement/">More achievements...</a>
-                  </div>
-                </div>
-            </div>
-
-          </div>
-
-          </div>
-          <div class="col-md-3 sidebar" >
-            
-          
-
-
-
-
-
-          </div>
+        </div>
+      {% endfor %}
+      <div class="row news-row">
+        <div class="col-md-12 col-element">
+          <a class='column-more' href="All">More news...</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-3 sidebar" >
+</div>
 {% endblock %}

@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^(?P<class_type>\b(news)\b)/(?P<item_type>\b(All|Research|IITG|Student|Alumni|Achievement)\b)/$', display_views.items, name='news-items'),
     # url(r'^achievement/(?P<type>\b(all|iitg|alumni|student)\b)/$', display_views.items , name='news-items'),
     url(r'^profile/$', display_views.profile , name='profile'),
+    url(r'^profile/change-password/$', display_views.change_password , name='change_password'),
     url(r'^profile/(?P<profile_id>.*)/$', display_views.view_profile , name='view-profile'),
     url(r'^search/$', display_views.search),
 

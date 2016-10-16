@@ -15,7 +15,6 @@ from constants import *
 def get_recent_objects():
     pass
 
-rolling_news = list(models.News.objects.all())[-3:]
 def home(request):
     research = models.News.objects.filter(post_type = 'R').first()
     activities = models.Activity.objects
@@ -28,13 +27,14 @@ def home(request):
         'activity': activity,
         'volunteer':volunteer,
         'community':community,
-        'rolling_news':rolling_news,
+        'rolling_news':list(models.News.objects.all())[-3:],
         })
 
 def volunteer(request):
     volunteers = models.Activity.objects.filter(activity_type = 'V')
     return render(request, 'alumniportal/volunteer.html', {
         'page':'volunteer',
+        'rolling_news':list(models.News.objects.all())[-3:],
         'volunteers':volunteers,
         })
 
@@ -43,6 +43,7 @@ def activity(request):
     return render(request,'alumniportal/activity.html', {
         'page': 'activity',
         'items':activities,
+        'rolling_news':list(models.News.objects.all())[-3:],
         'item_type':"ALL",
         })
 
@@ -53,6 +54,7 @@ def activity_items(request, item_type):
             return render(request, 'alumniportal/activity.html', {
                 'page':'activity',
                 'items':activities,
+                'rolling_news':list(models.News.objects.all())[-3:],
                 'item_type':item_type,
                 })
     return HttpResponseRedirect('/activity')
@@ -61,18 +63,27 @@ def community(request):
     post = models.Post.objects.first()
     return render(request,'alumniportal/communities.html', {
         'page': 'community',
+        'rolling_news':list(models.News.objects.all())[-3:],
         'post':post,
         })
 
 def news(request):
     admin_posts = models.News.objects
-    news = admin_posts.all()[:2]
-    achievements = admin_posts.filter(post_type = 'C')[:2]
+    news = admin_posts.all()[:5]
+    # achievements = admin_posts.filter(post_type = 'C')[:2]
     return render(request,'alumniportal/news.html', {
         'page': 'news',
         'news':news,
-        'achievements':achievements,
+        # 'achievements':achievements,
+        'rolling_news':list(models.News.objects.all())[-3:],
         'is_admin': request.user.is_superuser,
+        })
+
+@login_required
+def change_password(request):
+    print "Hi"
+    return render(request, 'alumniportal/widgets/change-password.html', {
+        'page':'change-password',
         })
 
 @login_required
@@ -80,11 +91,12 @@ def profile(request):
     try:
         profile = models.Profile.objects.get(user = request.user)
     except:
-        messages.error(request, "You can access profile unless you create your own profile.")
+        messages.error(request, "You cannot access profile unless you create your own profile.")
         return HttpResponseRedirect('/edit-profile')
     # import pdb; pdb.set_trace()
     return render(request,'alumniportal/profile.html', {
         'page': 'profile',
+        'rolling_news':list(models.News.objects.all())[-3:],
         'profile':profile,
         })
 
@@ -93,6 +105,7 @@ def view_profile(request, profile_id):
     profile = User.objects.get(username = profile_id).profile
     return render(request,'alumniportal/profile.html', {
         'page': 'profile',
+        'rolling_news':list(models.News.objects.all())[-3:],
         'profile':profile,
         })
 
@@ -112,6 +125,8 @@ def items(request, class_type, item_type):
         'page': 'items',
         'items':items,
         'item_type':item_type,
+        'class_type' : class_type,
+        'rolling_news':list(models.News.objects.all())[-3:],
         'is_admin': request.user.is_superuser,
         })
 
@@ -158,6 +173,7 @@ def search(request):
         'majors':DEPARTMENTS,
         'hostels':HOSTELS,
         'profiles':profiles,
+        'rolling_news':list(models.News.objects.all())[-3:],
         'hostels':HOSTELS,
         })
 
@@ -169,6 +185,7 @@ def news_detail(request, news_id):
         'heading': news.heading,
         'content': news.content,
         'news_id': news.id,
+        'rolling_news':list(models.News.objects.all())[-3:],
         'is_admin': request.user.is_superuser,
         })
 
@@ -184,6 +201,7 @@ def blog(request, username):
         'page': 'items',
         'posts': posts,
         'is_editor': (blog.profile.user == request.user),
+        'rolling_news':list(models.News.objects.all())[-3:],
         'username': user.username,
         })
 
@@ -199,6 +217,7 @@ def post_detail(request, username, post_id):
         'content': post.content,
         'post_id': post.id,
         'is_editor': (post.blog.profile.user == request.user),
+        'rolling_news':list(models.News.objects.all())[-3:],
         'username': username,
         'all_comments': post.postcomment_set.all(),
         'comment_form': forms.PostCommentForm(),
