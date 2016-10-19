@@ -33,7 +33,7 @@ class Profile(models.Model):
     alternate_email = models.EmailField(blank=True)   #Alternate EmailID (Non IITG)
     hostel = models.CharField(max_length=15, choices=HOSTELS, blank=True)    #Name of the hostel
     room_no = models.CharField(max_length=10, blank=True)    #Room No. of that person while living in IITG
-    roll_no = models.IntegerField(unique=True, primary_key=True)    #Row ID of the profiles
+    roll_no = models.CharField(unique=True, primary_key=True, max_length=16)    #Row ID of the profiles
     batch = models.CharField(max_length=16, choices=PASS_OUT_YEARS)  #Batch (Pass Out Year) of the person
     department = models.CharField(max_length=25, choices=DEPARTMENTS, blank=True)    #Department in which he was in IITG
     # Contact

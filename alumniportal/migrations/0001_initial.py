@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import migrations, models
+from django.db import models, migrations
 import alumniportal.models
 import ckeditor.fields
 from django.conf import settings
@@ -39,6 +39,7 @@ class Migration(migrations.Migration):
                 ('end_date', models.DateTimeField(null=True, blank=True)),
                 ('requirement', models.TextField(blank=True)),
                 ('description', models.TextField(blank=True)),
+                ('status', models.CharField(max_length=16, choices=[(b'Accepted', b'Accepted'), (b'Denied', b'Denied'), (b'Pending', b'Pending')])),
             ],
             options={
                 'ordering': ['-created'],
