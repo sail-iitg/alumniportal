@@ -201,6 +201,8 @@ def edit_iitg(request):
                         else:
                             task.save()
                             messages.success(request,'Validated Data Saved.')
+                    elif Experience.has_changed() :
+                        messages.error(request,'Please enter all necessary fields')
                 return HttpResponseRedirect('/edit-profile/iitg')
         else :
             _formset = formset(queryset=models.IITGExperience.objects.filter(profile=profile).reverse())
@@ -248,6 +250,8 @@ def edit_project(request):
                             task.profile = profile
                             task.save()
                             messages.success(request,'Validated Data Saved.')
+                    elif Project.has_changed() :
+                        messages.error(request,'Please enter all necessary fields')
                 return HttpResponseRedirect('/edit-profile/project')
         else :
             _formset = formset(queryset=models.Project.objects.filter(profile=profile).reverse())
@@ -291,6 +295,8 @@ def edit_education(request):
                         task.profile = profile
                         task.save()
                         messages.success(request,'Validated Data Saved.')
+                elif Education.has_changed() :
+                    messages.error(request,'Please enter all necessary fields')
             return HttpResponseRedirect('/edit-profile/education')
 
         
@@ -337,6 +343,8 @@ def edit_professional(request):
                         task.profile = profile
                         task.save()
                         messages.success(request,'Data Saved.')
+                elif Job.has_changed() :
+                    messages.error(request,'Please enter all necessary fields')
             return HttpResponseRedirect('/edit-profile/professional')
         else :
             _formset = formset(queryset=jobs.reverse())
@@ -386,6 +394,8 @@ def edit_achievement(request):
                             task.profile = profile
                             task.save()
                             messages.success(request,'Data Saved.')
+                    elif Achievement.has_changed() :
+                        messages.error(request,'Please enter all necessary fields')
                 return HttpResponseRedirect('/edit-profile/achievement')
         else :
             _formset = formset(queryset=models.Achievement.objects.filter(profile=profile).reverse())
@@ -487,6 +497,9 @@ def edit_news(request, news_id):
         if form.is_valid():
             task = form.save()
             return HttpResponseRedirect('/' + str(task.id) + '/news/')
+        else :
+            messages.error(request,'Please enter all necessary fields')
+
     else:
         form = forms.AddNewsForm(instance=news)
         form.helper.form_action = '/' + str(news_id) + '/edit/news/'
@@ -537,6 +550,8 @@ def edit_post(request, username, post_id):
             task = form.save()
             url = '/' + username + '/blog/' + str(task.id) + '/post/'
             return HttpResponseRedirect(url)
+        else :
+            messages.error(request,'Please enter all necessary fields')
     else:
         form = forms.AddPostForm(instance=post)
         form.helper.form_action = '/' + username + '/blog/' + str(post_id) + '/edit/post/'

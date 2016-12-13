@@ -5,13 +5,18 @@
 <div class="col-md-9 main-content" >
 	<div class="panel panel-default">
 		<div class="panel-heading profile-panel-heading"> 
-			<h3>My Profile</h3>
+			<h3>{% if is_self_profile %}My Profile
+				{% else %} {{profile.name}}'s Profile{% endif %}</h3>
 			<ul class="list-inline">
+			{% if is_self_profile %}
 			  <li><a href="/edit-profile">Edit</a></li>
 			  <li>|</li>
+			{% endif %}
 			  <li><a href="/{{ profile.user.username }}/blog/">Blog</a></li>
+			{% if is_self_profile %}
 			  <li>|</li>
 			  <li><a href="/profile/change-password">Change Password</a></li>
+			{% endif %}
 			</ul>
 		</div>
 		<div class="panel-body">	

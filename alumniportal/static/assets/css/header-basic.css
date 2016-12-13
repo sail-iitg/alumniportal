@@ -37,7 +37,7 @@ header .header-limiter nav a{
 	text-align:left;
 	/*border-right:  1px solid  #5a1112;*/
 	padding: 5px 50px 2px 0px;
-	font-family: "Ubuntu", serif;
+	font-family: 'Roboto', serif;
 	border-bottom:3px solid #f4f2ea ;
 }
 header .clear-nav-li{
@@ -71,7 +71,7 @@ header .header-limiter nav a.selected {
 
 header .header-title h1 a{
 	color: #f4f2ea; 
-	font-family: "Ubuntu", serif;
+	font-family: 'Roboto', serif;
 	padding:0px 0px 0px 0px;
 	text-decoration:none;
 }

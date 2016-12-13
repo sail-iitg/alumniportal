@@ -2,34 +2,31 @@
 
 {% block volunteer  %}
 {% load staticfiles %}
-          <div class="col-md-9 main-content" >
-            <div class="row">
+<div class="col-md-9 main-content" >
+  <div class="news-container">
+    <div class="news-header">
+      <h3 class="news-main-title">Volunteering Activities <a href="/volunteer/add/" class='column-addbutton'>(add)</a></h3>
+      <p class="news-intro">
+          Some Content lots of volunteering activity. A major development was the Peace Corps in the United States in 1960. When President Lyndon B. Johnson declared a War on Poverty in 1964, volunteer opportunities started to expand and continued into the next few decades.
+      </p>
+    </div>
+    <div class="clearfix" >
+      <!-- This is a template news row -->
+      {% for v in volunteers %}
+        <div class="clearfix news-row">
+          <div class="col-md-12 col-element" >
+            <img class="news-image" {% if v.image %} src="{{v.image.url}}" {% endif %} alt="{{v.post_type}}{{v.achievement_type}}" width="150" height="150" >
 
-                <h3>Volunteering Activities <a href="/volunteer/add/" class='column-addbutton'>(add)</a></h3>
-                <p class="news-intro">
-                    Some Content
-                </p>
-            </div>
-            <div class="row " >
-                <!-- This is a template news row -->
-                {% for v in volunteers %}
-                <div class="row news-row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if v.image %} src="{{v.image.url}}" {% endif %} alt="{{v.post_type}}{{v.achievement_type}}" width="150" height="150" >
-
-                    <h4><a>{{v.name}}</a></h4>
-                    <div class="news-date">{{v.created}}</div>
-                    <p class="col-elem-data">
-                      {{v.description}} 
-                    </p>
-                  </div>
-                </div>
-                {% endfor %}
-                <!-- News row end -->
-
+            <h4 class="news-title"><a>{{v.name}}</a></h4>
+            <div class="news-date">{{v.created}}</div>
+            <p class="col-elem-data">
+              {{v.description}} 
+            </p>
           </div>
-         
-
-          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
 {% endblock %}

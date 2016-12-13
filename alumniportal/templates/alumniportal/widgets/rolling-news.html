@@ -1,21 +1,16 @@
-<div class="row">
-	<div class="well">
-		<div id = "rolling-news">
-			<ul class="roll-ul">
-			    {% for rnews in rolling_news %}
-			    <li>
-			    	<div class="row">
-							<!-- <div class="roll-image col-md-3"><img {% if rnews.image %} src="{{rnews.image.url}}" {% endif %} alt="{{rnews.post_type}}{{rnews.achievement_type}}" width="60" height="50" ></div> -->
-							<div class="col-md-9 col-md-offset-1 roll-title-cont">
-								<div class="roll-title"><a href="/{{ rnews.id }}/news/">{{ rnews.heading }}</a></div>
-								<div class="roll-body">
-									{% autoescape off %}{{ rnews.content|linebreaks|truncatechars:180 }}{% endautoescape %}
-								</div>
-				    	</div>
-				    </div>
-			    </li>
-			    {% endfor %}
-			</ul>
-		</div>
-	</div>
+<div class="row" id = "rolling-news">
+	<h3 class="roll-main-title">News</h3>
+	<ul class="roll-ul">
+	    {% for rnews in rolling_news %}
+	    <li>
+	    	<div class="roll-cont">
+				<!-- <div class="roll-image col-md-3"><img {% if rnews.image %} src="{{rnews.image.url}}" {% endif %} alt="{{rnews.post_type}}{{rnews.achievement_type}}" width="60" height="50" ></div> -->
+				<div class="roll-title"><a href="/{{ rnews.id }}/news/">{{ rnews.heading }}</a></div>
+				<div class="roll-body">
+					{% autoescape off %}{{ rnews.content|linebreaks|truncatechars:180 }}{% endautoescape %}
+				</div>
+		    </div>
+	    </li>
+	    {% endfor %}
+	</ul>
 </div>

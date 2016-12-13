@@ -3,22 +3,21 @@
 {% block activity  %}
 {% load staticfiles %}
           <div class="col-md-9 main-content" >
-            <div class="row">
-
-                <h3>Activities</h3>
+          <div class="news-container">
+            <div class="news-header">
+                <h3 class="news-main-title">Activities</h3>
                 <p class="news-intro">
                     Some Content about the activities. 
                 </p>
             </div>
-            <div class="row " >
-              <div class="col-md-12 col-left news-container" >
-                <h3 class='column-header news-header'>{{item_type|upper}} <a href="/activity/add" class='column-addbutton'>(add)</a></h3>
+            <div class="clearfix">
+                <h3 class='news-header'>{{item_type|upper}} <a href="/activity/add" class='column-addbutton'>(add)</a></h3>
                 
                 <!-- This is a template news row -->
                 {% for item in items %}
                 
-                  <div class="col-md-6 col-element" >
-                    <img 
+                  <div class="col-md-6 col-element stick-left" >
+                    <img  class="news-image" 
                     {% if item.image %} 
                       src="{{item.image.url}}" 
                     {% else %}
@@ -29,7 +28,7 @@
                       <a class="news-topic-teaser" href="/activity/{{item.get_activity_type_display}}">{{item.get_activity_type_display}}</a>
                     </div>
                     {% endif %}
-                    <h4><a>{{item.name}}</a></h4>
+                    <h4 class="news-title"><a>{{item.name}}</a></h4>
                     <div class="news-date">{{item.created}}</div>
                     <p class="col-elem-data">
                       {{item.purpose}} 
@@ -38,11 +37,10 @@
                 {% endfor %}
                 <!-- News row end -->
 
-          </div>
          
 
           </div>
-
+          </div>
           </div>
          
 {% endblock %}

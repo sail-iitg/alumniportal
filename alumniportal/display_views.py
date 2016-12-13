@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 import time
 from datetime import datetime
 from constants import *
@@ -19,7 +20,7 @@ def home(request):
     research = models.News.objects.filter(post_type = 'R').first()
     activities = models.Activity.objects
     activity = activities.first()
-    volunteer = activities.filter(activity_type = 'V')
+    volunteer = activities.filter(activity_type = 'V').first()
     community = models.Post.objects.first() #When Clubs get implemented change Post to ClubPosts (there would be some more changes too)
     return render(request,'alumniportal/main-body.html', {
         'page': 'home',
@@ -81,7 +82,6 @@ def news(request):
 
 @login_required
 def change_password(request):
-    print "Hi"
     return render(request, 'alumniportal/widgets/change-password.html', {
         'page':'change-password',
         })
@@ -98,6 +98,7 @@ def profile(request):
         'page': 'profile',
         'rolling_news':list(models.News.objects.all())[-3:],
         'profile':profile,
+        'is_self_profile': True,
         })
 
 @login_required
@@ -107,6 +108,7 @@ def view_profile(request, profile_id):
         'page': 'profile',
         'rolling_news':list(models.News.objects.all())[-3:],
         'profile':profile,
+        'is_self_profile': False,
         })
 
 def items(request, class_type, item_type):
