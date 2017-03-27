@@ -58,6 +58,16 @@ coverage.xml
 
 # Django stuff:
 *.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+
+.env
+db.sqlite3
+alumniportal/migrations
+alumniportal/media
+
 
 # Sphinx documentation
 docs/_build/
