@@ -60,6 +60,12 @@ CLUBS = (
     ('Manthan', 'Manthan'),
     ('Kriti', 'Manthan'),
 )
+
+PERMISSION = (
+    ('X', 'Private'),
+    ('O', 'Public'),
+)
+
 GENDERS = (
     ('m', 'Male'),
     ('f', 'Female'),
@@ -127,9 +133,9 @@ HOSTELS = (
 ACTIVITY_TYPE = (
     ('E', 'Event'),
     ('M', 'Alumni Meet'),
-    ('V', 'Start a Volunteering Activity'),
-    ('S', 'Take a Survey'),
-    ('P', 'Float a Project'),
+    ('V', 'Volunteering'),
+    ('S', 'Survey'),
+    ('P', 'Project'),
     )
 
 POST_TYPE = (

@@ -1,16 +1,23 @@
-<div class="row" id = "rolling-news">
-	<h3 class="roll-main-title">News</h3>
-	<ul class="roll-ul">
-	    {% for rnews in rolling_news %}
-	    <li>
-	    	<div class="roll-cont">
-				<!-- <div class="roll-image col-md-3"><img {% if rnews.image %} src="{{rnews.image.url}}" {% endif %} alt="{{rnews.post_type}}{{rnews.achievement_type}}" width="60" height="50" ></div> -->
-				<div class="roll-title"><a href="/{{ rnews.id }}/news/">{{ rnews.heading }}</a></div>
-				<div class="roll-body">
-					{% autoescape off %}{{ rnews.content|linebreaks|truncatechars:180 }}{% endautoescape %}
-				</div>
-		    </div>
-	    </li>
-	    {% endfor %}
-	</ul>
+<div class="right_top">
+	<div class="right_header">News</div>
+	<div id="rolling-news">	
+		<ul>
+		    {% for rnews in rolling_news %}
+		    <li>
+		    	<div style="margin: 1%">
+					<div><a style="color: #d1b629; font-size: large" href="/news/{{ rnews.id }}/"><b>{{ rnews.heading }}</b></a></div>
+					<div >
+						{% autoescape off %}{{ rnews.content|linebreaks|truncatechars:180 }}{% endautoescape %}
+					</div>
+			    </div>
+		    </li>
+		    {% endfor %}
+		</ul>
+	</div>
 </div>
+
+<script>
+  $(function() {
+    $('#rolling-news').vTicker();
+  });
+</script>

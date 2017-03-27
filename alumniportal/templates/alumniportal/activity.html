@@ -1,46 +1,26 @@
 {% extends "base.html" %}
 
-{% block activity  %}
+{% block items  %}
 {% load staticfiles %}
-          <div class="col-md-9 main-content" >
-          <div class="news-container">
-            <div class="news-header">
-                <h3 class="news-main-title">Activities</h3>
-                <p class="news-intro">
-                    Some Content about the activities. 
-                </p>
-            </div>
-            <div class="clearfix">
-                <h3 class='news-header'>{{item_type|upper}} <a href="/activity/add" class='column-addbutton'>(add)</a></h3>
-                
-                <!-- This is a template news row -->
-                {% for item in items %}
-                
-                  <div class="col-md-6 col-element stick-left" >
-                    <img  class="news-image" 
-                    {% if item.image %} 
-                      src="{{item.image.url}}" 
-                    {% else %}
-                      src="{{item.images.first.image.url}}"
-                    {% endif %} alt="{{item.activity_type}}" width="150" height="150" >
-                    {% if item_type == "ALL" %}
-                    <div class="teaser-container">
-                      <a class="news-topic-teaser" href="/activity/{{item.get_activity_type_display}}">{{item.get_activity_type_display}}</a>
-                    </div>
-                    {% endif %}
-                    <h4 class="news-title"><a>{{item.name}}</a></h4>
-                    <div class="news-date">{{item.created}}</div>
-                    <p class="col-elem-data">
-                      {{item.purpose}} 
-                    </p>
-                  </div>
-                {% endfor %}
-                <!-- News row end -->
+<link rel="stylesheet" href="{% static 'assets/css/news.css' %}">
 
-         
-
-          </div>
-          </div>
-          </div>
+<div class="col-md-9 main-content" >
+  <div class="news-container">
+    <div class="news-header">
+      <h4><b>Activity</b></h4>
+      <p class="news-intro">
+  Get the latest news on IITG and your fellow alums all in one place. Browse the alumni directory online, follow the latest IITG trends on social media.
+      </p>
+      <hr>
+        <h5 class='news-type'>
+          <b>{{item_type | upper}}</b>
+          {% if add_right %}
+            <a href="/add/activity/" class='column-addbutton'>(ADD)</a>
+          {% endif %}
+        </h5> 
+    </div>
+    {% block item_list %}{% endblock %}
+  </div>
+</div>
          
 {% endblock %}

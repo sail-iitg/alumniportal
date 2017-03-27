@@ -41,7 +41,10 @@
 
 img{ max-width:100%;}
 
-a, a:hover, a:active{ outline:0px !important}
+a, a:hover, a:active{
+	outline:0px !important;
+    text-decoration:none;
+}
 
 @font-face {
   font-family: 'FontAwesome';
@@ -54,11 +57,10 @@ a, a:hover, a:active{ outline:0px !important}
 /* Primary Styles
 ---------------------------------*/
 body {
-	background:#fff;
 	font-family: 'Open Sans', sans-serif;
 	font-size:14px;
 	font-weight:normal;
-	color:#888888;
+	background-color: #e4e4e4;
 	margin:0;
 }
 h2{
@@ -69,7 +71,7 @@ h2{
 	letter-spacing: -1px;
 	margin:0 0 15px 0;
 	text-align:center;
-	text-transform:uppercase;
+	/*text-transform:uppercase;*/
 }
 h3{
 	font-family: 'Montserrat', sans-serif;
@@ -82,10 +84,10 @@ h3{
 h6{
 	font-size:16px;
 	color:#888888;
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Montserrat',sans-serif;
 	font-weight:400;
 	text-align:center;
-	margin:0 0 60px 0;
+	margin:0 0 0px 0;
 }
 p{
 	line-height:24px;
@@ -95,22 +97,33 @@ p{
 /* Header Styles
 ---------------------------------*/
 
-.header{
-	text-align:center;
-	background:url(../img/pw_maze_black_2X.png) left top repeat;
-	padding:280px 0;
+header{
+	width: 90%;
+	height: 120px;
+	margin: auto;
+	/* Enable flex mode. */
+	display: flex; 
+	/* Spread out the elements inside the header. */
+	justify-content: space-between;
+
+	/* Align items vertically in the center. */
+	/*align-items: center;*/
 }
+
+@media (max-width: 1000px){
+	header{
+		/* Reverse the axis of the header, making it vertical. */
+		flex-direction: row;
+		
+		/* Align items to the begining (the left) of the header. */
+		align-items: flex-start;
+	}
+}
+
 .logo{
-	width:130px;
-	margin:0 auto 35px;
-}
-.header h1{
-	font-family: 'Montserrat',sans-serif;
-	font-size:50px;
-	font-weight:400;
-	letter-spacing: -1px;
-	margin:0 0 22px 0 ;
-	color:#fff;
+	width:75px;
+	margin: auto;
+	float: left;
 }
 
 .we-create{
@@ -177,11 +190,16 @@ color: #fff;
 	padding:0px;
 	box-shadow:0 4px 5px -3px #ececec;
 	position:relative;
-	background:#fff;
+	background:#e4e4e4;
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: #b3b3b3;
 }
 .main-nav{
-	text-align:center;
-	margin:10px 0 0px;
+	width: 90%;
+	text-align:left;
+	/*margin:10px 0 0px;*/
+	margin: auto;
 	padding:0;
 	list-style:none;
 }
@@ -191,7 +209,7 @@ color: #fff;
 }
 .main-nav li a{
 	display:inline-block;
-	color:#636363;
+	color:#333333;
 	text-transform:uppercase;
 	font-family: 'Montserrat', sans-serif;
 	text-decoration: none;
@@ -212,8 +230,8 @@ color: #fff;
 }
 
 .main-section{
-	padding:60px 110px 20px 110px;
-	background: #FCFCFC;
+	padding:60px 5% 20px 5%;
+	background: #e4e4e4;
 }
 
 
@@ -772,7 +790,7 @@ border: 2px solid #fff;
 ---------------------------------*/
 
 .footer{
-	background:url(../img/pw_maze_black_2X.png) left top repeat;
+	/*background:url(../img/pw_maze_black_2X.png) left top repeat;*/
 	padding:35px 0 35px;
 }
 .footer-logo{

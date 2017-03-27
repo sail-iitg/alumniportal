@@ -1,0 +1,41 @@
+{% extends file %}
+{% block item_list %}
+{% load staticfiles %}
+    {% for item in items %}
+    <div class="cards">
+        {% if item.image %}
+        <div class="card_left">
+          <img  src="{{item.image.url}}" >
+        </div>
+        {% endif %}
+      <div class="card_middle" {% if item.image %} style="width: 80%" {% else %} style="width: 100%" {% endif %}>
+        <div class="title_bar">
+          <h4><a href="/{{class_type}}/{{ item.id }}/">{{item.heading}}{{item.achievement}}{{item.name}}</a></h4>
+          <h6><a href="/{{class_type}}/{{item.get_activity_type_display}}{{item.get_post_type_display}}{{item.get_achievement_type_display}}">{{item.get_activity_type_display}}{{item.get_post_type_display}}{{item.get_achievement_type_display}}
+          </a></h6>
+        <div class="news-date">{{item.timestamp}}{{item.year}}</div>
+        </div>
+            {% autoescape off %} {{item.content}}{{item.description}} {% endautoescape %}
+      </div>
+<!--       <div class="card_right">
+        
+      </div> -->
+    </div>
+
+    {% endfor %}
+    <div class="pagination">
+    <span class="step-links">
+        {% if items.has_previous %}
+            <a href="?page={{ items.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ items.number }} of {{ items.paginator.num_pages }}.
+        </span>
+
+        {% if contacts.has_next %}
+            <a href="?page={{ items.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+    </div>
+{% endblock %}

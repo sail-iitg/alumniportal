@@ -3,233 +3,178 @@
 {% block search %}
 {% load staticfiles %} 
 
-<link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
-<link rel="stylesheet" href="{% static 'assets/css/profile1.css' %}">
-<link rel="stylesheet" href="{% static 'assets/css/search.css' %}">
-<link rel="stylesheet" href="{% static 'assets/css/jquery.dataTables.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/forms.css' %}">
+<script type="text/javascript" src="{% static 'assets/js/forms.js' %}"></script>
 <div class="col-md-4 main-content" >
-	<div class="panel panel-default">
-		<div class="panel-heading profile-panel-heading"> 
+		<div class="form-panel-heading"> 
 			<h3>Advanced Search</h3>
 		</div>
-		<div class="panel-body" id="advanced_search_sidebar">
-			<form role="form" method="POST" action="/search/">
+		<div>
+			<form role="form" method="POST" action="/search/" id="search">
 			{% csrf_token %}
-      			
-      			    <div class="panel-group" id="accordion">
-				        <div class="panel panel-default">
-				            <div class="panel-heading">
-				                <h4 class="panel-title">
-				                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Personal Information</a>
-				                </h4>
+      			<input type="hidden" name="page" id="page" value="">
+      			    <div id="accordion">
+				        <div class="panel form-panel">
+				            <div class="form-heading">
+				                <h5 class="form-title">
+				                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Personal Information</a>
+				                </h5>
 				            </div>
 				            <div id="collapseOne" class="panel-collapse collapse in">
 				                <div class="panel-body">
-									<div class="col-md-12 form-group">
-								 		<div class="label-container col-md-4">
-
-									 		<label for="name">Name :</label>
-
-										</div>
-								 		<div class="form-element-container col-md-8">
-									 		<input type="text" class="form-control" name="name" id="name">
-								 		</div>
+									<div class="col-md-12 form-group float-label-control">
+									 		<label for="name">Name</label>
+                        					<input type="text" value="{{request.POST.name}}" class="form-control" name="name" id="name" placeholder="Name">
 									</div>
-									<div class="col-md-12 form-group ">
-								 		<div class="label-container col-md-4">
-
+									<div class="col-md-12 form-group float-label-control">
 									 		<label for="city">City</label>
-
-										</div>
-								 		<div class="form-element-container col-md-8">
-									 		<input type="text" class="form-control" name="city" id="city">
-								 		</div>
+									 		<input type="text" value="{{request.POST.city}}" class="form-control" name="city" id="city" placeholder="City">
 									</div>
-									<div class="col-md-12 form-group">
-								 		<div class="label-container col-md-4">
-
+									<div class="col-md-12 form-group float-label-control">
 									 		<label for="country">Country</label>
-
-										</div>
-								 		<div class="form-element-container col-md-8">
-									 		<input type="text" class="form-control" name="country" id="country">
-								 		</div>
+									 		<input type="text" value="{{request.POST.country}}" class="form-control" name="country" id="country" placeholder="Country">
 									</div>
-									<div class="col-md-12 form-group">
-											<div class="form-radio-container col-md-12">
-										 		<div class="row">
+									<div class="col-md-12 form-group" >
+											<!-- <div class="form-radio-container col-md-12"> -->
+										 		<!-- <div class="row"> -->
 
-										 			<label class="label-container col-md-4" for="gender">Gender</label>
-										 			<div class="form-element container col-md-8" id="wrapper_clear">   
+										 			<label class="col-md-4" for="gender">Gender</label>
+										 			<!-- <div class="form-element container col-md-8" id="wrapper_clear">    -->
 
-												    <label for="gender-m" class="col-md-6">
-												      <input type="radio" name="gender" id="gender-m" value="m">
+												    <label for="gender-m"  class="col-md-4">
+												      <input type="radio" name="gender" id="gender-m" value="m" {% if 'm' in request.POST.gender %} checked="checked" {% endif %}>
 													      <label class="form-radio-option-label">Male</label>
 												    </label>
-												    <label for="gender-f" class="col-md-6">
-												      <input type="radio" name="gender" id="gender-f" value="f">
+												    <label for="gender-f"  class="col-md-4">
+												      <input type="radio" name="gender" id="gender-f" value="f" {% if  'f' in request.POST.gender %} checked="checked" {% endif %}>
 												      <label class="form-radio-option-label">Female</label>
 												    </label>
-												    </div>
-												</div>
-											</div>
+												    <!-- </div> -->
+												<!-- </div> -->
+											<!-- </div> -->
 									</div>
-									<div class="col-md-12 row form-group">
-										<div class="form-container">
-									        <label for="select-hostel">Select Hostel:</label>
-
-										 		<input list="select-hostel" name="hostel" type="text" class="form-control" placeholder="Hostel in IITG">
-
-										        <datalist id="select-hostel" size="3">
-											        {% for hostel in hostels %}
-											        <option value="{{hostel.0}}">{{hostel.1}}</option>
-											        {% endfor %}
-										        </datalist>
-
-										</div>	
+									<div class="col-md-12 form-group float-label-control">
+								        <label for="select-hostel">Hostel</label>
+								 		<input type="text" value="{{request.POST.hostel}}" class="form-control" list="select-hostel" name="hostel" id="hostel" placeholder="Hostel">
 									</div>
+									<!-- Datalist outside the div element so that float-label-control can work properly. -->
+							        <datalist id="select-hostel" size="3">
+								        {% for hostel in hostels %}
+								        <option value="{{hostel.0}}">{{hostel.1}}</option>
+								        {% endfor %}
+							        </datalist>
 									
 				                </div>
 				            </div>
 				        </div>
-				        <div class="panel panel-default">
-				            <div class="panel-heading">
-				                <h4 class="panel-title">
-				                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Academic Information</a>
+				        <div class="panel form-panel">
+				            <div class="form-heading">
+				                <h4 class="form-title">
+				                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Academic Information</a>
 				                </h4>
 				            </div>
 				            <div id="collapseTwo" class="panel-collapse collapse">
 				                <div class="panel-body">
-				                	<h5>IITG Degree :</h5>
-									<div class="col-md-12 row form-group">
-								 		<div class="form-container">
-									 		<label class="control-label" for="datalist-batch">Batch :</label>
-										 		<input list="batch" name="batch" type="text" class="form-control" placeholder="Pass out year and Program">
-										 		<datalist id="batch" size="10"> 
-										 		{% for batch in batches %}
-										 			<option value="{{batch.0}}">{{batch.1}}</option>
-										 		{% endfor %}
-										 		</datalist>
-										</div>
+				                	<h5><b>IITG Degree :</b></h5>
+									<div class="col-md-12 row form-group float-label-control">
+								 		<label for="batch">Batch :</label>
+								 		<input type="text" value="{{request.POST.batch}}" class="form-control" list="batch" name="batch" id="batch" placeholder="Pass out year and Program">
 									</div>
-									<div class="col-md-12 row form-group">
-										<div class="form-container">
-									        <label for="select-major">Select Majors:</label>
+							 		<datalist id="batch" size="10"> 
+							 		{% for batch in batches %}
+							 			<option value="{{batch.0}}">{{batch.1}}</option>
+							 		{% endfor %}
+							 		</datalist>
+									<div class="col-md-12 row form-group float-label-control">
+									    <label for="select-major">Select Majors:</label>
+										<input type="text" value="{{request.POST.department}}" class="form-control" list="depts" name="department" placeholder="Department/Major">
 
-										        <input list="depts" name="department" type="text" class="form-control" placeholder="Department/Major">
-										 		<datalist id="depts" size="10"> 
-										 		{% for major in majors %}
-										 			<option value="{{major.1}}"></option>
-										 		{% endfor %}
-										 		</datalist>
-
-										</div>	
 									</div>
-									<h5>Other Degree :</h5>
-									<div class="col-md-12 row form-group">
-								 		<div class="form-container">
-									 		<label class="control-label" for="datalist-batch">Institue Name :</label>
-									 		<input type="text" name="institute" class="form-control" placeholder="Name of Institute">
-										</div>
+							 		<datalist id="depts" size="10"> 
+							 		{% for major in majors %}
+							 			<option value="{{major.1}}"></option>
+							 		{% endfor %}
+							 		</datalist>
+									<h5><b>Other Degree :</b></h5>
+									<div class="col-md-12 row form-group float-label-control">
+								 		<label for="datalist-batch">Institue Name :</label>
+								 		<input type="text" value="{{request.POST.institute}}" class="form-control" name="institute" placeholder="Name of Institute">
 									</div>
 				                </div>
 				            </div>
 				        </div>
-				        <div class="panel panel-default">
-				            <div class="panel-heading">
-				                <h4 class="panel-title">
-				                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Professional Information</a>
+				        <div class="panel form-panel">
+				            <div class="form-heading">
+				                <h4 class="form-title">
+				                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Professional Information</a>
 				                </h4>
 				            </div>
 				            <div id="collapseThree" class="panel-collapse collapse">
 				                <div class="panel-body">
-				                	<h5>Current Job</h5>
-									<div class="col-md-12 form-group">
-								 		<div class="label-container col-md-4">
-
+				                	<h5><b>Current Job</b></h5>
+									<div class="col-md-12 form-group float-label-control">
 									 		<label for="name">Company :</label>
-
-										</div>
-								 		<div class="form-element-container col-md-8">
-									 		<input type="text" class="form-control" name="currentJob__company" id="currentJob">
-								 		</div>
+									 		<input type="text" value="{{request.POST.currentJob__company}}" class="form-control" name="currentJob__company" id="currentJob">
 									</div>
-				                	<h5>Past Jobs</h5>
-									<div class="col-md-12 form-group">
-								 		<div class="label-container col-md-4">
-
+				                	<h5><b>Past Jobs</b></h5>
+									<div class="col-md-12 form-group float-label-control">
 									 		<label for="name">Company :</label>
-
-										</div>
-								 		<div class="form-element-container col-md-8">
-									 		<input type="text" class="form-control" name="company" id="company">
-								 		</div>
+									 		<input type="text" value="{{request.POST.company}}" class="form-control" name="company" id="company">
 									</div>
 
 				                </div>
 				            </div>
 				        </div>
 				    </div>
-					<button class="btn btn-primary btn-primary" id="adv_search_button">Submit</button>
+					<button class="form-btn btn" id="adv_search_button">Submit</button>
 			
 			</form>
 		</div>
 					      		
-	</div>
 </div>
 <div class="col-md-8" style="padding:0px;">
 <div class="col-md-12" style="padding:0px;">
-<div class="profile-tiles-container">
-	{% for profile in profiles %}
-	
-	<div class="col-md-4 " style="margin-bottom:10px;" >
-                <div class="row ">
-                  <div class="col-md-12 col-element profile-tiles" >
-                    <img {% if profile.image %} src="{{profile.image.url}}" {% endif %} width="150" height="150" >
-
-                    <h4><a href="/profile/{{profile.user.username}}">{{profile.name}}</a></h4>
-                    <div>Age : {{profile.age}}</div>
-					<div>Gender : {{profile.get_gender_display}}</div>
-					<div>Hostel : {{profile.hostel}}</div>
-					<div>City : {{profile.city}}</div>
-                  </div>
-                </div>
-    </div>
-    
-    
+<div class="profile-tiles-container" id="results">
+	{% for item in profiles %}
+		<div class="cards">
+		    {% if item.image %}
+		    <div class="card_left">
+		      <img  src="{{item.image.url}}" >
+		    </div>
+		    {% endif %}
+		  <div class="card_middle" {% if item.image %} style="width: 80%" {% else %} style="width: 100%" {% endif %}>
+	      	<h4><a style="float: none" href="/profile/{{item.user.username}}">{{item.name}}</a></h4>
+	        <div>Age : {{item.date_of_birth}}</div>
+			<div>Gender : {{item.get_gender_display}}</div>
+			<div>Hostel : {{item.hostel}}</div>
+			<div>City : {{item.city}}</div>
+		  </div>
+		</div>
 
 	{% endfor %}
+	<div class="pagination">
+	<span class="step-links">
+	    {% if profiles.has_previous %}
+	        <!-- <a href="?page={{ profiles.previous_page_number }}">previous</a> -->
+	        <button href="" onclick="document.getElementById('page').value = {{profiles.previous_page_number}}; document.getElementById('search').submit()" >previous</button>
+	    {% endif %}
+
+	    <span class="current">
+	        Page {{ profiles.number }} of {{ profiles.paginator.num_pages }}.
+	    </span>
+
+	    {% if profiles.has_next %}
+	        <button href="" onclick="document.getElementById('page').value = {{profiles.next_page_number}};document.getElementById('search').submit()" >next</buttom>
+	    {% endif %}
+	</span>
+	</div>
+
+
 </div>
 
-	<!-- <table id="searchtable" class="display" cellspacing="0" width="100%">
-		<thead>
-			<tr>
-				<th>Name</th>
-				<th>Age</th>
-				<th>Gender</th>
-				<th>Hostel</th>
-				<th>City</th>
-			</tr>
-		</thead>
-		<tbody>
-		
-			{% for profile in profiles%}
-			<tr>
-				<td>{{profile.name}}</td>
-				<td>{{profile.age}}</td>
-				<td>{{profile.gender}}</td>
-				<td>{{profile.hostel}}</td>
-				<td>{{profile.city}}</td>
-			</tr>
-			{% endfor %}
-			
-		</tbody>
-	</table> -->
 </div>
 </div>
 
-<script src="{% static 'assets/js/jquery.dataTables.min.js' %}"></script>
-<script type="text/javascript">
-	$("#searchtable").DataTable();
-</script>
+
+
 {% endblock %}

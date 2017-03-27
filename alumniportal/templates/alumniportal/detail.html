@@ -1,0 +1,318 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<head>
+    <link rel="stylesheet" href="{% static 'assets/css/detail.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/carousel.css' %}">
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <!-- <script src="{% static 'assets/js/bootstrap.js' %}"></script> -->
+    <script src="{% static 'assets/js/blog-comments.js' %}"></script>
+    <!-- <link rel="stylesheet" href="{% static 'assets/css/main-body.css' %}"> -->
+    
+</head>
+<body style="background-color: #e4e4e4;">
+<header>
+    <div class="header">
+        <div class="col-md-1"><a href="/"><img src="{% static 'assets/images/logo.png' %}"></a></div>
+        <div class="col-md-9"><a href="/{{class_type}}"><h5><b>{{class_type|upper}}</b></h5></a></div>
+        <div class="col-md-2"><a href="/profile/{{request.user.username}}"><h4>Hi {{request.user.profile.name}}</h4></a></div>
+    </div>
+</header>
+{% if "news" in class_type %}
+{% if item.image %} 
+<div class="row">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+        <!-- Carousel indicators -->
+
+        <!-- Wrapper for carousel items -->
+
+        <div class="carousel-inner">
+            <div class="item active">
+               <img onclick="openModal(this)" class="carousel-inner" src="{{item.image.url}}" alt="First Slide">
+            </div>
+        </div>
+
+        <!-- Carousel controls  -->
+<!--         <a class="carousel-control left" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>  -->
+
+    </div> 
+</div>
+{% endif %}
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    
+    <div class="detail-panel-heading" style=""> 
+        <div class="banner">
+            <h2>{{item.heading}}</h2>
+            <a href="edit">
+            <div class="edit">
+            {% if edit_right %}
+            <b>Edit</b>
+            {% endif %}
+            </div>
+            </a>
+        </div>
+        <h6 class="news-date">{{item.timestamp}}</h6>
+        <!-- <div> -->
+        <h6 style="color: #e7e7e7">Posted <b>{{item.get_post_type_display}}</b> News</h6>
+        <!-- </div> -->
+    </div>
+    <div class="panel-body">
+        {% autoescape off %} {{ item.content }} {% endautoescape %}
+    </div>
+</div>
+<div class="col-md-1"></div>
+
+{% elif "activity" in class_type %}
+
+<div class="row">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+        <!-- Carousel indicators -->
+
+        <!-- Wrapper for carousel items -->
+
+        <div class="carousel-inner">
+            <div class="item active">
+               <img onclick="openModal(this)" class="carousel-inner" src="{{item.image.url}}" alt="First Slide">
+            </div>
+        </div>
+
+        <!-- Carousel controls  -->
+<!--         <a class="carousel-control left" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>  -->
+
+    </div> 
+</div>
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    
+    <div class="detail-panel-heading" style=""> 
+        <div class="banner">
+            <h2>{{item.name}}</h2>
+            <a href="edit">
+            <div class="edit">
+            {% if edit_right %}
+            <b>Edit</b>
+            {% endif %}
+            </div>
+            </a>
+        </div>
+        <h6 class="news-date">{{item.created}}</h6>
+        <!-- <div> -->
+        <hr>
+            <div class="posted-by">
+                <img src="{{item.profile.blog.profile_picture.url}}">
+                <h4><b>{{item.profile.name}}</b></h4>
+                <h6 style="color: #e7e7e7">Posted <b>{{item.get_activity_type_display}}</b> Activity</h6>
+            </div>
+        <hr>
+        <!-- </div> -->
+    </div>
+    <div class="panel-body">
+        <h4><b>Purpose</b></h4>
+            {{item.purpose}}
+        <h4><b>Description</b></h4>
+        {% autoescape off %} {{ item.description }} {% endautoescape %}
+    </div>
+</div>
+<div class="col-md-1"></div>
+
+{% elif "community" in class_type %}
+
+{% if item.image %} 
+<div class="row">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+        <!-- Carousel indicators -->
+
+        <!-- Wrapper for carousel items -->
+
+        <div class="carousel-inner">
+            <div class="item active">
+               <img onclick="openModal(this)" class="carousel-inner" src="{{item.image.url}}" alt="First Slide">
+            </div>
+        </div>
+
+        <!-- Carousel controls  -->
+<!--         <a class="carousel-control left" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>  -->
+
+    </div> 
+</div>
+{% endif %}
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    
+    <div class="detail-panel-heading" style=""> 
+        <div class="banner">
+            <h2>{{item.heading}}</h2>
+            <a href="edit">
+            <div class="edit">
+            {% if edit_right %}
+            <b>Edit</b>
+            {% endif %}
+            </div>
+            </a>
+        </div>
+        <h6 class="news-date">{{item.timestamp}}</h6>
+        <!-- <div> -->
+        <h6 style="color: #e7e7e7">Posted in <b>{{item.club.name}}</b> Club</h6>
+        <!-- </div> -->
+    </div>
+    <div class="panel-body">
+        {% autoescape off %} {{ item.content }} {% endautoescape %}
+    </div>
+</div>
+<div class="col-md-1"></div>
+
+{% elif "blog" in class_type %}
+
+{% if item.image %}
+<div class="row">
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+        <!-- Carousel indicators -->
+
+        <!-- Wrapper for carousel items -->
+
+        <div class="carousel-inner">
+            <div class="item active">
+               <img onclick="openModal(this)" class="carousel-inner" src="{{item.image.url}}" alt="First Slide">
+            </div>
+        </div>
+
+        <!-- Carousel controls  -->
+<!--         <a class="carousel-control left" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="carousel-control right" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>  -->
+
+    </div> 
+</div>
+{% endif %}
+<div class="col-md-1"></div>
+<div class="col-md-10">
+    
+    <div class="detail-panel-heading" style=""> 
+        <div class="banner">
+            <h2>{{item.heading}}</h2>
+            <a href="edit">
+            <div class="edit">
+            {% if edit_right %}
+            <b>Edit</b>
+            {% endif %}
+            </div>
+            </a>
+        </div>
+        <h6 class="news-date">{{item.timestamp}}</h6>
+        <!-- <div> -->
+        <hr>
+            <div class="posted-by">
+                <a href="/profile/{{item.blog.profile.user.username}}"><img 
+                {% if item.blog.profile_picture %}
+                src="{{item.blog.profile_picture.url}}"
+                {% else %}
+                src="{{MEDIA_URL}}default_pic.png"
+                {% endif %} 
+                >
+                <h6 style="color: #e7e7e7">Posted by:</h6>
+                <h4><b>{{item.blog.profile.name}}</b></h4></a>
+            </div>
+        <hr>
+        <!-- </div> -->
+    </div>
+    <div class="panel-body">
+        {% autoescape off %} {{ item.content | linebreaks }} {% endautoescape %}
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <h4>Comments</h4><hr>
+            <div id="comments-list">
+                {% for post_comment in all_comments %}
+                <div id="comment-{{ post_comment.id }}" class="row">
+                    <a href="/profile/{{post_comment.author.user.username}}/"><div class="col-xs-3 col-sm-3 comment-author"><b>{{ post_comment.author.name }}</b></div></a>
+                    <div class="col-xs-9 col-sm-9 comment-text">{{ post_comment.comment }}</div>
+                </div><hr>
+                {% endfor %}
+            </div>
+
+            {% if user_has_profile %}
+            <form method="POST" id="comment-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ comment_form.comment }}
+                </div>
+                <div id="results"></div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            {% else %}
+            <div id="fill-profile">
+                <a href="/edit-profile/">Fill your personal details</a> to comment.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="col-md-1"></div>
+
+{% endif %}
+<div id="myModal" class="modal">
+
+  <!-- The Close Button -->
+  <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
+</div>
+<script type="text/javascript">
+    function openModal(image){
+        var modal = document.getElementById('myModal');
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var img = document.getElementById('myImg');
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+            modal.style.display = "block";
+            modalImg.src = image.src;
+            captionText.innerHTML = image.alt;
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+
+
+    $(document).keypress(function(e) { 
+        if (e.keyCode == 27) { 
+            $("#myModal").fadeOut(500);
+            //or
+            window.close();
+        } 
+    });
+
+
+    }
+</script>         
+
+
+</body>
+

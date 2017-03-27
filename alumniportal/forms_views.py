@@ -12,18 +12,19 @@ from django.core.files import File
 from django.forms.models import modelformset_factory
 from django.db import IntegrityError, transaction
 from django.core.exceptions import ObjectDoesNotExist
-######EDITED
 import time, os
 import json
 
-###maybe we can use different functions for each subcategory in profile later
+def has_blog(user):
+    return hasattr(user, 'profile') and hasattr(user.profile, 'blog')
 
-####my edits
+@user_passes_test(has_blog, login_url = '/edit-profile/')
 @login_required(login_url='/login/')
 def add_activity(request):
     """
     display form to alumnus to add an Activity
     """
+    print "In add activity"
     if hasattr(request.user, 'profile'):
         profile = request.user.profile
     else:
@@ -51,6 +52,9 @@ def add_activity(request):
             for image in image_list:
                 models.ActivityImage.objects.create(activity=task, image=image).save()
             messages.success(request, 'Activity Created')
+            return HttpResponseRedirect('/activity')
+        else:
+            messages.error(request, 'Fill the required fields.')
     else:
         form = forms.AddActivityForm()
         # remove volunteering activity from activity type
@@ -100,69 +104,26 @@ def add_volunteer(request):
                    'form': form,
                    'volunteer': True})
 
-########NOT SHOWING UP IN ADMIN
-# @login_required(login_url='/login/')
-# def blog_details_edit(request):
-#     """
-#     display form to alumnus for editing profile
-#     """
-
-#     # get user profile if exists
-#     if hasattr(request.user, 'profile'):
-#         profile = request.user.profile
-#     else:
-#         print("Create Profile before adding blog")
-#         return HttpResponseRedirect('/')
-
-#     if request.method == "POST":
-#         if profile:
-#             form = forms.BlogDetailsEdit(request.POST, request.FILES, instance=profile)
-#         else:
-#             form = forms.BlogDetailsEdit(request.POST, request.FILES)
-#         if form.is_valid():
-#             task = form.save(commit=False)
-#             task.profile = profile
-#             image_list = request.FILES.getlist('images_field')
-#             videos_list = request.FILES.getlist('videos_field')
-#             #####NOW GET DIRECTORY TO STORE IMAGES
-#             print(videos_list)
-#             print(image_list)
-#             print(task.profile.name)
-#             task.save()
-#             messages.success(request, 'Blog details updated.')
-#     else:
-#         if profile:
-#             form = forms.BlogDetailsEdit(instance=profile)
-#         else:
-#             form = forms.BlogDetailsEdit()
-#     return render(request, 'alumniportal/blog-details-edit.html',
-#                   {'page': 'blog-details-edit',
-#                    'form': form})
-
-
-@login_required(login_url='/login/')
-def blog_details_edit(request):
-    """
-    display form to alumnus for editing blog details
-    """
+@login_required
+def edit_blog_details(request):
+    # get user profile if exists
     if hasattr(request.user.profile, 'blog'):
         blog = request.user.profile.blog
-        # print(blog.about_me)
     else:
-        blog= None
-    # get user profile if exists
+        blog = None
+
     if hasattr(request.user, 'profile'):
         profile = request.user.profile
     else:
-        print("Create Profile before adding blog")
-        return HttpResponseRedirect('/')
-
+        messages.error("Fill up the Personal Details.")
+        return HttpResponseRedirect('/edit-profile/personal')
 
     if request.method == "POST":
         if blog:
-            form = forms.BlogDetailsEdit(request.POST, request.FILES, instance=blog)
+            form = forms.EditBlogDetails(request.POST, request.FILES, instance=blog)
         else:
-            form = forms.BlogDetailsEdit(request.POST, request.FILES)
+            form = forms.EditBlogDetails(request.POST, request.FILES)
+        # import pdb; pdb.set_trace()
         if form.is_valid():
             task = form.save(commit=False)
             task.profile = profile
@@ -170,12 +131,16 @@ def blog_details_edit(request):
             messages.success(request, 'Blog details saved.')
     else:
         if blog:
-            form = forms.BlogDetailsEdit(instance=blog)
+            form = forms.EditBlogDetails(instance=blog)
         else:
-            form = forms.BlogDetailsEdit()
-    return render(request, 'alumniportal/blog-details-edit.html',
-                  {'page': 'blog-details-edit',
-                   'form': form})
+            form = forms.EditBlogDetails()
+    return render(request, 'alumniportal/edit-profile.html', {
+        'page': 'edit-profile',
+        'form': form,
+        'profile':'blog',
+        'username': request.user.username,
+        'no_profile': not profile,
+        })
 
 @login_required
 def edit_iitg(request):
@@ -193,17 +158,22 @@ def edit_iitg(request):
             if _formset.is_valid():
                 instances = _formset.save(commit=False)
                 for Experience in _formset:
-                    if Experience.has_changed() and Experience.is_valid():
-                        task = Experience.save(commit=False)
-                        task.profile = profile
-                        if Experience.changed_data == ['DELETE']:
-                            task.delete()
+                    if Experience.has_changed():
+                        if Experience.is_valid():
+                            task = Experience.save(commit=False)
+                            task.profile = profile
+                            if Experience.changed_data == ['DELETE']:
+                                task.delete()
+                            else:
+                                task.save()
+                                messages.success(request, 'Validated Data Saved.')
                         else:
-                            task.save()
-                            messages.success(request,'Validated Data Saved.')
-                    elif Experience.has_changed() :
-                        messages.error(request,'Please enter all necessary fields')
+                            messages.error(request, 'Please enter all necessary fields')
+                    else:
+                        messages.success(request, 'No changes made.')
                 return HttpResponseRedirect('/edit-profile/iitg')
+            else:
+                messages.error(request, 'Please enter all necessary fields')
         else :
             _formset = formset(queryset=models.IITGExperience.objects.filter(profile=profile).reverse())
         helper = forms.IITGExperienceFormSetHelper()
@@ -345,6 +315,7 @@ def edit_professional(request):
                         messages.success(request,'Data Saved.')
                 elif Job.has_changed() :
                     messages.error(request,'Please enter all necessary fields')
+                    print messages
             return HttpResponseRedirect('/edit-profile/professional')
         else :
             _formset = formset(queryset=jobs.reverse())
@@ -432,9 +403,10 @@ def edit_personal(request):
             task.last_edited = datetime.now()
             if not profile:
                 task.user = request.user
-                models.Blog.objects.create(profile=task).save()
-            else:
-                task.save()
+            if profile:
+                if not hasattr(request.user.profile, 'blog'):
+                    models.Blog.objects.create(profile=task).save()
+            task.save()
             messages.success(request, 'Profile saved.')
     else:
         if profile:
@@ -477,36 +449,14 @@ def add_news(request):
             return HttpResponseRedirect('/' + str(task.id) + '/news/')
     else:
         form = forms.AddNewsForm()
-    return render(request, 'alumniportal/add-news.html',
-                  {'page': 'add-news',
-                   'form': form})
+    return render(request, 'alumniportal/add-edit.html',{
+        'page': 'add',
+        'class_type' : 'news',
+        'form': form,
+        'edit_right' : False,
+        })
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def edit_news(request, news_id):
-    """
-    Display form for editing news and redirect to published news
-    """
-    try:
-        news = models.News.objects.get(id=news_id)
-    except models.News.DoesNotExist:
-        return HttpResponse('News (id: ' + str(news_id) + ') does not exist.')
-
-    if request.method == 'POST':
-        form = forms.AddNewsForm(request.POST, request.FILES, instance=news)
-        if form.is_valid():
-            task = form.save()
-            return HttpResponseRedirect('/' + str(task.id) + '/news/')
-        else :
-            messages.error(request,'Please enter all necessary fields')
-
-    else:
-        form = forms.AddNewsForm(instance=news)
-        form.helper.form_action = '/' + str(news_id) + '/edit/news/'
-        return render(request, 'alumniportal/add-news.html',
-                  {'page': 'add-news',
-                   'form': form,
-                   'edit': True})
 
 
 @login_required(login_url='/login/')
@@ -532,6 +482,58 @@ def add_post(request, username):
                    'form': form})
 
 
+def can_edit(request, item, class_type):
+    if class_type == 'news':
+        return request.user.is_superuser
+    elif class_type == 'activity':
+        return (item.profile.user == request.user)
+    elif class_type == 'community':
+        return (item.member.user == request.user)
+
+def can_add(request, class_type):
+    if class_type == 'news':
+        return request.user.is_superuser
+    else:
+        return request.user
+
+def add(request, class_type, id):
+    pass
+# @user_passes_test(lambda u: u.is_superuser)
+def edit(request, class_type, id):
+    """
+    Display form for editing news and redirect to published news
+    """
+    try:
+        item = models.class_model_fn[class_type].objects.get(id=id)
+    except models.class_model_fn[class_type].DoesNotExist:
+        return HttpResponse('Does not exist.')
+
+    edit_right = can_edit(request, item, class_type)
+    if edit_right:
+        print "Edit right True"
+        if request.method == 'POST':
+            form = forms.class_form_fn[class_type](request.POST, request.FILES, instance=item)
+            # import pdb; pdb.set_trace()
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect('/' + class_type + '/' + str(item.id))
+            else :
+                form.helper.form_action = '/' + class_type + '/' + str(item.id) + '/edit/'
+                messages.error(request,'Please enter all necessary fields correctly.')
+        else:
+            form = forms.class_form_fn[class_type](instance=item)
+        form.helper.form_action = '/' + class_type + '/' + str(item.id) + '/edit/'
+    else:
+        print "Edit right False"
+        messages.error('Sorry! You do not have the permission to edit the requested form.')
+        return HttpResponseRedirect('/' + class_type + '/add')
+    return render(request, 'alumniportal/add-edit.html', {
+            'page': 'add',
+            'form': form,
+            'edit_right': edit_right,
+            'class_type': class_type,
+        })
+
 @login_required(login_url='/login/')
 def edit_post(request, username, post_id):
     """
@@ -548,17 +550,17 @@ def edit_post(request, username, post_id):
         form = forms.AddPostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             task = form.save()
-            url = '/' + username + '/blog/' + str(task.id) + '/post/'
+            url = '/' + username + '/blog/post/' + str(task.id)
             return HttpResponseRedirect(url)
-        else :
-            messages.error(request,'Please enter all necessary fields')
+        else:
+            messages.error(request,'Please enter all necessary fields correctly')
     else:
         form = forms.AddPostForm(instance=post)
-        form.helper.form_action = '/' + username + '/blog/' + str(post_id) + '/edit/post/'
-        return render(request, 'alumniportal/add-post.html',
-                  {'page': 'add-post',
-                   'form': form,
-                   'edit': True})
+    form.helper.form_action = '#'
+    return render(request, 'alumniportal/add-post.html',
+              {'page': 'add-post',
+               'form': form,
+               'edit': True})
 
 
 @login_required(login_url='/login/')

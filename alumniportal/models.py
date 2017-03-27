@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 from constants import *
 import os
+from datetime import datetime
 from time import strftime
 # from datetime import datetime
 # Create your models here.
@@ -14,14 +15,17 @@ from time import strftime
 #     }
 # datetime_dir = strftime("%Y%m%d_%H%M%S")
 def get_image_path(instance, filename):
+    filename, file_extension = os.path.splitext(filename)
     if type(instance).__name__ == "Blog":
-        return os.path.join('profile_picture', str(instance.profile.roll_no), filename)
+        return os.path.join(str(instance.profile.user.username), 'profile_picture', str(datetime.now().strftime("%Y%m%d_%H%M%S")) + file_extension)
     elif type(instance).__name__ == "Post":
-        return os.path.join('posts', instance.blog.profile.user.username, str(instance.timestamp.strftime("%Y%m%d_%H%M%S")), filename)
-    elif type(instance).__name__ == "ActivityImage":
-        return os.path.join('activity', instance.activity.activity_type, instance.activity.profile.user.username, str(instance.activity.created.strftime("%Y%m%d_%H%M%S")), filename)
+        return os.path.join(str(instance.blog.profile.user.username), 'posts', str(instance.timestamp.strftime("%Y%m%d_%H%M%S")) + file_extension)
+    elif (type(instance).__name__ == "ActivityImage"):
+        return os.path.join(str(instance.username), 'activity', instance.activity.activity_type, str(instance.activity.created.strftime("%Y%m%d_%H%M%S")) + file_extension)
     elif type(instance).__name__ == "News":
-        return os.path.join('news',str(instance.timestamp.strftime("%Y%m%d_%H%M%S")), filename)
+        return os.path.join('news', instance.heading, str(instance.timestamp.strftime("%Y%m%d_%H%M%S")) + file_extension)
+    elif (type(instance).__name__ == "Activity"):
+        return os.path.join(str(instance.profile.user.username), 'activity', instance.activity_type, str(instance.created.strftime("%Y%m%d_%H%M%S")) + file_extension)
 
 class Profile(models.Model):
     profile_type = models.CharField(max_length=16, choices=PROFILE_TYPE, blank=True)
@@ -29,7 +33,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, blank=True)  #webmail ID of the person (it acts as the username)
     name = models.CharField(max_length=50)  #Full Name with the designation
     gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
-    date_of_birth = models.DateTimeField(blank=True, null=True)  #Date of Birth
+    date_of_birth = models.DateField(blank=True, null=True)  #Date of Birth
     alternate_email = models.EmailField(blank=True)   #Alternate EmailID (Non IITG)
     hostel = models.CharField(max_length=15, choices=HOSTELS, blank=True)    #Name of the hostel
     room_no = models.CharField(max_length=10, blank=True)    #Room No. of that person while living in IITG
@@ -65,7 +69,7 @@ class Blog(models.Model):
     # profile_id = models.IntegerField(unique=True, primary_key=True) #Unique to the person
     profile = models.OneToOneField('Profile', blank=True)  #Row ID of Blog Class
     # TODO: Shift profile_picture to Profile model instead of Blog
-    profile_picture = models.ImageField(blank=True, null=True, upload_to=get_image_path)   #Profile Picture of the person
+    profile_picture = models.ImageField(blank=True, null=True, upload_to=get_image_path, default=os.path.join('default_pic.png'))   #Profile Picture of the person
     videos = models.TextField(blank=True) #List of path to the videos that the person with profile_id = roll_no has uploaded
     # posts = models.TextField(blank=True)      #List of lists. [["TimeStamp", "Header of Post", "Content"]]. It will be updated from the end.
     about_me = models.TextField(blank=True)   #About me
@@ -178,12 +182,12 @@ class Activity(models.Model):
     end_date = models.DateTimeField(blank=True, null=True)   #
     requirement = models.TextField(blank=True)    #Requirements if any
     description = models.TextField(blank=True)    #Short summary of the activity. How to be performed etc
-    peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved.
+    # peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved.
     recent = models.ForeignKey(Recent, blank=True, null=True, related_name='activities')
-    status = models.CharField(max_length=16, choices = STATUS)
+    status = models.CharField(max_length=16, choices = STATUS, blank = True)
 
     def __unicode__(self):
-        return str(self.created)
+        return str(self.id) + " " + str(self.created)
 
     class Meta:
         ordering = ['-created']
@@ -193,17 +197,27 @@ class ActivityImage(models.Model):
     image = models.ImageField(upload_to=get_image_path)
 
 class Club(models.Model):
-    name = models.CharField(max_length=32)  #Name of the club
+    name = models.CharField(max_length=32, primary_key=True)  #Name of the club
     description = models.TextField()    #Descripton of the club
     members = models.ManyToManyField(Profile, blank=True)    #List of the profile_id of the cluv
+    group_type = models.CharField(max_length = 2, choices = PERMISSION)
+
+    def __unicode__(self):
+        return self.name
 
 class ClubPost(models.Model):
-    member = models.ForeignKey(Profile, blank=True, related_name='clubposts')
+    member = models.ForeignKey(Profile, related_name='clubposts')
     heading = models.CharField(max_length=64)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     club = models.ForeignKey(Club, related_name='club')
     # image = models.ImageField(blank=True, null=True, upload_to = get_image_path)
+    def __unicode__(self):
+        return self.heading
+
+class ClubPostImage(models.Model):
+    clubpost = models.ForeignKey(ClubPost, related_name='images')
+    image = models.ImageField(blank = True, null=True)
 
 class News(models.Model):
     post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
@@ -232,7 +246,7 @@ class Post(models.Model):
     blog = models.ForeignKey(Blog)
     timestamp = models.DateTimeField(auto_now_add=True)
     heading = models.CharField(max_length=128)
-    content = models.TextField()
+    content = RichTextField()
     image = models.ImageField(blank=True, null=True, upload_to=get_image_path)
     recent = models.ForeignKey(Recent, null=True, blank=True, related_name='posts')
 
@@ -256,3 +270,5 @@ class PostComment(models.Model):
         dt = self.post.timestamp
         return '%s %s-%s-%s %02d:%d %s...' % (self.post.blog.profile.name,
             dt.year, dt.month, dt.day, dt.hour, dt.minute, self.comment[:20])
+
+class_model_fn = {'news': News, 'activity': Activity, 'community': ClubPost}

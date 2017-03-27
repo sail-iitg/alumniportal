@@ -2,28 +2,38 @@
 
 {% block items  %}
 {% load staticfiles %}
-          <div class="col-md-9 main-content" >
-            <div class="row " >
-              <div class="col-md-12 col-left news-container" >
-                <h3 class='column-header news-header'>Blog
-                  {% if is_editor %}
-                    <a href="/{{ username }}/blog/add/post/" class='column-addbutton'>(add post)</a>
-                  {% endif %}
-                </h3>
-                {% for post in posts %}
-                <div class="row news-row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if post.image %} src="{{ post.image.url }}" {% endif %} width="150" height="150">
-                    <h4><a href="/{{ username }}/blog/{{ post.id }}/post/">{{post.heading}}</a></h4>
-                    <div class="post-date">{{ post.timestamp }}</div>
-                    <p class="col-elem-data">
-                      {% autoescape off %} {{ post.content }} {% endautoescape %}
-                    </p>
-                  </div>
-                </div>
-                {% endfor %}
-              </div>
-            </div>
-          </div>
+<link rel="stylesheet" href="{% static 'assets/css/communities.css' %}">
+<div class="col-md-9 main-content" >
+  <div class="news-container">  
+    <h3 class="news-header">My Blog
+      {% if is_editor %}
+        <a href="/blog/{{ username }}/post/add" class='column-addbutton'>(add post)</a>
+      {% endif %}
+    </h3>
+  {% for post in posts %}
+  <div class="cards" >
+    {% if post.image %}
+    <div class="card_left">
+          <img src="{{ post.image.url }}" width="150" height="150">
+    </div>
+    {% endif %} 
+    <div class="card_middle" {% if post.image %} style="width: 80%" {% else %} style="width: 100%" {% endif %}>
+          
+          <div class="title_bar">
+          <a href="/blog/{{ username }}/post/{{ post.id }}/">
+            <h4 style="margin-top: 5px; margin-bottom: 5px;">
+              {{post.heading}}
+            </h4>
+          </a>
+            <h6 class="news-date" style="text-align: left;">
+              {{post.timestamp}}
+            </h6>
+        </div>
+          {% autoescape off %} {{ post.content|linebreaks }} {% endautoescape %}
+    </div>
+  </div>
+ {% endfor %}
+  </div>
+</div>
 
 {% endblock %}

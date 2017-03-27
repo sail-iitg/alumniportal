@@ -15,16 +15,14 @@ from django.core.validators import RegexValidator
 from datetime import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
 
-
 from multiupload.fields import MultiFileField
-
 
 class EditProfileForm(forms.ModelForm):
     """
     Form for alumnus to edit profile
     """
     date_of_birth = forms.DateTimeField(widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime":False}))
-
+    roll_no = forms.IntegerField(disabled = True)
     class Meta:
         model = models.Profile
         exclude = ('blog_id', 'user', 'current_job_id', 'room_no')
@@ -39,8 +37,8 @@ class EditProfileForm(forms.ModelForm):
                 'class': 'form-control',
                 'tabindex': index+1,
             })
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
+        # for field in self.fields.values():
+            # field.error_messages = {'required':''}
         self.helper = FormHelper()
 
         self.helper.form_id = 'id_edit_profile_form'
@@ -77,7 +75,7 @@ class EditProfileForm(forms.ModelForm):
                     'twitter_link',
                 ),
             ),
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+            FormActions(Submit('Save', 'Save', css_class='btn-primary')),
         )
 
 #### my edits
@@ -93,11 +91,11 @@ class AddActivityForm(forms.ModelForm):
         exclude = ('profile','created','images')
     def __init__(self, *args, **kwargs):
         super(AddActivityForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
+        # for field in self.fields.values():
+            # field.error_messages = {'required':''}
         self.helper = FormHelper()
         self.helper.form_id = 'id_add_activity_form'
-        self.helper.form_class = 'form-horizontal col-md-10'
+        self.helper.form_class = 'form-horizontal col-md-12'
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-9'
         self.helper.form_method = 'post'
@@ -110,40 +108,47 @@ class AddActivityForm(forms.ModelForm):
             'end_date',
             'requirement',
             'description',
-            'peoples_involved',
-            Field('files', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+            # 'peoples_involved',
+            Field('files', style="border : none; -webkit-box-shadow: none; box-shadow: none; width: 100%; padding: 0px;"),
+            FormActions(Submit('Save', 'Save', css_class='form-btn', style = 'width: 30%;')),
         )
 
-class BlogDetailsEdit(forms.ModelForm):
+class EditBlogDetails(forms.ModelForm):
     """
     Form to create a new Activity
     """
-    images_field = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5)
-    videos_field = MultiFileField(max_num = 10, min_num = 1, max_file_size = 1024*1024*5)
+    images_field = MultiFileField(max_num = 10, min_num = 0, max_file_size = 1024*1024*5, required=False)
+    videos_field = MultiFileField(max_num = 10, min_num = 0, max_file_size = 1024*1024*5, required=False)
 
     class Meta:
         model = models.Blog
         exclude = ('profile','videos','images','recent')
     def __init__(self, *args, **kwargs):
-        super(BlogDetailsEdit, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
+        super(EditBlogDetails, self).__init__(*args, **kwargs)
+        # for field in self.fields.values():
+            # field.error_messages = {'required':''}
         self.helper = FormHelper()
         self.helper.form_id = 'id_add_activity_form'
         self.helper.form_class = 'form-horizontal col-md-10'
         self.helper.label_class = 'col-md-3'
         self.helper.field_class = 'col-md-9'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/blog/edit/'
+        self.helper.form_action = '/edit-profile/blog/'
         self.helper.layout = Layout(
-            'profile_picture',
-            'about_me',
-            'interests',
-            'message_to_the_world',
-            Field('images_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
-            Field('videos_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+            Div(
+                # AccordionGroup('Introduction',
+                'profile_picture',
+                Field('about_me', style = "width: 90%; height: 100px;"),
+                Field('interests', style = "width: 90%; height: 100px;"),
+                Field('message_to_the_world', style = "width: 90%; height: 100px;"),
+                # ),
+                # AccordionGroup('Photos/Videos',
+                Field('images_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
+                Field('videos_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
+                style = "background-color: #fff; padding: 10px",
+                # ),
+            ),
+            FormActions(Submit('Save', 'Save', css_class='btn-primary')),
         )
 
 
@@ -163,11 +168,12 @@ class IITGExperienceFormSetHelper(FormHelper):
                 'club_name',
                 'experience',
                 Field('DELETE'),
-                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                FormActions(Submit('Save', 'Save', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
         )
         self.render_required_fields = True
+        self.html5_required = True
 
 class ProjectFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
@@ -187,7 +193,7 @@ class ProjectFormSetHelper(FormHelper):
                 'end_date',
                 Field('DELETE'),
 
-                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                FormActions(Submit('Save', 'Save', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
         )
@@ -212,7 +218,7 @@ class EducationFormSetHelper(FormHelper):
                 'department',
                 'specialization',
                 Field('DELETE'),
-                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                FormActions(Submit('Save', 'Save', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
         )
@@ -236,7 +242,7 @@ class JobFormSetHelper(FormHelper):
             'end_date',
             'city',
                 Field('DELETE'),
-                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                FormActions(Submit('Save', 'Save', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
         )
@@ -258,21 +264,11 @@ class AchievementFormSetHelper(FormHelper):
             'year',
             'description',
                 Field('DELETE'),
-                FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+                FormActions(Submit('Save', 'Save', css_class='btn-primary')),
                 css_class="edit_form_container",
             ),
         )
         self.render_required_fields = True
-
-
-
-
-
-
-
-
-
-
 
 class AddNewsForm(forms.ModelForm):
     """
@@ -286,8 +282,8 @@ class AddNewsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddNewsForm, self).__init__(*args, **kwargs)
 
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
+        # for field in self.fields.values():
+            # field.error_messages = {'required':''}
         self.helper = FormHelper()
         self.helper.form_id = 'id_add_news_form'
         self.helper.form_class = 'form-horizontal col-md-12'
@@ -300,7 +296,7 @@ class AddNewsForm(forms.ModelForm):
             'heading',
             'content',
             'image',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+            FormActions(Submit('Save', 'Save', css_class='form-btn', style = 'width: 30%;')),
         )
 
 
@@ -317,8 +313,8 @@ class AddPostForm(forms.ModelForm):
         username = kwargs.pop('username', None)
         super(AddPostForm, self).__init__(*args, **kwargs)
 
-        for field in self.fields.values():
-            field.error_messages = {'required':''}
+        # for field in self.fields.values():
+            # field.error_messages = {'required':''}
         self.helper = FormHelper()
         self.helper.form_id = 'id_add_post_form'
         self.helper.form_class = 'form-horizontal col-md-12'
@@ -329,7 +325,7 @@ class AddPostForm(forms.ModelForm):
             'heading',
             'content',
             'image',
-            FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+            FormActions(Submit('Save', 'Save', css_class='form-btn', style = 'width: 30%;')),
         )
 
 
@@ -351,6 +347,10 @@ class PostCommentForm(forms.ModelForm):
             ),
         }
 
+class AddClubPostForm(forms.ModelForm):
+    pass
+
+class_form_fn = {'news': AddNewsForm, 'activity': AddActivityForm, 'community': AddClubPostForm}
 # class EditEducationForm(forms.ModelForm):
 #     """
 #     Form for alumnus to edit education details (a tab within the profile edit page)
@@ -382,7 +382,7 @@ class PostCommentForm(forms.ModelForm):
 #             'end_year',
 #             'department',
 #             'specialization',
-#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#             FormActions(Submit('Save', 'Save', css_class='btn-primary')),
 #         )
 
 # class EditIITGExperienceForm(forms.ModelForm):
@@ -410,7 +410,7 @@ class PostCommentForm(forms.ModelForm):
 #         self.helper.layout = Layout(
 #             'club_name',
 #             'experience',
-#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#             FormActions(Submit('Save', 'Save', css_class='btn-primary')),
 #         )
 
 # class EditProjectForm(forms.ModelForm):
@@ -441,7 +441,7 @@ class PostCommentForm(forms.ModelForm):
 #             'description',
 #             'start_date',
 #             'end_date',
-#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#             FormActions(Submit('Save', 'Save', css_class='btn-primary')),
 #         )
 
 
@@ -473,7 +473,7 @@ class PostCommentForm(forms.ModelForm):
 #             'achievement_type',
 #             'year',
 #             'description',
-#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#             FormActions(Submit('Save', 'Save', css_class='btn-primary')),
 #         )
 
 
@@ -507,7 +507,7 @@ class PostCommentForm(forms.ModelForm):
 #             'start_date',
 #             'end_date',
 #             'city',
-#             FormActions(Submit('Save', 'Save changes', css_class='btn-primary')),
+#             FormActions(Submit('Save', 'Save', css_class='btn-primary')),
 #         )
 
 

@@ -1,26 +1,34 @@
-<link rel="stylesheet" href="css/header-basic.css">
-<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
-<link href="http://fonts.googleapis.com/css?family=Vollkorn" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=Ubuntu:normal" rel="stylesheet" type="text/css">
-<header class="header-basic">
-			<div class="header-title">
-				<h1>Alumni</h1>
-			</div>
-			<div class="header-limiter navbar">
-				<div class="navbar-inner">
-					<nav class='link-container'>
-						<ul class="nav">
-							<li><a href="#">News</a></li>
-							<li><a href="#">Activities</a></li>
-							<li><a href="#">Let's Join Hands</a></li>
-							<li><a href="#">Community</a></li>
-							<li><a href="#" class="last-header-item">Profile</a></li>
-						</ul>
-					
-						
-					</nav>
-				</div>
-			</div>
-
+{% load staticfiles %}
+<header>
+    <div class="header-left">
+        <img src="{% static 'assets/images/logo.png' %}" class="logo">
+        <ul>
+            <li><h2><a href="/">PLEXUS</a></h2></li>
+            <li><h6><a href="www.iitg.ac.in"><b>Indian Institute of Technology Guwahati</b></a></h6></li>
+            <li><h6><a href="#">Wish I were here again!</a></h6></li>
+        </ul>
+    </div>
+    <div class="header-right">
+        <a href="#">
+            <div id="right_header">
+              <img src="{% static 'assets/images/donation.jpg' %}">
+              <h4>Make a<br><b>Gift</b></h4>
+            </div>
+        </a>
+    </div>
 </header>
 
+<nav class="main-nav-outer scroll-to-fixed-fixed" id="topnav" style="z-index: 1000;">
+    <!--<div class="container">-->
+    <ul class="main-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/news/All">News</a></li>
+        <li><a href="/activity/">Activities</a></li>
+        <li><a href="/community">Community</a></li>
+        <li><a href="/news/Achievement">Medals & Honours</a></li>
+        <li><a href="/search">Search</a></li>
+        <li><a href="/profile">Profile</a></li>
+    </ul>
+    <a class="res-nav_click" href="#"><i class="fa-bars"></i></a>
+<!--</div>-->
+</nav>

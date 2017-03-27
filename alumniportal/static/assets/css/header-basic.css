@@ -2,8 +2,34 @@ header .header-basic {
 	background-color: #9a1c1f;
 	box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.15);
 	padding: 5px 0px;
-	height:87px;
+	height:120px;
 	box-sizing: border-box;
+}
+
+header a {
+	color: #333333;
+}
+
+header .header-left {
+	margin: auto 0 auto 0;
+}
+header .header-left ul{
+	list-style: none;
+	float: right;
+	margin: auto;
+}
+
+header .header-left h2{
+	text-align: left;
+	margin: auto;
+}
+
+header .header-left h6{
+	text-align: left;
+	margin: auto;
+	font-weight: 700;
+	font-size: 12px;
+	font-family: 'Nimbus Sans L';
 }
 
 header .header-limiter {
@@ -80,10 +106,41 @@ header .header-limiter .filler {
 		width=100%;
 }
 
-
+#right_header{
+  top:0px;
+  float: right;
+  height:80px;
+  width:180px;
+  background-color:#d1b628;
+}
+#right_header img{
+  position:relative;
+  top:25px;
+  left:30px;
+  float: left;
+  height:40px;
+  width:40px;
+}
+#right_header h4{
+	text-align: left;
+	color: #337ab7;
+  position: relative;
+  top:16px;
+  left:35px;  
+}
 /* For the headers to look good, be sure to reset the margin and padding of the body */
 
 body {
 	margin:0;
 	padding:0;
+}
+
+.fa-bars::before {
+    content: "\f0c9";
+}
+
+i {
+    font-family: 'FontAwesome';
+    font-weight: normal;
+    font-style: normal;
 }

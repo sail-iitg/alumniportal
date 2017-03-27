@@ -2,143 +2,160 @@
 
 {% block profile  %}
 {% load staticfiles %}
+<link rel="stylesheet" href="{% static 'assets/css/profile.css' %}"> <!--  -->
+
 <div class="col-md-9 main-content" >
 	<div class="panel panel-default">
 		<div class="panel-heading profile-panel-heading"> 
 			<h3>{% if is_self_profile %}My Profile
 				{% else %} {{profile.name}}'s Profile{% endif %}</h3>
 			<ul class="list-inline">
+			  <li><a style="color: white;" href="/blog/{{ profile.user.username }}/"><b>Blog</b></a></li>
+			  <li style="color: white;">|</li>
 			{% if is_self_profile %}
 			  <li><a href="/edit-profile">Edit</a></li>
-			  <li>|</li>
 			{% endif %}
-			  <li><a href="/{{ profile.user.username }}/blog/">Blog</a></li>
 			{% if is_self_profile %}
-			  <li>|</li>
+			  <li style="color: white;">|</li>
 			  <li><a href="/profile/change-password">Change Password</a></li>
 			{% endif %}
 			</ul>
 		</div>
 		<div class="panel-body">	
-		  <ul class="nav nav-tabs profile-tabs">
+		  
+            <div id="tabs">
+              <ul class="nav nav-tabs profile-tabs" style="display: table;">
+                <li class="active"><a  data-toggle="tab"href="#tab-summary">Summary</a></li>
+                <li><a  data-toggle="tab"href="#tab-personal">Personal</a></li>
+                <li><a  data-toggle="tab"href="#tab-professional">Professional</a></li>
+                <li><a  data-toggle="tab"href="#tab-education">Education</a></li>
+                <li><a  data-toggle="tab"href="#tab-iitg">IITG</a></li>
+                <li><a  data-toggle="tab"href="#tab-view-all">View All</a></li>
+              </ul>
+            </div>
+
+
+
+<!-- 		  <ul class="nav nav-tabs profile-tabs">
 		    <li class="active"><a data-toggle="tab" href="#tab-summary">Summary</a></li>
 		    <li><a data-toggle="tab" href="#tab-personal">Personal</a></li>
 		    <li><a data-toggle="tab" href="#tab-professional">Professional</a></li>
 		    <li><a data-toggle="tab" href="#tab-education">Education</a></li>
 		    <li><a data-toggle="tab" href="#tab-iitg">IITG</a></li>
 		    <li><a data-toggle="tab" href="#tab-view-all">View All</a></li>
-		  </ul>
+		  </ul> -->
 		  <div class="tab-content">
 		    <div id="tab-summary" class="tab-pane fade in active profile-summary">
-		    	<div class="panel panel-default">
-					<div class="panel-heading">  
-						<div class="row summary-info-row">
-							<div class="col-md-4 summary-img">
-								{% if profile.blog.profile_picture %}
-									<img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
-								{% endif %}
+				<div class="panel-body">  
+					<div class="row summary-info-row">
+						<div class="col-md-4 ">
+							<div class="summary-img">
+							<img width="150" height="150"  
+							{% if profile.blog.profile_picture %}
+								src="{{profile.blog.profile_picture.url}}"
+							{% endif %}
+							>
 							</div>
-							<div class="col-md-8">
-								<h4 class="profile-summary-name">
-									{{profile.name}}
-								</h4>
-								<p>{{profile.get_department_display}}{% if profile.department %}, {% endif %}{{profile.batch}} <br>
-									{{profile.city}}{% if profile.city %}, {% endif %}{{profile.country}}
-								</p>
-							</div>
-		      			</div>	
-					</div>
-					<div class="panel-body">
-			      		<div class="bs-callout bs-callout-default">
-							 <h4>Profile Summary</h4>
-						 	<div class="row">
-						 		<div class="col-md-4">
-						 			Address :
-						 		</div>
-						 		<div class="col-md-8">
-						 			<p>{{profile.current_address|linebreaks}}</p>
-						 		</div>
-						 	</div>
-						 	<div class="row">
-						 		<div class="col-md-4">
-						 			Email :
-						 		</div>
-						 		<div class="col-md-8">
-						 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
-						 			<p>Other : {{profile.alternate_email}}</p>
-						 		</div>
-						 	</div>
-			      		</div>
-					</div>
+						</div>
+						<div class="col-md-8">
+							<h4 class="profile-summary-name">
+								{{profile.name}}
+							</h4>
+							<p>{{profile.get_department_display}}{% if profile.department %}, {% endif %}{{profile.batch}} <br>
+								{{profile.city}}{% if profile.city %}, {% endif %}{{profile.country}}
+							</p>
+						</div>
+	      			</div>	
 				</div>
+	      		<div class="panel-heading">
+					 <h4 class="panel-title">Profile Summary</h4>
+	      		</div>
+			 	<div class="panel-body">
+			 		<div class="col-md-4">
+			 			Address :
+			 		</div>
+			 		<div class="col-md-8">
+			 			<p>{{profile.current_address|linebreaks}}</p>
+			 		</div>
+			 	</div>
+			 	<div class="panel-body">
+			 		<div class="col-md-4">
+			 			Email :
+			 		</div>
+			 		<div class="col-md-8">
+			 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
+			 			<p>Other : {{profile.alternate_email}}</p>
+			 		</div>
+			 	</div>
 		    </div>
 		    
 		    <div id="tab-personal" class="tab-pane fade profile-personal">
-		     	<div class="panel panel-default">
-					<div class="panel-heading">  
-						<div class="row summary-info-row">
-							<div class="col-md-4 summary-img">
-								{% if profile.blog.profile_picture %}
-								<img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
-								{% endif %}
+				<div class="panel-body">  
+					<div class="row summary-info-row">
+						<div class="col-md-4 ">
+							<div class="summary-img">
+							<img width="150" height="150"  
+							{% if profile.blog.profile_picture %}
+								src="{{profile.blog.profile_picture.url}}"
+							{% endif %}
+							>
 							</div>
-							<div class="col-md-8">
-								<h4 class="profile-summary-name">
-									{{profile.name}}
-								</h4>
-								<p>{{profile.get_department_display}}{% if profile.department %}, {% endif %}{{profile.batch}} <br>
-									{{profile.city}}{% if profile.city %}, {% endif %}{{profile.country}}
-								</p>
-							</div>
-		      			</div>	
-					</div>
-					<div class="panel-body">
-			      		<div class="bs-callout bs-callout-default">
-							 <h4>Personal Profile</h4>
-							 	<div class="row">
-							 		<div class="col-md-4">
-							 			Address :
-							 		</div>
-							 		<div class="col-md-8">
-							 			<p>{{profile.current_address|linebreaks}}</p>
-							 		</div>
-							 	</div>
-							 	<div class="row">
-							 		<div class="col-md-4">
-							 			Email :
-							 		</div>
-							 		<div class="col-md-8">
-							 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
-							 			<p>Other : {{profile.alternate_email}}</p>
-							 		</div>
-							 	</div>
-			      		</div>
-					</div>
-				</div>
+						</div>
+						<div class="col-md-8">
+							<h4 class="profile-summary-name">
+								{{profile.name}}
+							</h4>
+							<p>{{profile.get_department_display}}{% if profile.department %}, {% endif %}{{profile.batch}} <br>
+								{{profile.city}}{% if profile.city %}, {% endif %}{{profile.country}}
+							</p>
+						</div>
+	      			</div>	
+				</div>	
+	      		<div class="panel-heading">
+					 <h4 class="panel-title">Personal Profile</h4>
+	      		</div>
+			 	<div class="panel-body">
+			 		<div class="col-md-4">
+			 			Address :
+			 		</div>
+			 		<div class="col-md-8">
+			 			<p>{{profile.current_address|linebreaks}}</p>
+			 		</div>
+			 	</div>
+			 	<div class="panel-body">
+			 		<div class="col-md-4">
+			 			Email :
+			 		</div>
+			 		<div class="col-md-8">
+			 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
+			 			<p>Other : {{profile.alternate_email}}</p>
+			 		</div>
+			 	</div>
 			</div>
 		    
 		    <div id="tab-professional" class="tab-pane fade profile-professional">
-		      <div class="bs-callout bs-callout-default">
-					<h4>Professional</h4>
-					{% for job in profile.jobs.all %}
-					<div class="row">
-						<div class="col-md-4">
-						{{job.start_date}} - {% if job.end_date %}{{job.end_date}}{% else %}Present{% endif %}
-						</div>
-						<div class="col-md-8" title="{{job.description}}">
-							{{job.position}}{% if job.position %} at {% endif %}{{job.company}}<br>
-							{{job.city}}
-						</div>
-					</div>
-					{% endfor %}
+		      <div class="panel-heading">
+					<h4 class="panel-title">Professional</h4>
 			  </div>
+				{% for job in profile.jobs.all %}
+				<div class="panel-body">
+					<div class="col-md-4">
+					{{job.start_date}} - {% if job.end_date %}{{job.end_date}}{% else %}Present{% endif %}
+					</div>
+					<div class="col-md-8" title="{{job.description}}">
+						{{job.position}}{% if job.position %} at {% endif %}{{job.company}}<br>
+						{{job.city}}
+					</div>
+				</div>
+				{% endfor %}
 		    </div>
 
 		    <div  id="tab-education" class="tab-pane fade profile-education">
-		      <div class="bs-callout bs-callout-default">
-				<h4>Education</h4>
+		      <div class="panel-heading">
+				<h4 class="panel-title">Education</h4>
+			  </div>
 				{% for education in profile.educations.all %}
-				 	<div class="row">
+				 	<div class="panel-body">
 				 		<div class="col-md-4">
 				 			{{education.start_year}} - {% if education.end_year %}{{education.end_year}}{% else %}Present{% endif %}
 				 		</div>
@@ -149,14 +166,14 @@
 						</div>
 				 	</div>
 				 {% endfor %}
-			  </div>
 			</div>
 
 		    <div  id="tab-iitg" class="tab-pane fade profile-IITG">
-		      <div class="bs-callout bs-callout-default">
-				<h4>My Life at IITG</h4>
+		      <div class="panel-heading">
+				<h4 class="panel-title">My Life at IITG</h4>
+			  </div>
 				{% for iitg in profile.iitgexperiences.all %}
-				 	<div class="row">
+				 	<div class="panel-body">
 				 		<div class="col-md-4">
 				 			{{iitg.club_name}}
 				 		</div>
@@ -165,76 +182,78 @@
 						</div>
 				 	</div>
 				 {% endfor %}
-			  </div>
 		    </div>
 
 		    <div  id="tab-view-all" class="tab-pane fade profile-view-all">
-		      <div class="panel panel-default">
-					<div class="panel-heading">  
-						<div class="row summary-info-row">
-							<div class="col-md-4 summary-img">
+				<div class="panel-body">  
+					<div class="row summary-info-row">
+						<div class="col-md-4 ">
+							<div class="summary-img">
+							<img width="150" height="150"  
 							{% if profile.blog.profile_picture %}
-								<img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
+								src="{{profile.blog.profile_picture.url}}"
 							{% endif %}
+							>
 							</div>
-							<div class="col-md-8">
-								<h4 class="profile-summary-name">
-									{{profile.name}}
-								</h4>
-								<p>{{profile.get_department_display}}{% if profile.department %}, {% endif %}{{profile.batch}} <br>
-									{{profile.city}}{% if profile.city %}, {% endif %}{{profile.country}} <br>
-								</p>
-							</div>
-		      			</div>	
-					</div>
-
-					<div class="panel-body">
-			      		<div class="bs-callout bs-callout-default">
-							 <h4>Personal Profile</h4>
-							 	<div class="row">
-							 		<div class="col-md-4">
-							 			Address :
-							 		</div>
-							 		<div class="col-md-8">
-							 			<p>{{profile.current_address|linebreaks}}</p>
-							 		</div>
-							 	</div>
-							 	<div class="row">
-							 		<div class="col-md-4">
-							 			Email :
-							 		</div>
-							 		<div class="col-md-8">
-							 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
-							 			<p>Other : {{profile.alternate_email}}</p>
-							 		</div>
-							 	</div>
-			      		</div>
-
-						<div class="bs-callout bs-callout-default">
-							 <h4>Stanford Degrees</h4>
-							 	<div class="row">
-							 		<div class="col-md-4">
-							 			Address :
-							 		</div>
-							 		<div class="col-md-8">
-							 			<p>{{profile.current_address|linebreaks}}</p>
-							 		</div>
-							 	</div>
-							 	<div class="row">
-							 		<div class="col-md-4">
-							 			Email :
-							 		</div>
-							 		<div class="col-md-8">
-							 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
-							 			<p>Other : {{profile.alternate_email}}</p>
-							 		</div>
-							 	</div>
 						</div>
+						<div class="col-md-8">
+							<h4 class="profile-summary-name">
+								{{profile.name}}
+							</h4>
+							<p>{{profile.get_department_display}}{% if profile.department %}, {% endif %}{{profile.batch}} <br>
+								{{profile.city}}{% if profile.city %}, {% endif %}{{profile.country}}
+							</p>
+						</div>
+	      			</div>	
+				</div>
+
+			      		<div class="panel-heading">
+							 <h4 class="panel-title">Personal Profile</h4>
+			      		</div>
+					 	<div class="panel-body">
+					 		<div class="col-md-4">
+					 			Address :
+					 		</div>
+					 		<div class="col-md-8">
+					 			<p>{{profile.current_address|linebreaks}}</p>
+					 		</div>
+					 	</div>
+					 	<div class="panel-body">
+					 		<div class="col-md-4">
+					 			Email :
+					 		</div>
+					 		<div class="col-md-8">
+					 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
+					 			<p>Other : {{profile.alternate_email}}</p>
+					 		</div>
+					 	</div>
+
+						<div class="panel-heading">
+							 <h4 class="panel-title">Stanford Degrees</h4>
+						</div>
+							 	<div class="panel-body">
+							 		<div class="col-md-4">
+							 			Address :
+							 		</div>
+							 		<div class="col-md-8">
+							 			<p>{{profile.current_address|linebreaks}}</p>
+							 		</div>
+							 	</div>
+							 	<div class="panel-body">
+							 		<div class="col-md-4">
+							 			Email :
+							 		</div>
+							 		<div class="col-md-8">
+							 			<p>IITG : {{profile.user.username}}@iitg.ernet.in</p>
+							 			<p>Other : {{profile.alternate_email}}</p>
+							 		</div>
+							 	</div>
 							      		
-			      		<div class="bs-callout bs-callout-default">
-							 <h4>Professional</h4>
+			      		<div class="panel-heading">
+							 <h4 class="panel-title">Professional</h4>
+			    		</div>
 							 	{% for job in profile.jobs.all %}
-							 	<div class="row">
+							 	<div class="panel-body">
 							 		<div class="col-md-4">
 							 			{{job.start_date}} - {% if job.end_date %}{{job.end_date}}{% else %}Present{% endif %}
 							 		</div>
@@ -244,12 +263,12 @@
 									</div>
 							 	</div>
 							 	{% endfor %}
-			    		</div>
 
-			    		<div class="bs-callout bs-callout-default">
-							 <h4>Education</h4>
+			    		<div class="panel-heading">
+							 <h4 class="panel-title">Education</h4>
+			  			</div>
 							 	{% for education in profile.educations.all %}
-							 	<div class="row">
+							 	<div class="panel-body">
 							 		<div class="col-md-4">
 							 			{{education.start_year}} - {% if education.end_year %}{{education.end_year}}{% else %}Present{% endif %}
 							 		</div>
@@ -260,12 +279,12 @@
 									</div>
 							 	</div>
 							 	{% endfor %}
-			  			</div>
 
-			  			<div class="bs-callout bs-callout-default">
-							<h4>My Life at IITG</h4>
+			  			<div class="panel-heading">
+							<h4 class="panel-title">My Life at IITG</h4>
+						</div>
 							{% for iitg in profile.iitgexperiences.all %}
-							 	<div class="row">
+							 	<div class="panel-body">
 							 		<div class="col-md-4">
 							 			{{iitg.club_name}}
 							 		</div>
@@ -274,9 +293,6 @@
 									</div>
 							 	</div>
 							 {% endfor %}
-						</div>
-					</div>
-			  </div>
 			</div>
 
 		  </div>	

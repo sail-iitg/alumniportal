@@ -1,171 +1,184 @@
 {% extends "base.html" %}
 
 {% block edit-profile  %}
-        {% load staticfiles %}
-        {% load crispy_forms_tags %}
-        <div class="col-md-9 main-content" >
-            <div class="panel panel-default">
-                <div class="panel-heading profile-panel-heading">
-                    <h3>Edit Profile</h3>
-                    <ul class="list-inline">
-                      {% if not no_profile %}
-                        <li><a href="/profile">View all profile data</a></li>
-                        <li>|</li>
-                        <li><a href="/{{ username }}/blog/">Blog</a></li>
-                        <li>|</li>
-                      {% endif %}
-                      <li><a href="#">Change Password</a></li>
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'assets/css/profile.css' %}"> <!--  -->
+        
+{% load crispy_forms_tags %}
+<div class="col-md-9 main-content" id="form-content" >
+    <div class="panel panel-default">
+        <div class="panel-heading profile-panel-heading">
+            <h3>Edit Profile</h3>
+            <ul class="list-inline">
+              {% if not no_profile %}
+                <li><a style="color: white" href="/blog/{{ username }}/"><b>Blog</b></a></li>
+                <li style="color: white">|</li>
+                <li><a href="/profile/">View all profile data</a></li>
+                <li style="color: white">|</li>
+              {% endif %}
+              <li><a href="/profile/change-password/">Change Password</a></li>
 
-                    </ul>
+            </ul>
 
-                </div>
-                <div class="panel-body">
-
-                      {% if messages %}
-                      <div class="messages">
-                          {% for message in messages %}
-                          <!-- TODO: Design "Profile saved" message using Bootstrap3 -->
-                          {% if 'success' in message.tags %}
-                            <p {% if message.tags %} class="{{ message.tags }} alert alert-success"{% endif %}>{{ message }}</p>
-                          {% elif 'error' in message.tags %}
-                            <p {% if message.tags %} class="{{ message.tags }} alert alert-danger"{% endif %}>{{ message }}</p>
-                          {% endif %}
-                          {% endfor %}
-                      </div>
-                    {% endif %}
-
-                    <!-- Implementation for Current Jo and Education ends here -->
-                      <ul class="nav nav-tabs profile-tabs">
-                        <li><a  href="/edit-profile/personal">Personal</a></li>
-                        <li><a  href="/edit-profile/education">Education</a></li>
-                        <li><a  href="/edit-profile/iitg">IITG</a></li>
-                        <li><a  href="/edit-profile/project">Project</a></li>
-                        <li><a  href="/edit-profile/achievement">Achievement</a></li>
-                        <li><a  href="/edit-profile/professional">Professional</a></li>
-                      </ul>
-                    </div>
-                    <div class="tab-content">
-
-
-                    {% if profile == "iitg" %}
-                      <div id="tab-iitg" class="tab-pane fade in active profile-iitg">
-                        {% crispy formset helper%}
-                      </div>
-
-                    {% elif profile == "project" %}
-                      <div id="tab-project" class="tab-pane fade in active profile-project">
-                        {% crispy formset helper %}
-                      </div>
-                    {% elif profile == "personal" %}
-                      <div id="tab-personal" class="tab-pane fade in active profile-personal">
-                        {% crispy form form.helper %}
-                      </div>
-                    {% elif profile == "education" %}
-                      <div id="tab-education" class="tab-pane fade in active profile-education">
-                         {% crispy formset helper %}
-                      </div>
-                    {% elif profile == "achievement" %}
-                      <div id="tab-achievement" class="tab-pane fade in active profile-achievement">
-                        {% crispy formset helper %}
-                      </div>
-                    {% elif profile == "professional" %}
-                      <div id="tab-professional" class="tab-pane fade in active profile-professional">
-                        {% crispy formset helper %}
-                      </div>
-                    {% else %}
-                    {% endif %}
-
-                    <!-- Form for selecting current job/education -->
-                    {% if currents %}
-                      <div class="col-md-10">
-                        <form method="post" action="current/" class="form-inline">
-                          {% csrf_token %}
-                          {% if profile == "professional" %}
-                          <hr><h4>Choose your current job</h4>
-                          <div class="form-group">
-                            <select name="current" id="current" class="form-control">
-                              {% for current in currents %}
-                                <option value="{{ current.id }}">{{ current.company }} {{ current.start_date }}{{ current.start_year }}
-                              {% endfor %}
-                            </select>
-                          </div>
-                          <div class="btn-group">
-                            <button type="submit" class="btn">Save Changes</button>
-                          </div>
-
-                          {% elif profile == "education" %}
-                          <hr><h4>Choose your current education</h4>
-                          <div class="form-group">
-                            <select name="current" id="current" class="form-control">
-                              {% for current in currents %}
-                                <option value="{{ current.id }}">{{ current.institute }} {{ current.start_date }}{{ current.start_year }}
-                              {% endfor %}
-                            </select>
-                          </div>
-                          <div class="btn-group">
-                            <button type="submit" class="btn">Save Changes</button>
-                          </div>
-                          {% endif %}
-                        </form>
-                      </div>
-                    {% endif %}
-                </div>
-            </div>
         </div>
-        <script type="text/javascript">
-          $( document ).ready(function() {
-          $(".tab-pane").removeClass( "active" )
-          if("{{profile}}"=="iitg"){
-            $("#tab-iitg").addClass("active")
-            $('a[href="/edit-profile/iitg"]').parent('li').addClass("active")
+        <div class="panel-body">
 
-          }else if("{{profile}}"=="project"){
-            $("#tab-project").addClass("active")
-            $('a[href="/edit-profile/project"]').parent('li').addClass("active")
-          }
-          else if("{{profile}}"=="education"){
-            $("#tab-education").addClass("active")
-            $('a[href="/edit-profile/education"]').parent('li').addClass("active")
-          }
-          else if("{{profile}}"=="achievement"){
-            $("#tab-achievement").addClass("active")
-            $('a[href="/edit-profile/achievement"]').parent('li').addClass("active")
-          }
-          else if("{{profile}}"=="professional"){
-            $("#tab-professional").addClass("active")
-            $('a[href="/edit-profile/professional"]').parent('li').addClass("active")
-          }else if("{{profile}}"=="personal"){
-            $("#tab-personal").addClass("active")
-            $('a[href="/edit-profile/personal"]').parent('li').addClass("active")
-          }
+              {% if messages %}
+              <div class="messages">
+                  {% for message in messages %}
+                  <!-- TODO: Design "Profile saved" message using Bootstrap3 -->
+                  {% if 'success' in message.tags %}
+                    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  {% elif 'error' in message.tags %}
+                    <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+            {% endif %}
+
+            <div id="tabs">
+              <ul class="nav nav-tabs profile-tabs" style="display: table;">
+                <li><a  href="/edit-profile/personal/#form-content">Personal</a></li>
+                <li><a  href="/edit-profile/education/#form-content">Education</a></li>
+                <li><a  href="/edit-profile/iitg/#form-content">IITG</a></li>
+                <li><a  href="/edit-profile/project/#form-content">Project</a></li>
+                <li><a  href="/edit-profile/achievement/#form-content">Achievement</a></li>
+                <li><a  href="/edit-profile/professional/#form-content">Professional</a></li>
+                <li><a  href="/edit-profile/blog/#form-content">Blog</a></li>
+              </ul>
+            </div>
+            <div class="tab-content" id="tab-content">
+
+
+            {% if profile == "iitg" %}
+              <div id="tab-iitg" class="tab-pane fade in active profile-iitg">
+                {% crispy formset helper%}
+              </div>
+            {% elif profile == "project" %}
+              <div id="tab-project" class="tab-pane fade in active profile-project">
+                {% crispy formset helper %}
+              </div>
+            {% elif profile == "personal" %}
+              <div id="tab-personal" class="tab-pane fade in active profile-personal">
+                {% crispy form form.helper %}
+              </div>
+            {% elif profile == "education" %}
+              <div id="tab-education" class="tab-pane fade in active profile-education">
+                 {% crispy formset helper %}
+              </div>
+            {% elif profile == "achievement" %}
+              <div id="tab-achievement" class="tab-pane fade in active profile-achievement">
+                {% crispy formset helper %}
+              </div>
+            {% elif profile == "professional" %}
+              <div id="tab-professional" class="tab-pane fade in active profile-professional">
+                {% crispy formset helper %}
+              </div>
+            {% elif profile == "blog" %}
+              <div id="tab-blog" class="tab-pane fade in active profile-blog">
+                {% if profile.blog.profile_picture %}
+                <img width="150" height="150"  src="{{profile.blog.profile_picture.url}}">
+                {% endif %}
+                {% crispy form form.helper %}
+              </div>
+            {% else %}
+            {% endif %}
+
+            <!-- Form for selecting current job/education -->
+            {% if currents %}
+              <div class="col-md-12">
+                <form method="post" action="current/" class="current-form form-inline">
+                  {% csrf_token %}
+                  {% if profile == "professional" %}
+                  <h4>Where are you currently working?</h4>
+                  <div class="form-group">
+                    <select name="current" id="current" class="form-control">
+                      {% for current in currents %}
+                        <option value="{{ current.id }}">{{ current.company }} {{ current.start_date }}{{ current.start_year }}
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="btn-group">
+                    <button type="submit" class="btn">Save</button>
+                  </div>
+
+                  {% elif profile == "education" %}
+                  <h4>Where are you currently studying?</h4>
+                  <div class="form-group">
+                    <select name="current" id="current" class="form-control">
+                      {% for current in currents %}
+                        <option value="{{ current.id }}">{{ current.institute }} {{ current.start_date }}{{ current.start_year }}
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="btn-group">
+                    <button type="submit" class="btn">Save</button>
+                  </div>
+                  {% endif %}
+                </form>
+              </div>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+  $( document ).ready(function() {
+  $(".tab-pane").removeClass( "active" )
+  if("{{profile}}"=="iitg"){
+    $("#tab-iitg").addClass("active")
+    $('a[href="/edit-profile/iitg/#form-content"]').parent('li').addClass("active")
+
+  }else if("{{profile}}"=="project"){
+    $("#tab-project").addClass("active")
+    $('a[href="/edit-profile/project/#form-content"]').parent('li').addClass("active")
+  }
+  else if("{{profile}}"=="education"){
+    $("#tab-education").addClass("active")
+    $('a[href="/edit-profile/education/#form-content"]').parent('li').addClass("active")
+  }
+  else if("{{profile}}"=="achievement"){
+    $("#tab-achievement").addClass("active")
+    $('a[href="/edit-profile/achievement/#form-content"]').parent('li').addClass("active")
+  }
+  else if("{{profile}}"=="professional"){
+    $("#tab-professional").addClass("active")
+    $('a[href="/edit-profile/professional/#form-content"]').parent('li').addClass("active")
+  }else if("{{profile}}"=="personal"){
+    $("#tab-personal").addClass("active")
+    $('a[href="/edit-profile/personal/#form-content"]').parent('li').addClass("active")
+  }else if("{{profile}}" == "blog"){
+    $("#tab-blog").addClass("active")
+    $('a[href="/edit-profile/blog/#form-content"]').parent('li').addClass("active")
+  }
 
 
 
 
-          var html = '<div class="row col-md-12"><div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>';
+  var html = '<div class="row col-md-12" style="padding: 0px; margin: 0px;"><div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true"></div>';
 
-            // SETUP CODE BELOW FOR ACCORDION
-            $( "form" ).wrap( html );
-            $($('.edit_form_container').get().reverse()).each(function(i, obj) {
-              var name = $(this).children("div").first().children("div").first().children("*").first().val();
-              if(!name){
-                $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'"> Add new</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
-              }
-              else{
-              $(this).html('<div class="panel panel-default"><div class="panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title" style="width:600px"><a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
-              }
-            });
+    // SETUP CODE BELOW FOR ACCORDION
+    $( "form" ).wrap( html );
+    $($('.edit_form_container').get().reverse()).each(function(i, obj) {
+      var name = $(this).children("div").first().children("div").first().children("*").first().val();
+      if(!name){
+        $(this).html('<div class="panel panel-default"><div class="sub-panel-heading panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'"> Add new</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
+      }
+      else{
+      $(this).html('<div class="panel panel-default"><div class="sub-panel-heading panel-heading" role="tab" id="heading'+i.toString()+'"><h4 class="panel-title"><a class="accordion-toggle" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+i.toString()+'" aria-expanded="false" aria-controls="collapse'+i.toString()+'">'+name+'</a></h4></div><div id="collapse'+i.toString()+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+i.toString()+'"><div class="panel-body">'+$(this).html()+'</div></div></div>');
+      }
+    });
 
-            // $('.checkboxinput').click(function(){
-            //   $(this).closest(".panel-body").find(".disable_institute").attr('disabled',this.checked);
-            //   if(this.checked){
-            //     $(this).closest(".panel-body").find(".disable_institute").val("IIT Guwahati")
-            //   }else{
-            //     $(this).closest(".panel-body").find(".disable_institute").val("")
-            //   }
-            // });
+    // $('.checkboxinput').click(function(){
+    //   $(this).closest(".panel-body").find(".disable_institute").attr('disabled',this.checked);
+    //   if(this.checked){
+    //     $(this).closest(".panel-body").find(".disable_institute").val("IIT Guwahati")
+    //   }else{
+    //     $(this).closest(".panel-body").find(".disable_institute").val("")
+    //   }
+    // });
 
-            //$('.checkboxinput').attr('checked') = true
-        });
-        </script>
+    //$('.checkboxinput').attr('checked') = true
+});
+</script>
 {% endblock %}

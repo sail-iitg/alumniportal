@@ -2,209 +2,77 @@
 
 {% block community  %}
 {% load staticfiles %}
+<link rel="stylesheet" href="{% static 'assets/css/communities.css' %}">
+<div class="col-md-9 main-content" >
+<div class="news-container">
+  <div class="news-header">
+    <h4><b>Communities</b></h4>
+    <p class="news-intro">
+      Itching to get out and do something? Stop scratching and start clicking! Take your pick of things to do and places to see on campus, where you live or in a fascinating land far, far away.
+    </p>
+    <hr>
+  </div>
+          
+{% for key, value in club_posts.iteritems %}
+  <div class="sub-panel-heading panel-heading">
+    <h4 class="panel-title">{{key}}</h4>
+  </div>
+  {% for post in value %}
+    <div class="cards">
+      <div class="card_left">
+        <img {% if item.image %} src="{{item.image.url}}" {% endif %}>
+      </div>
+      <div class="card_middle">
+        <div class="title_bar">
+          <h4>
+            <a href="/news/{{ item.id }}/">{{post.heading}}</a>
+          </h4>
+          <h6><a href="/profile/{{post.member.user.username}}">{{post.member.name}}
+          </a></h6>
+        <div class="news-date">{{post.timestamp}}</div>
+        </div>
+            {% autoescape off %} 
+            {{post.content}} 
+            {% endautoescape %}
+      </div>
+      <div class="card_right">
         
-          <div class="col-md-9 main-content" >
-          <div class="news-container">
-            <div class="row">
-              <h3 class="news-main-title">Communities</h3>
-              <p class="activities-intro">
-          Itching to get out and do something? Stop scratching and start clicking! Take your pick of things to do and places to see on campus, where you live or in a fascinating land far, far away.
-              </p>
+      </div>
+    </div>
+  {% endfor %}
+{% endfor %}
+
+<div class="news-header" style="margin-top: 35px; margin-bottom: 10px;">
+    <h4 class="panel-title">What are your friends upto!!!???</h4>
+</div>
+{% for blog in blog_posts %}
+  <div>
+    <div class="cards">
+      <div class="card_middle" style="width: 100%">
+        <div class="title_bar">
+          {% if blog.blog.profile_picture %}
+          <a href="/profile/{{blog.blog.profile.user.username}}">
+            <div style="height: 100%; float: left;">
+              <img style="max-height: 100%; max-width: 100%;" src="{{blog.blog.profile_picture.url}}">
             </div>
-            
-          
-          <div class="row">
-              <div class="col-md-6 col-left" >
-                <h3 class='column-header'>Alumni to IITG</h3>
-                <div class="row">
-                  <div class="col-md-12 col-element" >
-                    <img width="150" height="150" >
-                    <h4><a></a></h4>
-                    <p class="col-elem-data">
-                        SAIL activities; project; lectures; project launches; 
-                    </p>
-                  </div>
-                </div>
+          </a>
+          {% endif %}
+          <a href="/profile/{{blog.blog.profile.user.username}}">
+            <h4 style="margin-top: 5px; margin-bottom: 5px;">
+              {{blog.blog.profile.name}}
+            </h4>
+          </a>
+            <h6 class="news-date" style="text-align: left;">
+              {{blog.timestamp}}
+            </h6>
+        </div>
+        <p>{% autoescape off %} {{blog.content | linebreaks}} {% endautoescape %}</p>
+      </div>
+    </div>
+  </div>
+{% endfor %}
 
-                <div class="row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="/news/research">Lets revive memories...</a>
-                  </div>
-                </div>
-
-
-            </div>
-              
-            <div class="col-md-6 right" >
-                <h3 class='column-header'>Classes, Clubs, Groups</h3>
-                <div class="row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if activity.image %} src="{{activity.image.url}}" {% endif %} alt="{{activity.activity_type}}" width="150" height="150" >
-
-                    <h4><a>{{activity.name}}</a></h4>
-                    <p class="col-elem-data">
-                      {{activity.created}}<br>Coming Soon
-                    </p>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="/activity/all">Coming Soon...</a>
-                  </div>
-                </div>
-
-
-            </div>
-          </div>
-          <div class="row">
-              <div class="col-md-6 col-left" >
-              <h3 class='column-header'>Make a donation</h3>
-                <div class="row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if volunteer.image %} src="{{volunteer.image.url}}" {% endif %} alt="{{volunteer.activity_type}}" width="150" height="150" >
-                    <h4><a>{{volunteer.name}}</a></h4>
-                    <p class="col-elem-data">
-                      {{volunteer.created}}<br>Blah Blah Blah ...
-                    </p>
-                  </div>
-                  <div class="row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="/activity/all">Let's help each other...</a>
-                  </div>
-                </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 right" >
-              <h3 class='column-header'>Community</h3>
-                <div class="row">
-                  <div class="col-md-12 col-element" >
-                    <img {% if post.image %} src="{{post.image.url}}" {% endif %} alt="{{post.heading}}" width="150" height="150" >
-
-                    <h4><a>{{post.heading}}</a></h4>
-                    <p class="col-elem-data">
-                      {{post.content|truncatechars_html:172}}
-                    </p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="/activity/all">More about the community...</a>
-                  </div>
-                </div>
-            </div>
-          </div>
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <div class="row">
-              <div class="col-md-12 col-left activities-container" >
-              <h3 class='column-header activities-header'>Technical <a href="" class='column-addbutton'>(add)</a></h3>
-                <div class="row activities-row">
-                  <div class="col-md-6 col-element" >
-                    <img src="{% static 'assets/images/image2.jpeg' %}">
-                    <h4><a>Great Technical Event</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                  <div class="col-md-6 col-element" >
-                    <img src="{% static 'assets/images/image4.jpeg' %}">
-                    <h4><a>Better Technical Event</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                </div>
-                <div class="row activities-row">
-                  <div class="col-md-6 col-element" >
-                    <img src="{% static 'assets/images/image2.jpeg' %}">
-                    <h4><a>Another Better Technical Event</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                  <div class="col-md-6 col-element" >
-                    <img src="{% static 'assets/images/image1.jpeg' %}">
-                    <h4><a>Best Tech Event</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                </div>
-            <div class="row activities-row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More events...</a>
-                  </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-right activities-container " >
-              <h3 class='column-header activities-header'>Cultural <a href="" class='column-addbutton'>(add)</a></h3>
-                <div class="row activities-row">
-                  <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image3.jpeg' %}">
-                    <h4><a>Epic Meet</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                </div>
-                <div class="row activities-row">
-                  <div class="col-md-12 col-element" >
-                    <img src="{% static 'assets/images/image6.jpeg' %}">
-                    <h4><a>Awesome Meet</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                </div>
-                <div class="row activities-row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More meets...</a>
-                  </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-right activities-container " >
-              <h3 class='column-header activities-header'>Sports <a href="" class='column-addbutton'>(add)</a></h3>
-                <div class="row activities-row">
-                  <div class="col-md-12 col-element" >
-                    <img src="images/image3.jpeg">
-                    <h4><a>Epic Meet</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                </div>
-                <div class="row activities-row">
-                  <div class="col-md-12 col-element" >
-                    <img src="images/image1.jpeg">
-                    <h4><a>Awesome Meet</a></h4>
-                    <p class="col-elem-data">
-                      Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                    </p>
-                  </div>
-                </div>
-                <div class="row activities-row">
-                  <div class="col-md-12 col-element">
-                    <a class='column-more' href="">More meets...</a>
-                  </div>
-                </div>
-            </div>
-
-          </div>
-          </div>
-          </div>
+    </div>
+  </div>
 {% endblock %}
 

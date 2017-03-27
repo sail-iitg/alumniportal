@@ -5,8 +5,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 
-# Create your views here.
-#####edited
 def login(request):
     next_url=None
     if request.GET:
@@ -16,7 +14,6 @@ def login(request):
             return render(request, 'login-page.html',{'next':next_url,'page':'login'})
         else :
             return render(request, 'login-page.html',{'next':'','page':'login'})
-
     else:
         return HttpResponseRedirect('/')
 
@@ -78,14 +75,12 @@ def auth(request):
         user = authenticate.authenticate(username=username, password=password)
 
         if user is not None:
-
             if user.is_active:  #is_active can be used to block a user
                 authenticate.login(request, user)
-                
-
             if next_url != '' :
                 return HttpResponseRedirect(next_url)
             else :
                 return HttpResponseRedirect('/')
-        
+        else:
+            messages.error(request, "Incorrect Username or Password!")
     return HttpResponseRedirect('/')

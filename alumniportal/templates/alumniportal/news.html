@@ -1,40 +1,26 @@
 {% extends "base.html" %}
 
-{% block news  %}
+{% block items  %}
 {% load staticfiles %}
+<link rel="stylesheet" href="{% static 'assets/css/news.css' %}">
+
 <div class="col-md-9 main-content" >
-  <div class="row">
-   	<h3>News & Views</h3>
-   	<p class="news-intro">
-			Get the latest news on IITG and your fellow alums all in one place. Browse the alumni directory online, follow the latest IITG trends on social media.
-   	</p>
-  </div>
-  <div class="row " >
-    <div class="col-md-12 col-left news-container" >
-      <h3 class='column-header news-header'>News
-      {% if is_admin %}
-        <a href="/add/news/" class='column-addbutton'>(add)</a>
-      {% endif %}
-      </h3>
-      {% for new in news %}
-        <div class="row news-row">
-          <div class="col-md-12 col-element" >
-            <img {% if new.image %} src="{{new.image.url}}" {% endif %} alt="{{new.post_type}}" width="150" height="150" >
-            <h4><a href="/{{ new.id }}/news/">{{new.heading}}</a></h4>
-            <p class="col-elem-data">
-              {% autoescape off %} {{new.content|linebreaks}} {% endautoescape %}
-            </p>
-          </div>
-        </div>
-      {% endfor %}
-      <div class="row news-row">
-        <div class="col-md-12 col-element">
-          <a class='column-more' href="All">More news...</a>
-        </div>
-      </div>
+  <div class="news-container">
+    <div class="news-header">
+      <h4><b>News & Views</b></h4>
+      <p class="news-intro">
+  Get the latest news on IITG and your fellow alums all in one place. Browse the alumni directory online, follow the latest IITG trends on social media.
+      </p>
+      <hr>
+        <h5 class='news-type'>
+          <b>{{item_type | upper}}</b>
+          {% if add_right %}
+            <a href="/news/add/" class='column-addbutton'>(ADD)</a>
+          {% endif %}
+        </h5> 
     </div>
+    {% block item_list %}{% endblock %}
   </div>
 </div>
-<div class="col-md-3 sidebar" >
-</div>
+         
 {% endblock %}
