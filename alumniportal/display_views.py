@@ -82,7 +82,7 @@ def profile(request):
     try:
         profile = models.Profile.objects.get(user = request.user)
     except:
-        messages.error(request, "You cannot access profile unless you create your own profile.")
+        messages.error(request, "Please create your profile.")
         return HttpResponseRedirect('/edit-profile')
     # import pdb; pdb.set_trace()
     return render(request,'alumniportal/profile.html', {
