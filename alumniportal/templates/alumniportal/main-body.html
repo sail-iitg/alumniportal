@@ -6,6 +6,7 @@
 {% load staticfiles %}
         
 <div class="col-md-9 main-content">
+  {% if activity %}
     <div class="cards">
       <div class="card_left">
         <img {% if activity.image %} src="{{activity.image.url}}" {% endif %} alt="{{activity.activity_type}}">
@@ -16,13 +17,19 @@
         <h6><a href="/activity/All">Activities</a></h6>
        </div> 
       <div class="content_bar">
-        <p>{{activity.description}}</p>
+        <p>{{activity.description|truncatechars:285}}
+        <a href="/activity/{{activity.id}}">Read more</a></p>
+
       </div>
       </div>
-      <div class="card_right">
-      </div>
+      <a href="/activity/{{activity.id}}">
+        <div class="card_right">
+        </div>
+      </a>
     </div>
-    
+  {% endif %}
+
+  {% if volunteer %}
     <div class="cards">
       <div class="card_left">
         <img {% if volunteer.image %} src="{{volunteer.image.url}}" {% endif %} alt="{{volunteer.activity_type}}">
@@ -39,7 +46,9 @@
       <div class="card_right">
       </div>
     </div><!--div card closed-->
+  {% endif %}
 
+  {% if community %}
     <div class="cards">
       <div class="card_left">
         <img {% if community.image %} src="{{community.image.url}}" {% endif %} alt="{{community.post_type}}" >
@@ -56,5 +65,6 @@
       <div class="card_right">
       </div><!--div card closed-->
     </div>
+  {% endif %}
 </div>
 {% endblock %}

@@ -56,6 +56,7 @@ main_groups = ['Technical Board', 'Sports Board', 'Cultural Board']
 def community(request):
     club_posts = {}
     for grp in main_groups:
+        # TODO Error No such column: alumniportal_club.group_type
         club, create = models.Club.objects.get_or_create(name = grp, description = "Aim to spread awareness about the happenings in the campus from the side of " + grp, group_type = 'O')
         club_posts[grp] = models.ClubPost.objects.filter(club = club)[:3]
     blog_posts = models.Post.objects.all()[:5]
@@ -118,7 +119,7 @@ def items(request, class_type, item_type):
     elif class_type == "activity":
         activities = models.Activity.objects.all()
         items = activities
-        if hasattr(request.user.profile, 'blog'):
+        if hasattr(request.user, 'profile') and hasattr(request.user.profile, 'blog'):
             add_right = True
         for a in ACTIVITY_TYPE:
             print items
