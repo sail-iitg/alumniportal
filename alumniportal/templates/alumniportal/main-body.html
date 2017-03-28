@@ -19,8 +19,9 @@
         <p>{{activity.description}}</p>
       </div>
       </div>
+      <a href="/activity/{{activity.id}}">
       <div class="card_right">
-      </div>
+      </div></a>
     </div>
     
     <div class="cards">
@@ -29,15 +30,17 @@
       </div>
       <div class="card_middle">
        <div class="title_bar">
-        <h2><a >{{volunteer.name}}</a></h2>
+        <h2><a href="/activity/{{volunteer.id}}">{{volunteer.name}}</a></h2>
         <h6><a href="/volunteer">Volunteer</a></h6>
        </div> 
       <div class="content_bar">
         <p>{{volunteer.description}}</p>
       </div>
       </div>
+      <a href="/activity/{{volunteer.id}}">
       <div class="card_right">
       </div>
+      </a>
     </div><!--div card closed-->
 
     <div class="cards">
@@ -46,15 +49,17 @@
       </div>
       <div class="card_middle">
        <div class="title_bar">
-        <h2><a href="/{{community.blog.profile.user.username}}/blog/post/{{community.id}}">{{community.heading}}</a></h2>
+        <h2><a href="/blog/{{community.blog.profile.user.username}}/post/{{community.id}}">{{community.heading}}</a></h2>
         <h6><a href="/community">Community</a></h6>
        </div> 
       <div class="content_bar">
-        <p>{{community.content}}</p>
+        <p>{% autoescape off %} {{ community.content|linebreaks }} {% endautoescape %}</p>
       </div>
       </div>
+      <a href="/blog/{{community.blog.profile.user.username}}/post/{{community.id}}">
       <div class="card_right">
       </div><!--div card closed-->
+      </a>
     </div>
 </div>
 {% endblock %}

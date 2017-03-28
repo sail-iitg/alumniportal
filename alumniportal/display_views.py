@@ -118,7 +118,7 @@ def items(request, class_type, item_type):
     elif class_type == "activity":
         activities = models.Activity.objects.all()
         items = activities
-        if hasattr(request.user.profile, 'blog'):
+        if hasattr(request.user, 'profile') and hasattr(request.user.profile, 'blog'):
             add_right = True
         for a in ACTIVITY_TYPE:
             print items

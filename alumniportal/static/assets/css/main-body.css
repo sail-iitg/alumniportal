@@ -1,6 +1,6 @@
 .container{
 	width: 100%;
-	font-family: 'Roboto', serif;
+	font-family: 'Segoe UI', 'Roboto', serif;
 	padding:60px 5% 20px 5%;
     border-top-style: solid;
     border-top-width: 1px;
@@ -74,7 +74,7 @@
 }
 
 * {
-    font-family: 'Nimbus Sans L';
+    font-family: 'Segoe UI', sans-serif;
   
 }
 
@@ -192,7 +192,7 @@ h3 {
 
 .card_middle .content_bar{
     height: 65%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .card_middle h2 a{

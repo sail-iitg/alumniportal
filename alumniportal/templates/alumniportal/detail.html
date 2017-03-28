@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="{% static 'assets/css/carousel.css' %}">
     <script src="{% static 'assets/js/jquery.min.js' %}"></script>
     <!-- <script src="{% static 'assets/js/bootstrap.js' %}"></script> -->
+    {% if "blog" in class_type %}
     <script src="{% static 'assets/js/blog-comments.js' %}"></script>
+    {% endif %}
     <!-- <link rel="stylesheet" href="{% static 'assets/css/main-body.css' %}"> -->
     
 </head>
