@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
-from constants import *
+from .constants import *
 import os
 from datetime import datetime
 from time import strftime
@@ -222,6 +222,7 @@ class ClubPostImage(models.Model):
 class News(models.Model):
     post_type = models.CharField(max_length=2, choices = POST_TYPE) #Will only be visible in custom form to Admin users only. (For Now)
     timestamp = models.DateTimeField(auto_now_add=True)
+    # TODO Increase length of heading and look into https://github.com/timmyomahony/django-charsleft-widget
     heading = models.CharField(max_length=128)
     content = RichTextField()
     image = models.ImageField(blank=True, null=True, upload_to=get_image_path)  #Currently just one

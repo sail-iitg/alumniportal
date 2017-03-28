@@ -4,11 +4,11 @@
 		<ul>
 		    {% for rnews in rolling_news %}
 		    <li>
-		    	<div style="margin: 1%">
-					<div><a style="color: #d1b629; font-size: large" href="/news/{{ rnews.id }}/"><b>{{ rnews.heading }}</b></a></div>
-					<div >
-						{% autoescape off %}{{ rnews.content|linebreaks|truncatechars:180 }}{% endautoescape %}
-					</div>
+		    	<div class="rolling-news-item">
+            <div><a style="color: #d1b629; font-size: large" href="/news/{{ rnews.id }}/"><b>{{ rnews.heading }}</b></a></div>
+            <div class="rolling-news-content">
+              {% autoescape off %}{{ rnews.content|linebreaks|truncatechars:180 }}{% endautoescape %}
+            </div>
 			    </div>
 		    </li>
 		    {% endfor %}
@@ -18,6 +18,7 @@
 
 <script>
   $(function() {
-    $('#rolling-news').vTicker();
+    $('#rolling-news').vTicker('init', {
+    padding:4});
   });
 </script>

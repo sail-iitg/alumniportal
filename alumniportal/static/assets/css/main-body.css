@@ -183,7 +183,7 @@ h3 {
   float:left;
   height:100%;
   padding: 2%;
-  overflow: auto;
+  /*overflow: auto;*/
 }
 
 .card_middle .title_bar{
@@ -197,8 +197,8 @@ h3 {
 
 .card_middle h2 a{
     text-align: left;
-    font-size: 36px;
-    color: black;    
+    font-size: 30px;
+    /*color: black;    */
     width: 50%;
     float: left;
     font-family: Helvetica;
@@ -252,6 +252,15 @@ h3 {
   padding-top:12px;
   padding-bottom: 32px;
   padding-left:20px;
+}
+
+.rolling-news-item {
+    margin: 3% 4% 0% 4%;
+}
+
+.rolling-news-content {
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 #right_content_top{

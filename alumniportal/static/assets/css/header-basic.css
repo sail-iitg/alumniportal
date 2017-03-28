@@ -103,7 +103,7 @@ header .header-title h1 a{
 }
 
 header .header-limiter .filler {
-		width=100%;
+		width:100%;
 }
 
 #right_header{
@@ -116,7 +116,7 @@ header .header-limiter .filler {
 #right_header img{
   position:relative;
   top:25px;
-  left:30px;
+  left:20px;
   float: left;
   height:40px;
   width:40px;

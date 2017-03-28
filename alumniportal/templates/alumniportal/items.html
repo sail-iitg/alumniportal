@@ -15,7 +15,9 @@
           </a></h6>
         <div class="news-date">{{item.timestamp}}{{item.year}}</div>
         </div>
-            {% autoescape off %} {{item.content}}{{item.description}} {% endautoescape %}
+        <p>{% autoescape off %} {{item.content|truncatechars:285}}{{item.description|truncatechars:285}} {% endautoescape %}
+          <a href="/{{class_type}}/{{ item.id }}/">Read more</a>
+        </p>
       </div>
 <!--       <div class="card_right">
         
