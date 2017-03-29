@@ -300,20 +300,24 @@
             captionText.innerHTML = image.alt;
         var span = document.getElementsByClassName("close")[0];
         span.onclick = function() {
-          modal.style.display = "none";
+          document.getElementById('myModal').style.display='none';
         }
 
 
-    $(document).keypress(function(e) { 
-        if (e.keyCode == 27) { 
-            $("#myModal").fadeOut(500);
-            //or
-            window.close();
-        } 
-    });
 
 
     }
+  $(document).keypress(function(e) { 
+    if (e.keyCode == 27) { 
+        document.getElementById('myModal').style.display = 'none';
+    } 
+});
+  $(document).keydown(function(e) { 
+    if (e.which == 27) { 
+        document.getElementById('myModal').style.display = 'none';
+    } 
+});
+
 </script>         
 
 

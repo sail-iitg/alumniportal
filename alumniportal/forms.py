@@ -290,7 +290,7 @@ class AddNewsForm(forms.ModelForm):
         self.helper.label_class = 'col-md-2'
         self.helper.field_class = 'col-md-10'
         self.helper.form_method = 'post'
-        self.helper.form_action = '/add/news/'
+        self.helper.form_action = '/news/add/'
         self.helper.layout = Layout(
             'post_type',
             'heading',
@@ -350,7 +350,6 @@ class PostCommentForm(forms.ModelForm):
 class AddClubPostForm(forms.ModelForm):
     pass
 
-class_form_fn = {'news': AddNewsForm, 'activity': AddActivityForm, 'community': AddClubPostForm}
 # class EditEducationForm(forms.ModelForm):
 #     """
 #     Form for alumnus to edit education details (a tab within the profile edit page)

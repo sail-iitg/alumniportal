@@ -63,6 +63,50 @@ def add_activity(request):
                   {'page': 'add-activity',
                    'form': form})
 
+@user_passes_test(lambda u: u.is_superuser)
+def add_news(request):
+    """
+    Display form for adding news and redirect to published news
+    """
+    if request.method == 'POST':
+        form = forms.AddNewsForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save()
+            return HttpResponseRedirect('/news/' + str(task.id))
+    else:
+        form = forms.AddNewsForm()
+    return render(request, 'alumniportal/add-edit.html',{
+        'page': 'add',
+        'class_type' : 'news',
+        'form': form,
+        'edit_right' : False,
+        })
+
+
+
+
+@login_required(login_url='/login/')
+def add_post(request, username):
+    """
+    Display form for adding blog post and redirect to published post
+    """
+    if request.user.username != username:
+        return HttpResponse('You do not have edit access to this blog')
+    if request.method == 'POST':
+        form = forms.AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.blog = request.user.profile.blog
+            task.save()
+            url = '/' + username + '/blog/' + str(task.id) + '/post/'
+            return HttpResponseRedirect(url)
+    else:
+        form = forms.AddPostForm()
+        form.helper.form_action = '/' + username + '/blog/add/post/'
+    return render(request, 'alumniportal/add-post.html',
+                  {'page': 'add-post',
+                   'form': form})
+
 @login_required(login_url='/login/')
 def add_volunteer(request):
     """
@@ -403,6 +447,7 @@ def edit_personal(request):
             task.last_edited = datetime.now()
             if not profile:
                 task.user = request.user
+                models.Blog.objects.create(profile=task).save()
             if profile:
                 if not hasattr(request.user.profile, 'blog'):
                     models.Blog.objects.create(profile=task).save()
@@ -437,49 +482,6 @@ def current(request):
             return HttpResponseRedirect("/edit-profile")
     return HttpResponseRedirect("/edit-profile")
 
-@user_passes_test(lambda u: u.is_superuser)
-def add_news(request):
-    """
-    Display form for adding news and redirect to published news
-    """
-    if request.method == 'POST':
-        form = forms.AddNewsForm(request.POST, request.FILES)
-        if form.is_valid():
-            task = form.save()
-            return HttpResponseRedirect('/' + str(task.id) + '/news/')
-    else:
-        form = forms.AddNewsForm()
-    return render(request, 'alumniportal/add-edit.html',{
-        'page': 'add',
-        'class_type' : 'news',
-        'form': form,
-        'edit_right' : False,
-        })
-
-
-
-
-@login_required(login_url='/login/')
-def add_post(request, username):
-    """
-    Display form for adding blog post and redirect to published post
-    """
-    if request.user.username != username:
-        return HttpResponse('You do not have edit access to this blog')
-    if request.method == 'POST':
-        form = forms.AddPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.blog = request.user.profile.blog
-            task.save()
-            url = '/' + username + '/blog/' + str(task.id) + '/post/'
-            return HttpResponseRedirect(url)
-    else:
-        form = forms.AddPostForm()
-        form.helper.form_action = '/' + username + '/blog/add/post/'
-    return render(request, 'alumniportal/add-post.html',
-                  {'page': 'add-post',
-                   'form': form})
 
 
 def can_edit(request, item, class_type):
@@ -499,6 +501,7 @@ def can_add(request, class_type):
 def add(request, class_type, id):
     pass
 # @user_passes_test(lambda u: u.is_superuser)
+class_form_fn = {'news': forms.AddNewsForm, 'activity': forms.AddActivityForm, 'community': forms.AddClubPostForm}
 def edit(request, class_type, id):
     """
     Display form for editing news and redirect to published news
@@ -512,7 +515,7 @@ def edit(request, class_type, id):
     if edit_right:
         print "Edit right True"
         if request.method == 'POST':
-            form = forms.class_form_fn[class_type](request.POST, request.FILES, instance=item)
+            form = class_form_fn[class_type](request.POST, request.FILES, instance=item)
             # import pdb; pdb.set_trace()
             if form.is_valid():
                 form.save()
@@ -521,7 +524,7 @@ def edit(request, class_type, id):
                 form.helper.form_action = '/' + class_type + '/' + str(item.id) + '/edit/'
                 messages.error(request,'Please enter all necessary fields correctly.')
         else:
-            form = forms.class_form_fn[class_type](instance=item)
+            form = class_form_fn[class_type](instance=item)
         form.helper.form_action = '/' + class_type + '/' + str(item.id) + '/edit/'
     else:
         print "Edit right False"

@@ -68,6 +68,11 @@
   margin-bottom: 20px;
 }
 
+.nav-active{
+  border-bottom: 5px solid #d1b628;
+  font-weight: bold;
+}
+
 @font-face {
     font-family: Vollkorn;
     src: url(vollkorn.ttf) format("truetype");
@@ -169,7 +174,7 @@ h3 {
   height:180px;
   margin-bottom:10px;
   background-color:#f6f6f6;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
   /*border: solid 1px black;*/
 }
 .card_left{
@@ -392,3 +397,4 @@ h3 {
   display: inline-block;
   transition: opacity ease 0.5s;
 } 
+
