@@ -3,10 +3,40 @@
 {% block edit-profile  %}
 {% load staticfiles %}
 <link rel="stylesheet" href="{% static 'assets/css/profile.css' %}"> <!--  -->
-        
+{% if "1" in "0" %}
+<script type="text/javascript">
+    
+    // Setup an event listener to make an API call once auth is complete
+    function onLinkedInLoad() {
+        IN.Event.on(IN, "auth", getProfileData);
+        $('a[id*=li_ui_li_gen_]').css({marginBottom:'20px'}).html("<img src=\"{% static 'assets/images/Add_to_Profile_Small_Active.png' %}\" height='31' width='150' border='0' /> <p style=\"font-size: 15px; margin-top:10px;float:right;\">Use LinkedIn to import data</p>");
+    }
+
+    // Handle the successful return from the API call
+    function onSuccess(data) {
+        document.getElementById('id_alternate_email').value = data.emailAddress;
+        console.log(data);
+    }
+
+    // Handle an error response from the API call
+    function onError(error) {
+        console.log(error);
+    }
+
+    // Use the API call wrapper to request the member's basic profile data
+    function getProfileData() {
+        IN.API.Raw("/people/~:(first-name,last-name,headline,location,picture-url,industry,public-profile-url,email-address,summary,specialties,positions:(title,summary,start-date,end-date,is-current,company:(id,name,type,size,industry,ticker)),educations:(id,school-name,field-of-study,start-date,end-date,degree,activities,notes),associations,interests,num-recommenders,date-of-birth,publications:(id,title,publisher:(name),authors:(id,name),date,url,summary),patents:(id,title,summary,number,status:(id,name),office:(name),inventors:(id,name),date,url),languages:(id,language:(name),proficiency:(level,name)),skills:(id,skill:(name)),certifications:(id,name,authority:(name),number,start-date,end-date),courses:(id,name,number),recommendations-received:(id,recommendation-type,recommendation-text,recommender),honors-awards,three-current-positions,three-past-positions,volunteer)").result(onSuccess).error(onError);
+    }
+
+</script>
+{% endif %}
 {% load crispy_forms_tags %}
 <div class="col-md-9 main-content" id="form-content" >
+    {% if "1" in "0" %}
+    <script type="in/Login"></script>
+    {% endif %}
     <div class="panel panel-default">
+
         <div class="panel-heading profile-panel-heading">
             <h3>Edit Profile</h3>
             <ul class="list-inline">
