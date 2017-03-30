@@ -14,7 +14,7 @@
       <div class="card_middle">
        <div class="title_bar">
         <h2><a href="/activity/{{activity.id}}">{{activity.name}}</a></h2>
-        <h6><a href="/activity/All">Activities</a></h6>
+        <h6><b><a href="/activity/All">Activities</a></b></h6>
        </div> 
       <div class="content_bar">
         <p>{{activity.description|truncatechars:285}}
@@ -26,7 +26,6 @@
         <div class="card_right">
         </div>
       </a>
->>>>>>> f80209db8c58eaea4229c0626591c177fc9a0c99
     </div>
   {% endif %}
 
@@ -38,7 +37,7 @@
       <div class="card_middle">
        <div class="title_bar">
         <h2><a href="/activity/{{volunteer.id}}">{{volunteer.name}}</a></h2>
-        <h6><a href="/volunteer">Volunteer</a></h6>
+        <h6><b><a href="/volunteer">Volunteer</a></b></h6>
        </div> 
       <div class="content_bar">
         <p>{{volunteer.description}}</p>
@@ -59,7 +58,7 @@
       <div class="card_middle">
        <div class="title_bar">
         <h2><a href="/blog/{{community.blog.profile.user.username}}/post/{{community.id}}">{{community.heading}}</a></h2>
-        <h6><a href="/community">Community</a></h6>
+        <h6><b><a href="/community">Community</a></b></h6>
        </div> 
       <div class="content_bar">
         <p>{% autoescape off %} {{ community.content|linebreaks }} {% endautoescape %}</p>

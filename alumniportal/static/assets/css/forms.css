@@ -1,3 +1,7 @@
+input[placeholder]::-webkit-input-placeholder {
+            color: #a7a7a7;
+}
+
 .form-panel-heading{
     background-color: #d1b628;
     padding: 15px 15px;

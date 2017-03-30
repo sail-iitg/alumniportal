@@ -42,6 +42,14 @@
 	<!-- <script type="text/javascript" src="{% static 'assets/js/classie.js' %}"></script> -->
 	
     <!-- <script src="{% static 'assets/contactform/contactform.js' %}"></script> -->
+{% if "1" in "0" %}
+<script type="text/javascript" src="//platform.linkedin.com/in.js">
+    api_key:   APIKEY
+    onLoad:    onLinkedInLoad
+    authorize: True
+    lang:      en_US
+</script>
+{% endif %}
 
 </head>
 <body>
@@ -110,7 +118,7 @@
                 <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
               </div>
             </div>
-<!--             <div class="item">
+            <div class="item">
                <img onclick="openModal(this)" class="carousel-inner" src="{% static 'assets/images/mid_pic.jpg' %}" alt="First Slide">
                <div class="carousel-caption">
                 <h3></h3>
@@ -126,7 +134,7 @@
                 <img onclick="openModal(this)" class="carousel-inner" src="{% static 'assets/images/slideshow3.jpg' %}" alt="Third Slide">
                 <div class="carousel-caption">
               </div>
-            </div> -->
+            </div>
             
         </div>
 
@@ -150,12 +158,8 @@
   <img class="modal-content" id="img01">
 
   <!-- Modal Caption (Image Text) -->
-  <div id="caption"></div>
-</div>
-<script type="text/javascript">
-
-
-</script>         
+  <!-- <div id="caption"></div> -->
+</div>       
 
 	<div class="container">
 	      <div class="row complete-container">

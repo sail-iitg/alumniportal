@@ -78,19 +78,19 @@
 				                	<h5><b>IITG Degree :</b></h5>
 									<div class="col-md-12 row form-group float-label-control">
 								 		<label for="batch">Batch :</label>
-								 		<input type="text" value="{{request.POST.batch}}" class="form-control" list="batch" name="batch" id="batch" placeholder="Pass out year and Program">
+								 		<input type="text" value="{{request.POST.batch}}" class="form-control" list="select-batch" name="batch" id="batch" placeholder="Pass out year and Program">
 									</div>
-							 		<datalist id="batch" size="10"> 
+							 		<datalist id="select-batch" size="10"> 
 							 		{% for batch in batches %}
 							 			<option value="{{batch.0}}">{{batch.1}}</option>
 							 		{% endfor %}
 							 		</datalist>
 									<div class="col-md-12 row form-group float-label-control">
 									    <label for="select-major">Select Majors:</label>
-										<input type="text" value="{{request.POST.department}}" class="form-control" list="depts" name="department" placeholder="Department/Major">
+										<input type="text" value="{{request.POST.department}}" class="form-control" list="select-depts" name="department" id="department" placeholder="Department/Major">
 
 									</div>
-							 		<datalist id="depts" size="10"> 
+							 		<datalist id="select-depts" size="10"> 
 							 		{% for major in majors %}
 							 			<option value="{{major.1}}"></option>
 							 		{% endfor %}
@@ -135,6 +135,7 @@
 <div class="col-md-8" style="padding:0px;">
 <div class="col-md-12" style="padding:0px;">
 <div class="profile-tiles-container" id="results">
+{% if profiles %}
 	{% for item in profiles %}
 		<div class="cards">
 		    {% if item.image %}
@@ -153,23 +154,30 @@
 
 	{% endfor %}
 	<div class="pagination">
-	<span class="step-links">
-	    {% if profiles.has_previous %}
-	        <!-- <a href="?page={{ profiles.previous_page_number }}">previous</a> -->
-	        <button href="" onclick="document.getElementById('page').value = {{profiles.previous_page_number}}; document.getElementById('search').submit()" >previous</button>
-	    {% endif %}
+		<span class="step-links">
+		    {% if profiles.has_previous %}
+		        <!-- <a href="?page={{ profiles.previous_page_number }}">previous</a> -->
+		        <button href="" onclick="document.getElementById('page').value = {{profiles.previous_page_number}}; document.getElementById('search').submit()" >previous</button>
+		    {% endif %}
 
-	    <span class="current">
-	        Page {{ profiles.number }} of {{ profiles.paginator.num_pages }}.
-	    </span>
+		    <span class="current">
+		        Page {{ profiles.number }} of {{ profiles.paginator.num_pages }}.
+		    </span>
 
-	    {% if profiles.has_next %}
-	        <button href="" onclick="document.getElementById('page').value = {{profiles.next_page_number}};document.getElementById('search').submit()" >next</buttom>
-	    {% endif %}
-	</span>
+		    {% if profiles.has_next %}
+		        <button href="" onclick="document.getElementById('page').value = {{profiles.next_page_number}};document.getElementById('search').submit()" >next</button>
+		    {% endif %}
+		</span>
 	</div>
 
+{% else %}
 
+You can search and connect with your batchmates or find alumni studying in a particular institute or working in a specific company. 
+<br>
+Explore where are your hostelmates and classmates!
+<br>
+Happy Connecting! 
+{% endif %}
 </div>
 
 </div>
