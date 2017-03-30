@@ -50,6 +50,7 @@ class EditProfileForm(forms.ModelForm):
         self.helper.layout = Layout(
             Accordion(
                 AccordionGroup('Personal',
+                    'profile_picture',
                     'name',
                     'gender',
                     'date_of_birth',
@@ -137,14 +138,13 @@ class EditBlogDetails(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 # AccordionGroup('Introduction',
-                'profile_picture',
                 Field('about_me', style = "width: 90%; height: 100px;"),
                 Field('interests', style = "width: 90%; height: 100px;"),
                 Field('message_to_the_world', style = "width: 90%; height: 100px;"),
                 # ),
                 # AccordionGroup('Photos/Videos',
-                Field('images_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
-                Field('videos_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
+                # Field('images_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
+                # Field('videos_field', style="border : none; -webkit-box-shadow: none; box-shadow: none;"),
                 style = "background-color: #fff; padding: 10px",
                 # ),
             ),
@@ -348,8 +348,32 @@ class PostCommentForm(forms.ModelForm):
         }
 
 class AddClubPostForm(forms.ModelForm):
-    pass
+    """
+    Form for users to add posts to their blogs
+    """
 
+    class Meta:
+        model = models.ClubPost
+        exclude = ('member', 'timestamp')
+
+    def __init__(self, *args, **kwargs):
+        # username = kwargs.pop('username', None)
+        super(AddClubPostForm, self).__init__(*args, **kwargs)
+
+        # for field in self.fields.values():
+            # field.error_messages = {'required':''}
+        self.helper = FormHelper()
+        self.helper.form_id = 'id_add_post_form'
+        self.helper.form_class = 'form-horizontal col-md-12'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-10'
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            'heading',
+            'content',
+            'club',
+            FormActions(Submit('Save', 'Save', css_class='form-btn', style = 'width: 30%;')),
+        )
 # class EditEducationForm(forms.ModelForm):
 #     """
 #     Form for alumnus to edit education details (a tab within the profile edit page)

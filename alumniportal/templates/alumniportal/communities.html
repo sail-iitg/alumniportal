@@ -11,6 +11,12 @@
       Itching to get out and do something? Stop scratching and start clicking! Take your pick of things to do and places to see on campus, where you live or in a fascinating land far, far away.
     </p>
     <hr>
+    <h5 class='news-type'>
+      {% if add_right %}
+        <a href="/community/add/" class='column-addbutton'>(ADD)</a>
+      {% endif %}
+    </h5> 
+
   </div>
           
 {% for key, value in club_posts.iteritems %}
@@ -19,20 +25,23 @@
   </div>
   {% for post in value %}
     <div class="cards">
+      {% if post.image %} 
       <div class="card_left">
-        <img {% if item.image %} src="{{item.image.url}}" {% endif %}>
+        <img 
+        src="{{post.image.url}}">
       </div>
-      <div class="card_middle">
+      {% endif %}
+      <div class="card_middle" {% if post.image %} style="width: 75%" {% else %} style="width: 95%" {% endif %}">
         <div class="title_bar">
           <h4>
-            <a href="/news/{{ item.id }}/">{{post.heading}}</a>
+            <a href="/community/{{ post.id }}/">{{post.heading}}</a>
           </h4>
           <h6><a href="/profile/{{post.member.user.username}}">{{post.member.name}}
           </a></h6>
         <div class="news-date">{{post.timestamp}}</div>
         </div>
             {% autoescape off %} 
-            {{post.content}} 
+            {{post.content | linebreaks}} 
             {% endautoescape %}
       </div>
       <div class="card_right">
