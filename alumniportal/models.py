@@ -16,8 +16,8 @@ from time import strftime
 # datetime_dir = strftime("%Y%m%d_%H%M%S")
 def get_image_path(instance, filename):
     filename, file_extension = os.path.splitext(filename)
-    if type(instance).__name__ == "Blog":
-        return os.path.join(str(instance.profile.user.username), 'profile_picture', str(datetime.now().strftime("%Y%m%d_%H%M%S")) + file_extension)
+    if type(instance).__name__ == "Profile":
+        return os.path.join(str(instance.user.username), 'profile_picture', str(datetime.now().strftime("%Y%m%d_%H%M%S")) + file_extension)
     elif type(instance).__name__ == "Post":
         return os.path.join(str(instance.blog.profile.user.username), 'posts', str(instance.timestamp.strftime("%Y%m%d_%H%M%S")) + file_extension)
     elif (type(instance).__name__ == "ActivityImage"):
@@ -30,6 +30,7 @@ def get_image_path(instance, filename):
 class Profile(models.Model):
     profile_type = models.CharField(max_length=16, choices=PROFILE_TYPE, blank=True)
     # Personal
+    profile_picture = models.ImageField(blank=True, null=True, upload_to=get_image_path, default=os.path.join('default_pic.png'))   #Profile Picture of the person
     user = models.OneToOneField(User, blank=True)  #webmail ID of the person (it acts as the username)
     name = models.CharField(max_length=50)  #Full Name with the designation
     gender = models.CharField(max_length=7, choices=GENDERS, blank=True) #Choices
@@ -68,8 +69,6 @@ class Blog(models.Model):
     """
     # profile_id = models.IntegerField(unique=True, primary_key=True) #Unique to the person
     profile = models.OneToOneField('Profile', blank=True)  #Row ID of Blog Class
-    # TODO: Shift profile_picture to Profile model instead of Blog
-    profile_picture = models.ImageField(blank=True, null=True, upload_to=get_image_path, default=os.path.join('default_pic.png'))   #Profile Picture of the person
     videos = models.TextField(blank=True) #List of path to the videos that the person with profile_id = roll_no has uploaded
     # posts = models.TextField(blank=True)      #List of lists. [["TimeStamp", "Header of Post", "Content"]]. It will be updated from the end.
     about_me = models.TextField(blank=True)   #About me

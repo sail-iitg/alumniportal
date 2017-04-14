@@ -1,6 +1,6 @@
 .container{
 	width: 100%;
-	font-family: 'Roboto', serif;
+	font-family: 'Segoe UI', 'Roboto', serif;
 	padding:60px 5% 20px 5%;
     border-top-style: solid;
     border-top-width: 1px;
@@ -68,13 +68,18 @@
   margin-bottom: 20px;
 }
 
+.nav-active{
+  border-bottom: 5px solid #d1b628;
+  font-weight: bold;
+}
+
 @font-face {
     font-family: Vollkorn;
     src: url(vollkorn.ttf) format("truetype");
 }
 
 * {
-    font-family: 'Nimbus Sans L';
+    font-family: 'Segoe UI', sans-serif;
   
 }
 
@@ -169,7 +174,7 @@ h3 {
   height:180px;
   margin-bottom:10px;
   background-color:#f6f6f6;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
   /*border: solid 1px black;*/
 }
 .card_left{
@@ -183,7 +188,27 @@ h3 {
   float:left;
   height:100%;
   padding: 2%;
-  /*overflow: auto;*/
+  overflow: auto;
+}
+
+.card_middle::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.card_middle::-webkit-scrollbar
+{
+  width: 12px;
+  background-color: #F5F5F5;
+}
+
+.card_middle::-webkit-scrollbar-thumb
+{
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #e4e4e4;
 }
 
 .card_middle .title_bar{
@@ -192,16 +217,16 @@ h3 {
 
 .card_middle .content_bar{
     height: 65%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 .card_middle h2 a{
     text-align: left;
     font-size: 30px;
-    /*color: black;    */
+    color: #828282;    
     width: 50%;
     float: left;
-    font-family: Helvetica;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 .card_middle h4 a{
@@ -210,7 +235,7 @@ h3 {
     color: #636363;    
     width: 50%;
     float: left;
-    font-family: Helvetica;
+    font-family: 'Segoe UI', sans-serif;
 }
 
 
@@ -392,3 +417,4 @@ h3 {
   display: inline-block;
   transition: opacity ease 0.5s;
 } 
+

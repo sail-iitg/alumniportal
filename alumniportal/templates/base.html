@@ -31,7 +31,8 @@
 	<!-- JQuery Loaded first -->
 	<script src="{% static 'assets/js/jquery.min.js' %}"></script>
 	<script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'assets/js/jquery.vticker.min.js' %}"></script>
+    <script src="{% static 'assets/js/jquery.vticker.min.js' %}"></script>
+	<script src="{% static 'assets/js/main-body.js' %}"></script>
 
 	<!-- <script type="text/javascript" src="{% static 'assets/js/bootstrap.js' %}"></script> -->
 	<script type="text/javascript" src="{% static 'assets/js/jquery-scrolltofixed.js' %}"></script>
@@ -41,6 +42,14 @@
 	<!-- <script type="text/javascript" src="{% static 'assets/js/classie.js' %}"></script> -->
 	
     <!-- <script src="{% static 'assets/contactform/contactform.js' %}"></script> -->
+{% if "1" in "0" %}
+<script type="text/javascript" src="//platform.linkedin.com/in.js">
+    api_key:   APIKEY
+    onLoad:    onLinkedInLoad
+    authorize: True
+    lang:      en_US
+</script>
+{% endif %}
 
 </head>
 <body>
@@ -62,7 +71,7 @@
     <div class="header-left">
         <img src="{% static 'assets/images/logo.png' %}" class="iitg-logo">
         <ul>
-            <li><h2><a href="/">PLEXUS</a></h2></li>
+            <li><h2><a href="/">Plexus</a></h2></li>
             <li><h6><a href="http://www.iitg.ac.in"><b>Indian Institute of Technology Guwahati</b></a></h6></li>
             <li><h6><a>Wish I were here again!</a></h6></li>
         </ul>
@@ -70,8 +79,10 @@
     <div class="header-right">
         <a href="#">
             <div id="right_header">
-              <img src="{% static 'assets/images/donation.jpg' %}">
-              <h4>Make a<br><b>Gift</b></h4>
+                <div style="margin: 30px 40px 30px 40px;">
+                    <img src="{% static 'assets/images/donation.jpg' %}">
+                    <h4>Make a<br><b>Gift</b></h4>
+                </div>
             </div>
         </a>
     </div>
@@ -80,13 +91,13 @@
 <nav class="main-nav-outer scroll-to-fixed-fixed" id="topnav" style="z-index: 1000;">
     <!--<div class="container">-->
     <ul class="main-nav">
-        <li><a href="/">Home</a></li>
-    	<li><a href="/news/All">News</a></li>
-    	<li><a href="/activity/">Activities</a></li>
-    	<li><a href="/community">Community</a></li>
-    	<li><a href="/news/Achievement">Medals & Honours</a></li>
-    	<li><a href="/search">Search</a></li>
-    	<li><a href="/profile">Profile</a></li>
+        <li><a id="nav-home" href="/">Home</a></li>
+    	<li><a id="nav-news" href="/news/All">News</a></li>
+    	<li><a id="nav-activity" href="/activity/">Activities</a></li>
+    	<li><a id="nav-community" href="/community">Community</a></li>
+    	<li><a id="nav-achievement" href="/news/Achievement">Medals & Honours</a></li>
+    	<li><a id="nav-search" href="/search">Search</a></li>
+    	<li><a id="nav-profile" href="/profile">Profile</a></li>
     </ul>
     <a class="res-nav_click" href="#"><i class="fa-bars"></i></a>
 <!--</div>-->
@@ -107,7 +118,7 @@
                 <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
               </div>
             </div>
-<!--             <div class="item">
+            <div class="item">
                <img onclick="openModal(this)" class="carousel-inner" src="{% static 'assets/images/mid_pic.jpg' %}" alt="First Slide">
                <div class="carousel-caption">
                 <h3></h3>
@@ -123,7 +134,7 @@
                 <img onclick="openModal(this)" class="carousel-inner" src="{% static 'assets/images/slideshow3.jpg' %}" alt="Third Slide">
                 <div class="carousel-caption">
               </div>
-            </div> -->
+            </div>
             
         </div>
 
@@ -138,7 +149,7 @@
 
     </div> 
 </div>
-<div id="myModal" class="modal">
+<div id="myModal" class="modal" style="z-index: 2000;">
 
   <!-- The Close Button -->
   <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
@@ -147,36 +158,8 @@
   <img class="modal-content" id="img01">
 
   <!-- Modal Caption (Image Text) -->
-  <div id="caption"></div>
-</div>
-<script type="text/javascript">
-    function openModal(image){
-        var modal = document.getElementById('myModal');
-
-        // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById('myImg');
-        var modalImg = document.getElementById("img01");
-        var captionText = document.getElementById("caption");
-            modal.style.display = "block";
-            modalImg.src = image.src;
-            captionText.innerHTML = image.alt;
-        var span = document.getElementsByClassName("close")[0];
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-
-
-    $(document).keypress(function(e) { 
-        if (e.keyCode == 27) { 
-            $("#myModal").fadeOut(500);
-            //or
-            window.close();
-        } 
-    });
-
-
-    }
-</script>         
+  <!-- <div id="caption"></div> -->
+</div>       
 
 	<div class="container">
 	      <div class="row complete-container">
@@ -294,34 +277,13 @@
 <!-- rolling news -->
 
 <script type="text/javascript">
-    $(document).ready(function(e) {
-        $('#topnav').scrollToFixed();
-        $('.res-nav_click').click(function(){
-            $('.main-nav').slideToggle();
-            return false    
-            
-        });        
-    });
+    // $(document).ready(function(e) {
+ 
+    // });
 </script>
 
 <script type="text/javascript">
-	$(window).load(function(){
-		
-		$('.main-nav li a').bind('click',function(event){
-			var $anchor = $(this);
-			
-			$('html, body').stop().animate({
-				scrollTop: $($anchor.attr('href')).offset().top - 102
-			}, 1500,'easeInOutExpo');
-			/*
-			if you don't want to use the easing effects:
-			$('html, body').stop().animate({
-				scrollTop: $($anchor.attr('href')).offset().top
-			}, 1000);
-			*/
-			event.preventDefault();
-		});
-	})
+
 </script>
 	
 	{% block scripts %}{% endblock %}

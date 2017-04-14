@@ -33,6 +33,7 @@ urlpatterns = [
     # url(r'^(?P<class_type>\b(activity|news)\b)/add/$', forms_views.add, name='add'),
     url(r'^news/add/$', forms_views.add_news, name='add-news'),
     url(r'^activity/add/$', forms_views.add_activity , name='add_activity'),
+    url(r'^community/add/$', forms_views.add_community , name='add_community'),
 
     url(r'^(?P<class_type>\b(news)\b)/(?P<item_type>\b(All|Research|IITG|Student|Alumni|Achievement)\b)/$', display_views.items, name='news-items'),
     url(r'^(?P<class_type>\b(activity)\b)/(?P<item_type>\b(All|Event|Alumni Meet|Volunteering|Survey|Project)\b)/$', display_views.items, name='activity-items'),

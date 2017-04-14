@@ -51,8 +51,10 @@
 						<div class="col-md-4 ">
 							<div class="summary-img">
 							<img width="150" height="150"  
-							{% if profile.blog.profile_picture %}
-								src="{{profile.blog.profile_picture.url}}"
+							{% if profile.profile_picture %}
+								src="{{profile.profile_picture.url}}"
+							{% else %}
+								src="{{MEDIA_URL}}default_pic.png"
 							{% endif %}
 							>
 							</div>

@@ -24,71 +24,118 @@ def add_activity(request):
     """
     display form to alumnus to add an Activity
     """
-    print "In add activity"
-    if hasattr(request.user, 'profile'):
-        profile = request.user.profile
-    else:
-        messages.error(request, "Create your Profile before adding activity")
-        return HttpResponseRedirect('/edit-profile/')
+    profile = request.user.profile
 
     if request.method == "POST":
         form = forms.AddActivityForm(request.POST, request.FILES)
         form.fields['activity_type'].choices = [choice for choice in form.fields['activity_type'].choices if choice[0] != 'V']
-        recent = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
+        recent, created = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))
         # import pdb; pdb.set_trace()
         if form.is_valid():
             task = form.save(commit=False)
             image_list = request.FILES.getlist('files')
             task.profile = profile
             task.created = datetime.now()
-            today = datetime.today().isocalendar()
-            week = str(today[1])+str(today[0])
-            tmp = models.Recent.objects.get_or_create(week=week)
-            if tmp[1]:
-                tmp[0].save()
-            task.recent = tmp[0]
+            if created:
+                recent.save()
+            task.recent = recent
             task.save()
 
             for image in image_list:
                 models.ActivityImage.objects.create(activity=task, image=image).save()
-            messages.success(request, 'Activity Created')
-            return HttpResponseRedirect('/activity')
+            return HttpResponseRedirect('/activity/' + str(task.id))
         else:
             messages.error(request, 'Fill the required fields.')
     else:
         form = forms.AddActivityForm()
         # remove volunteering activity from activity type
         form.fields['activity_type'].choices = [choice for choice in form.fields['activity_type'].choices if choice[0] != 'V']
-    return render(request, 'alumniportal/add-activity.html',
-                  {'page': 'add-activity',
+    return render(request, 'alumniportal/add-activity.html', {
+        'page': 'add-activity',
+        'form': form,
+        })
+
+@user_passes_test(lambda u: u.is_superuser)
+def add_news(request):
+    """
+    Display form for adding news and redirect to published news
+    """
+    if request.method == 'POST':
+        form = forms.AddNewsForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save()
+            return HttpResponseRedirect('/news/' + str(task.id))
+    else:
+        form = forms.AddNewsForm()
+    return render(request, 'alumniportal/add-edit.html',{
+        'page': 'add',
+        'class_type' : 'news',
+        'form': form,
+        'edit_right' : False,
+        })
+
+@user_passes_test(lambda u: u.is_superuser)
+def add_community(request):
+    if request.method == 'POST':
+        form = forms.AddClubPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.member = request.user.profile
+            task.timestamp = datetime.now()
+            task.save()
+            return HttpResponseRedirect('/community/' + str(task.id))
+    else:
+        form = forms.AddClubPostForm()
+    return render(request, 'alumniportal/add-edit.html',{
+        'page': 'add',
+        'class_type' : 'Club Post',
+        'form': form,
+        'edit_right' : False,
+        })    
+
+
+@login_required(login_url='/login/')
+def add_post(request, username):
+    """
+    Display form for adding blog post and redirect to published post
+    """
+    if request.user.username != username:
+        return HttpResponse('You do not have edit access to this blog')
+    if request.method == 'POST':
+        form = forms.AddPostForm(request.POST, request.FILES)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.blog = request.user.profile.blog
+            task.save()
+            url = '/' + username + '/blog/' + str(task.id) + '/post/'
+            return HttpResponseRedirect(url)
+    else:
+        form = forms.AddPostForm()
+        form.helper.form_action = '/' + username + '/blog/add/post/'
+    return render(request, 'alumniportal/add-post.html',
+                  {'page': 'add-post',
                    'form': form})
 
+@user_passes_test(has_blog, login_url = '/edit-profile/')
 @login_required(login_url='/login/')
 def add_volunteer(request):
     """
     display form to alumnus to add a Volunteering Activity
     """
-    if hasattr(request.user, 'profile'):
-        profile = request.user.profile
-    else:
-        messages.error(request, "Create your Profile before adding activity")
-        return HttpResponseRedirect('/edit-profile/')
+    profile = request.user.profile
 
     if request.method == "POST":
         form = forms.AddActivityForm(request.POST, request.FILES)
         form.data[u'activity_type'] = u'V'
-        recent = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
+        recent, created = models.Recent.objects.get_or_create(week = str(datetime.now().isocalendar()[1])+str(datetime.now().year))[0]
         if form.is_valid():
             task = form.save(commit=False)
             image_list = request.FILES.getlist('files')
             task.profile = profile
             task.created = datetime.now()
-            today = datetime.today().isocalendar()
-            week = str(today[1])+str(today[0])
-            tmp = models.Recent.objects.get_or_create(week=week)
-            if tmp[1]:
-                tmp[0].save()
-            task.recent = tmp[0]
+            if created:
+                recent.save()
+            task.recent = recent
             task.save()
 
             for image in image_list:
@@ -104,19 +151,12 @@ def add_volunteer(request):
                    'form': form,
                    'volunteer': True})
 
+@user_passes_test(has_blog, login_url = '/edit-profile/')
 @login_required
 def edit_blog_details(request):
     # get user profile if exists
-    if hasattr(request.user.profile, 'blog'):
-        blog = request.user.profile.blog
-    else:
-        blog = None
-
-    if hasattr(request.user, 'profile'):
-        profile = request.user.profile
-    else:
-        messages.error("Fill up the Personal Details.")
-        return HttpResponseRedirect('/edit-profile/personal')
+    blog = request.user.profile.blog
+    profile = request.user.profile
 
     if request.method == "POST":
         if blog:
@@ -403,6 +443,7 @@ def edit_personal(request):
             task.last_edited = datetime.now()
             if not profile:
                 task.user = request.user
+                models.Blog.objects.create(profile=task).save()
             if profile:
                 if not hasattr(request.user.profile, 'blog'):
                     models.Blog.objects.create(profile=task).save()
@@ -437,49 +478,6 @@ def current(request):
             return HttpResponseRedirect("/edit-profile")
     return HttpResponseRedirect("/edit-profile")
 
-@user_passes_test(lambda u: u.is_superuser)
-def add_news(request):
-    """
-    Display form for adding news and redirect to published news
-    """
-    if request.method == 'POST':
-        form = forms.AddNewsForm(request.POST, request.FILES)
-        if form.is_valid():
-            task = form.save()
-            return HttpResponseRedirect('/' + str(task.id) + '/news/')
-    else:
-        form = forms.AddNewsForm()
-    return render(request, 'alumniportal/add-edit.html',{
-        'page': 'add',
-        'class_type' : 'news',
-        'form': form,
-        'edit_right' : False,
-        })
-
-
-
-
-@login_required(login_url='/login/')
-def add_post(request, username):
-    """
-    Display form for adding blog post and redirect to published post
-    """
-    if request.user.username != username:
-        return HttpResponse('You do not have edit access to this blog')
-    if request.method == 'POST':
-        form = forms.AddPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            task = form.save(commit=False)
-            task.blog = request.user.profile.blog
-            task.save()
-            url = '/' + username + '/blog/' + str(task.id) + '/post/'
-            return HttpResponseRedirect(url)
-    else:
-        form = forms.AddPostForm()
-        form.helper.form_action = '/' + username + '/blog/add/post/'
-    return render(request, 'alumniportal/add-post.html',
-                  {'page': 'add-post',
-                   'form': form})
 
 
 def can_edit(request, item, class_type):
@@ -490,15 +488,8 @@ def can_edit(request, item, class_type):
     elif class_type == 'community':
         return (item.member.user == request.user)
 
-def can_add(request, class_type):
-    if class_type == 'news':
-        return request.user.is_superuser
-    else:
-        return request.user
-
-def add(request, class_type, id):
-    pass
 # @user_passes_test(lambda u: u.is_superuser)
+class_form_fn = {'news': forms.AddNewsForm, 'activity': forms.AddActivityForm, 'community': forms.AddClubPostForm}
 def edit(request, class_type, id):
     """
     Display form for editing news and redirect to published news
@@ -512,7 +503,7 @@ def edit(request, class_type, id):
     if edit_right:
         print "Edit right True"
         if request.method == 'POST':
-            form = forms.class_form_fn[class_type](request.POST, request.FILES, instance=item)
+            form = class_form_fn[class_type](request.POST, request.FILES, instance=item)
             # import pdb; pdb.set_trace()
             if form.is_valid():
                 form.save()
@@ -521,11 +512,11 @@ def edit(request, class_type, id):
                 form.helper.form_action = '/' + class_type + '/' + str(item.id) + '/edit/'
                 messages.error(request,'Please enter all necessary fields correctly.')
         else:
-            form = forms.class_form_fn[class_type](instance=item)
+            form = class_form_fn[class_type](instance=item)
         form.helper.form_action = '/' + class_type + '/' + str(item.id) + '/edit/'
     else:
         print "Edit right False"
-        messages.error('Sorry! You do not have the permission to edit the requested form.')
+        messages.error(request, 'Sorry! You do not have the permission to edit the requested form.')
         return HttpResponseRedirect('/' + class_type + '/add')
     return render(request, 'alumniportal/add-edit.html', {
             'page': 'add',

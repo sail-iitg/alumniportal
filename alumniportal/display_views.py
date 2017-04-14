@@ -4,6 +4,7 @@ from alumniportal import models
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.db.models import Q
@@ -18,6 +19,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 ####To pass the required recent objects in required numbers
 def get_recent_objects():
     pass
+
+def has_blog(user):
+    return hasattr(user, 'profile') and hasattr(user.profile, 'blog')
 
 def home(request):
     research = models.News.objects.filter(post_type = 'R').first()
@@ -58,7 +62,7 @@ def community(request):
     for grp in main_groups:
         # TODO Error No such column: alumniportal_club.group_type
         club, create = models.Club.objects.get_or_create(name = grp, description = "Aim to spread awareness about the happenings in the campus from the side of " + grp, group_type = 'O')
-        club_posts[grp] = models.ClubPost.objects.filter(club = club)[:3]
+        club_posts[grp] = models.ClubPost.objects.filter(club = club)[:1]
     blog_posts = models.Post.objects.all()[:5]
     print club_posts
     return render(request,'alumniportal/communities.html', {
@@ -66,6 +70,7 @@ def community(request):
         'rolling_news':list(models.News.objects.all())[-3:],
         'club_posts': club_posts,
         'blog_posts': blog_posts,
+        'add_right' : request.user.is_superuser,
         })
 
 def news(request):
@@ -212,7 +217,8 @@ def search(request):
         'hostels':HOSTELS,
         })
 
-
+@user_passes_test(has_blog, login_url = '/edit-profile/')
+@login_required(login_url='/login/')
 def detail(request, class_type, id):
     edit_right = False
     if class_type == 'news':

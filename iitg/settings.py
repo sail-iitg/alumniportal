@@ -24,7 +24,7 @@ SECRET_KEY = 'zh@bciss1qw57z62#2)m4e*m12ra&2w6gil2i()^1h8)#d51#t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.4.13.8','localhost', '127.0.0.1']
 
 
 # Application definition
@@ -39,7 +39,7 @@ INSTALLED_APPS = (
     'alumniportal',
     'login',
     'crispy_forms',
-    'crispy_forms_foundation',
+    # 'crispy_forms_foundation',
     'bootstrap3_datetime',
     'multiupload',
     'ckeditor',
@@ -128,7 +128,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'alumniportal/media/')
 MEDIA_URL = '/media/'
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'alumniportal/static/')
 
 # PATH_TO_DATABASE_IMPORT = '/home/jayadeep/Downloads/sailDb.sql'
 

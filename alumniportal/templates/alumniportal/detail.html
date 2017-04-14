@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="{% static 'assets/css/carousel.css' %}">
     <script src="{% static 'assets/js/jquery.min.js' %}"></script>
     <!-- <script src="{% static 'assets/js/bootstrap.js' %}"></script> -->
+    {% if "blog" in class_type %}
     <script src="{% static 'assets/js/blog-comments.js' %}"></script>
+    {% endif %}
     <!-- <link rel="stylesheet" href="{% static 'assets/css/main-body.css' %}"> -->
     
 </head>
@@ -176,7 +178,7 @@
         <!-- </div> -->
     </div>
     <div class="panel-body">
-        {% autoescape off %} {{ item.content }} {% endautoescape %}
+        {% autoescape off %} {{ item.content | linebreaks}} {% endautoescape %}
     </div>
 </div>
 <div class="col-md-1"></div>
@@ -290,28 +292,31 @@
         var modal = document.getElementById('myModal');
 
         // Get the image and insert it inside the modal - use its "alt" text as a caption
-        var img = document.getElementById('myImg');
         var modalImg = document.getElementById("img01");
         var captionText = document.getElementById("caption");
-            modal.style.display = "block";
-            modalImg.src = image.src;
-            captionText.innerHTML = image.alt;
+        modal.style.display = "block";
+        modalImg.src = image.src;
+        captionText.innerHTML = image.alt;
         var span = document.getElementsByClassName("close")[0];
         span.onclick = function() {
-          modal.style.display = "none";
+          document.getElementById('myModal').style.display='none';
         }
 
 
-    $(document).keypress(function(e) { 
-        if (e.keyCode == 27) { 
-            $("#myModal").fadeOut(500);
-            //or
-            window.close();
-        } 
-    });
 
 
     }
+  $(document).keypress(function(e) { 
+    if (e.keyCode == 27) { 
+        document.getElementById('myModal').style.display = 'none';
+    } 
+});
+  $(document).keydown(function(e) { 
+    if (e.which == 27) { 
+        document.getElementById('myModal').style.display = 'none';
+    } 
+});
+
 </script>         
 
 
