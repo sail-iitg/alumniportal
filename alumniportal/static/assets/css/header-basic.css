@@ -133,6 +133,7 @@ header .header-limiter .filler {
 body {
 	margin:0;
 	padding:0;
+	min-width: 400px;
 }
 
 .fa-bars::before {

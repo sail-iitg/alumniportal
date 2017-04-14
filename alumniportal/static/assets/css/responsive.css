@@ -87,7 +87,38 @@
 	.isotope{ width:400px; margin:0px auto;}
 	.Portfolio-box{}
 	.portfolioContainer{ width:350px; margin:0px auto !important; } */
-	
+
+	/* Reduce size of right header in tablet view */
+	#right_header{
+		height:50px;
+		width:110px;
+	}
+	#right_header img{
+		top:10px;
+		left:10px;
+		height:30px;
+		width:30px;
+	}
+	#right_header h4{
+		font-size: 14px;
+		top:2px;
+		left:20px;
+	}
+
+	/* Reduce size of the left header in tablet view */
+	header .header-left ul{
+		padding-left: 15px;
+	}
+
+	header .header-left h2{
+		font-size: 26px;
+	}
+	header .header-left h6{
+		font-size: 11px;
+	}
+	.iitg-logo{
+		width: 60px;
+	}
 	
 }
 
@@ -100,6 +131,37 @@
 	.c-logo-part ul li{ display:block;}
 	.Portfolio-box{  max-width:300px !important; width:96.4% !important; margin:0 !important}
 	.Portfolio-box img { max-width:100%;}
-	.portfolioContainer{ width:280px !important; margin:0 auto !important } 
-	
+	.portfolioContainer{ width:280px !important; margin:0 auto !important }
+
+	/* Reduce size of right header in phone view */
+	#right_header{
+		height:45px;
+		width:80px;
+	}
+	#right_header img{
+		top:10px;
+		left:10px;
+		height:25px;
+		width:25px;
+	}
+	#right_header h4{
+		font-size: 11px;
+		top:3px;
+		left:15px;
+	}
+
+	/* Reduce size of left header in phone view */
+	header .header-left ul{
+		padding-left: 15px;
+	}
+
+	header .header-left h2{
+		font-size: 22px;
+	}
+	header .header-left h6{
+		font-size: 11px;
+	}
+	.iitg-logo{
+		width: 50px;
+	}
 }
