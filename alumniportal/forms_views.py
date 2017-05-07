@@ -36,6 +36,7 @@ def add_activity(request):
             image_list = request.FILES.getlist('files')
             task.profile = profile
             task.created = datetime.now()
+            task.status = 'Pending'
             if created:
                 recent.save()
             task.recent = recent
@@ -517,7 +518,32 @@ def edit(request, class_type, id):
     else:
         print "Edit right False"
         messages.error(request, 'Sorry! You do not have the permission to edit the requested form.')
-        return HttpResponseRedirect('/' + class_type + '/add')
+        return HttpResponseRedirect('/' + class_type + '/')
+    return render(request, 'alumniportal/add-edit.html', {
+            'page': 'add',
+            'form': form,
+            'edit_right': edit_right,
+            'class_type': class_type,
+        })
+
+def delete(request, class_type, id):
+    """
+    Display form for editing news and redirect to published news
+    """
+    try:
+        item = models.class_model_fn[class_type].objects.get(id=id)
+    except models.class_model_fn[class_type].DoesNotExist:
+        return HttpResponse('Does not exist.')
+
+    edit_right = can_edit(request, item, class_type)
+    if edit_right:
+        item.delete()
+        messages.success(request,'The content has been deleted')
+        return HttpResponseRedirect('/' + class_type + '/')
+    else:
+        print "Edit right False"
+        messages.error(request, 'Sorry! You do not have the permission to delete this content.')
+        return HttpResponseRedirect('/' + class_type + '/')
     return render(request, 'alumniportal/add-edit.html', {
             'page': 'add',
             'form': form,

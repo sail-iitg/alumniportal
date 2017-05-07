@@ -183,7 +183,8 @@ class Activity(models.Model):
     description = models.TextField(blank=True)    #Short summary of the activity. How to be performed etc
     # peoples_involved = models.ManyToManyField(Profile, blank=True)   #No. of peoples currently got involved.
     recent = models.ForeignKey(Recent, blank=True, null=True, related_name='activities')
-    status = models.CharField(max_length=16, choices = STATUS, blank = True)
+    status = models.CharField(max_length=16, choices = STATUS, default='Pending', editable=False)
+    comments = models.TextField(blank=True)
 
     def __unicode__(self):
         return str(self.id) + " " + str(self.created)

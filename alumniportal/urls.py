@@ -16,10 +16,13 @@ from django.conf.urls import include, url
 from alumniportal import forms_views, display_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^$', display_views.home , name='home'),
     url(r'^activity/$', display_views.activity , name='activity'),
+    url(r'^approval/$', display_views.approval , name='approval'),
+    url(r'^approval/(?P<id>.+)/$', display_views.approval , name='approval'),
     url(r'^news/$', display_views.news , name='news'),
     url(r'^volunteer/$', display_views.volunteer),
     url(r'^community/$', display_views.community , name='community'),
@@ -38,6 +41,7 @@ urlpatterns = [
     url(r'^(?P<class_type>\b(news)\b)/(?P<item_type>\b(All|Research|IITG|Student|Alumni|Achievement)\b)/$', display_views.items, name='news-items'),
     url(r'^(?P<class_type>\b(activity)\b)/(?P<item_type>\b(All|Event|Alumni Meet|Volunteering|Survey|Project)\b)/$', display_views.items, name='activity-items'),
     url(r'^(?P<class_type>\b(activity|news|community)\b)/(?P<id>.+)/edit/$', forms_views.edit, name='edit'),
+    url(r'^(?P<class_type>\b(activity|news|community)\b)/(?P<id>.+)/delete/$', forms_views.delete, name='delete'),
     url(r'^(?P<class_type>\b(activity|news|community)\b)/(?P<id>.+)/$', display_views.detail, name='detail'),
     
     # url(r'^achievement/(?P<type>\b(all|iitg|alumni|student)\b)/$', display_views.items , name='news-items'),
@@ -69,5 +73,12 @@ urlpatterns = [
     url(r'^blog/(?P<username>.+)/post/(?P<post_id>\d+)/$', display_views.post_detail, name='post-detail'),
     url(r'^blog/(?P<username>.+)/$', display_views.blog, name='blog'),
     url(r'^blog/$', display_views.blog, name='blog'),
+
+    url(r'^password_reset/$', auth_views.password_reset, name='password_reset'),
+    url(r'^password_reset/done/$', auth_views.password_reset_done, name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        auth_views.password_reset_confirm, name='password_reset_confirm'),
+    url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

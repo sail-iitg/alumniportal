@@ -15,7 +15,7 @@
           </a></b></h6>
         <div class="news-date">{{item.timestamp}}{{item.year}}</div>
         </div>
-        <div>{% autoescape off %} {{item.content|truncatechars:285}}{{item.description|truncatechars:285}} {% endautoescape %}
+        <div>{% autoescape off %} {{item.content | truncatechars_html:285}}{{item.description | truncatechars_html:285}} {% endautoescape %}
         </div>
       </div>
     </div>

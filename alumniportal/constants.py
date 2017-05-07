@@ -74,7 +74,9 @@ GENDERS = (
 PROGRAMS = (
     ('B. Tech', 'B.Tech.'),
     ('M. Tech', 'M.Tech.'),
+    ('M. Sc', 'M.Sc.'),
     ('B. Des', 'B.Des.'),
+    ('M. Des', 'M.Des.'),
     ('Ph.D.', 'Ph.D.'),
     ('Other', 'Other')
 )

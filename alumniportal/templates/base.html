@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, maximum-scale=1">
 
 	<!-- Title of page to be added dynamically -->	
-	<title>{{page|title}}</title>
+	<title>{{class_type|title}} {{page|title}} | PLEXUS: IIT Guwahati</title>
 	{% load staticfiles %}
 	
 	<!--<link rel="icon" href="favicon.png" type="image/png">
@@ -93,7 +93,7 @@
     <ul class="main-nav">
         <li><a id="nav-home" href="/">Home</a></li>
     	<li><a id="nav-news" href="/news/All">News</a></li>
-    	<li><a id="nav-activity" href="/activity/">Activities</a></li>
+    	<li><a id="nav-activity" href="/activity/">Activities</a>{% if request.user.is_superuser %}<a id="data-span" href="/approval" class="data-span">{{pending_count}}</a>{% endif %}</li>
     	<li><a id="nav-community" href="/community">Community</a></li>
     	<li><a id="nav-achievement" href="/news/Achievement">Medals & Honours</a></li>
     	<li><a id="nav-search" href="/search">Search</a></li>

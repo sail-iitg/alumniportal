@@ -24,18 +24,26 @@ def has_blog(user):
     return hasattr(user, 'profile') and hasattr(user.profile, 'blog')
 
 def home(request):
-    research = models.News.objects.filter(post_type = 'R').first()
+    news = models.News.objects
+    research = news.filter(post_type = 'R').first()
     activities = models.Activity.objects
-    activity = activities.first()
-    volunteer = activities.filter(activity_type = 'V').first()
-    community = models.Post.objects.first() #When Clubs get implemented change Post to ClubPosts (there would be some more changes too)
+    activity = activities.filter(status='Accepted').first()
+    achievement = news.filter(post_type = 'C').first()
+    volunteer = activities.filter(status='Accepted').filter(activity_type = 'V').first()
+    pending_count = None
+    if request.user.is_superuser:
+        pending_count = len(activities.filter(status='Pending'))
+    #When Clubs get implemented change Post to ClubPosts (there would be some more changes too)
+    community = models.Post.objects.first() 
     return render(request,'alumniportal/main-body.html', {
         'page': 'home',
         'research':research,
         'activity': activity,
+        'pending_count':pending_count,
+        'achievement':achievement,
         'volunteer':volunteer,
         'community':community,
-        'rolling_news':list(models.News.objects.all())[-3:],
+        'rolling_news':list(news.all())[-3:],
         })
 
 def volunteer(request):
@@ -44,27 +52,17 @@ def volunteer(request):
 def activity(request):
     return items(request, "activity", "All")
 
-def activity_items(request, item_type):
-    for a in ACTIVITY_TYPE:
-        if a[1]==item_type:
-            activities = models.Activity.objects.filter(activity_type=a[0])
-            return render(request, 'alumniportal/activity.html', {
-                'page':'activity',
-                'items':activities,
-                'rolling_news':list(models.News.objects.all())[-3:],
-                'item_type':item_type,
-                })
-    return HttpResponseRedirect('/activity')
+def news(request):
+    return items(request, "news", "All")
 
 main_groups = ['Technical Board', 'Sports Board', 'Cultural Board']
 def community(request):
     club_posts = {}
     for grp in main_groups:
-        # TODO Error No such column: alumniportal_club.group_type
         club, create = models.Club.objects.get_or_create(name = grp, description = "Aim to spread awareness about the happenings in the campus from the side of " + grp, group_type = 'O')
         club_posts[grp] = models.ClubPost.objects.filter(club = club)[:1]
     blog_posts = models.Post.objects.all()[:5]
-    print club_posts
+    # print club_posts
     return render(request,'alumniportal/communities.html', {
         'page': 'community',
         'rolling_news':list(models.News.objects.all())[-3:],
@@ -73,8 +71,6 @@ def community(request):
         'add_right' : request.user.is_superuser,
         })
 
-def news(request):
-    return items(request, "news", "All")
 
 @login_required(login_url='/login/')
 def change_password(request):
@@ -110,7 +106,7 @@ def view_profile(request, profile_id):
 def items(request, class_type, item_type):
     #####need to add continuously loading of news
     items = None
-    print "In items function"
+    # print "In items function"
     add_right = False
     if class_type == "news":
         news = models.News.objects.all()
@@ -122,14 +118,14 @@ def items(request, class_type, item_type):
             if a[1] == item_type:
                 items = news.filter(post_type = a[0])
     elif class_type == "activity":
-        activities = models.Activity.objects.all()
+        activities = models.Activity.objects.filter(status='Accepted')
         items = activities
         if hasattr(request.user, 'profile') and hasattr(request.user.profile, 'blog'):
             add_right = True
         for a in ACTIVITY_TYPE:
             print items
             if a[1] == item_type:
-                items = activities.filter(activity_type = a[0])
+                items = activities.filter(status='Accepted').filter(activity_type = a[0])
 
     paginator = Paginator(items, 10)
     page = request.GET.get('page')
@@ -140,8 +136,10 @@ def items(request, class_type, item_type):
     except EmptyPage:
         items = paginator.page(paginator.num_pages)
         
-    print request.path
-    # print POST_TYPE
+    # print request.path
+    pending_count = None
+    if request.user.is_superuser:
+        pending_count = len(models.Activity.objects.filter(status='Pending'))
 
     ########WHat happens if none of the URL matches!!!!
     return render(request,'alumniportal/items.html', {
@@ -149,6 +147,7 @@ def items(request, class_type, item_type):
         'items':items,
         'item_type':item_type,
         'class_type' : class_type,
+        'pending_count': pending_count,
         'file': class_type + ".html",
         'rolling_news':list(models.News.objects.all())[-3:],
         'add_right': add_right,
@@ -214,7 +213,6 @@ def search(request):
         'hostels':HOSTELS,
         'profiles':profiles,
         'rolling_news':list(models.News.objects.all())[-3:],
-        'hostels':HOSTELS,
         })
 
 @user_passes_test(has_blog, login_url = '/edit-profile/')
@@ -231,6 +229,10 @@ def detail(request, class_type, id):
         try:
             item = models.Activity.objects.get(id=id)
             edit_right = (item.profile.user == request.user)
+            if (request.user.is_superuser) or (edit_right):
+                pass
+            elif item.status == 'Pending' or item.status == 'Denied':
+                raise Http404("404 Not Found")
         except ObjectDoesNotExist:
             raise Http404("404 Not Found")
         print "In actvity"
@@ -248,6 +250,7 @@ def detail(request, class_type, id):
         'item' : item,
         'page' : 'detail',
         'class_type' : class_type,
+        'status':STATUS,
         'edit_right' : edit_right,
         })
 
@@ -283,4 +286,23 @@ def blog(request, username = None):
         'is_editor': (blog.profile.user == request.user),
         'rolling_news':list(models.News.objects.all())[-3:],
         'username': user.username,
+        })
+
+@user_passes_test(lambda u: u.is_superuser)
+def approval(request, id = None):
+    activities = models.Activity.objects.filter(status = 'Pending')
+    if request.POST:
+        item = models.Activity.objects.get(id=id)
+        item.status = request.POST['status']
+        item.save()
+        return HttpResponseRedirect('/approval')
+    return render(request, 'alumniportal/items.html', {
+        'file': "activity.html",
+        'items':activities,
+        'status':STATUS,
+        'page': 'items',
+        'item_type':"all",
+        'class_type' : "activity",
+        'rolling_news':list(models.News.objects.all())[-3:],
+        'add_right': False,
         })

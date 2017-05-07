@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['10.4.13.8','localhost', '127.0.0.1']
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -43,8 +44,13 @@ INSTALLED_APPS = (
     'bootstrap3_datetime',
     'multiupload',
     'ckeditor',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     # 'endless_pagination',
 )
+
+SITE_ID = 1
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -78,6 +84,13 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development onlys
 
 #URL for login_required decorator 
 LOGIN_URL = '/login/'

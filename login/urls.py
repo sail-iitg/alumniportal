@@ -14,6 +14,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from login import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^$', views.login , name='login'),

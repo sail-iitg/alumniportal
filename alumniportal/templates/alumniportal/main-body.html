@@ -6,6 +6,52 @@
 {% load staticfiles %}
         
 <div class="col-md-9 main-content">
+  {% if achievement %}
+    <div class="cards">
+      <div class="card_left">
+        <img {% if achievement.image %} src="{{achievement.image.url}}" {% endif %} alt="{{achievement.post_type}}">
+      </div>
+      <div class="card_middle">
+       <div class="title_bar">
+        <h2><a href="/news/{{achievement.id}}">{{achievement.heading}}</a></h2>
+        <h6><b><a href="/news/Achievement">Achievement</a></b></h6>
+       </div> 
+      <div class="content_bar">
+        <p>{% autoescape off %} {{ achievement.content|truncatechars_html:285 }} {% endautoescape %}
+        <a href="/news/{{achievement.id}}">Read more</a></p>
+
+      </div>
+      </div>
+      <a href="/news/{{achievement.id}}">
+        <div class="card_right">
+        </div>
+      </a>
+    </div>
+  {% endif %}
+
+  {% if research %}
+    <div class="cards">
+      <div class="card_left">
+        <img {% if research.image %} src="{{research.image.url}}" {% endif %} alt="{{research.post_type}}">
+      </div>
+      <div class="card_middle">
+       <div class="title_bar">
+        <h2><a href="/news/{{research.id}}">{{research.heading}}</a></h2>
+        <h6><b><a href="/news/Research">Research</a></b></h6>
+       </div> 
+      <div class="content_bar">
+        <p>{% autoescape off %} {{ research.content|truncatechars_html:285 }} {% endautoescape %}
+        <a href="/news/{{research.id}}">Read more</a></p>
+
+      </div>
+      </div>
+      <a href="/news/{{research.id}}">
+        <div class="card_right">
+        </div>
+      </a>
+    </div>
+  {% endif %}
+
   {% if activity %}
     <div class="cards">
       <div class="card_left">
@@ -17,8 +63,7 @@
         <h6><b><a href="/activity/All">Activities</a></b></h6>
        </div> 
       <div class="content_bar">
-        <p>{{activity.description|truncatechars:285}}
-        <a href="/activity/{{activity.id}}">Read more</a></p>
+        <p>{{activity.description|truncatechars_html:285}}</p>
 
       </div>
       </div>
@@ -40,7 +85,7 @@
         <h6><b><a href="/volunteer">Volunteer</a></b></h6>
        </div> 
       <div class="content_bar">
-        <p>{{volunteer.description}}</p>
+        <p>{{volunteer.description | truncatechars_html:285}}</p>
       </div>
       </div>
       <a href="/activity/{{volunteer.id}}">
@@ -61,7 +106,8 @@
         <h6><b><a href="/community">Community</a></b></h6>
        </div> 
       <div class="content_bar">
-        <p>{% autoescape off %} {{ community.content|linebreaks }} {% endautoescape %}</p>
+        <p>{% autoescape off %} {{ community.content | truncatechars_html:285}} {% endautoescape %}</p>
+
       </div>
       </div>
       <a href="/blog/{{community.blog.profile.user.username}}/post/{{community.id}}">
